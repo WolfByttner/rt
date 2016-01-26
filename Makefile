@@ -6,7 +6,7 @@
 #    By: fnieto <fnieto@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2013/11/19 14:09:58 by apachkof          #+#    #+#              #
-#    Updated: 2016/01/26 18:52:24 by fnieto           ###   ########.fr        #
+#    Updated: 2016/01/26 20:08:45 by fnieto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS=-Wall -Wextra -Werror -O3
 
 RM=rm -f
 
-SRC=main.c
+SRC=main.c shader.c
 
 LIB= -framework OpenGL -framework AppKit libft/libft.a minilibx_macos/libmlx.a fred_gl/fred_gl.a
 

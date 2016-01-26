@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 18:42:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/01/26 19:37:49 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/01/26 20:11:50 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,24 @@ int			draw_frame(int x, int y, int color)
 
 int			loop_hook(void *params)
 {
+	static t_attrib			def[8];
+	t_vertex				a;
+	t_vertex				b;
+	size_t					i;
+
+	i = -1;
+	while (++i < 8)
+	{
+		def[i] = attrib_null();
+	}
+	i = -1;
+	while (++i < g_pms.res.y)
+	{
+		a = vertex(vec3(0, (t_float)i, 0), def);
+		b = vertex(vec3(g_pms.res.x, (t_float)i, 0), def);
+		draw_line(a, b, &shader, get_instance()->frame);
+	}
+	set_time(get_time() + 1./60.);
 	mlx_put_image_to_window(g_mlx.core, g_mlx.window, g_mlx.frame, 0, 0);
 	return ((int)params);
 }

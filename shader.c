@@ -1,34 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rt.h                                               :+:      :+:    :+:   */
+/*   shader.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/26 18:42:50 by fnieto            #+#    #+#             */
-/*   Updated: 2016/01/26 20:10:13 by fnieto           ###   ########.fr       */
+/*   Created: 2016/01/26 20:06:05 by fnieto            #+#    #+#             */
+/*   Updated: 2016/01/26 20:11:18 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RT_H
-# define RT_H
+#include "rt.h"
 
-# include "fred_gl.h"
-
-typedef	struct				s_mlx
+int		shader(t_shader_info info)
 {
-	void	*core;
-	void	*window;
-	void	*frame;
-}							t_mlx;
-
-typedef	struct				s_params
-{
-	t_vec2	res;
-	int		ac;
-	char	**av;
-}							t_params;
-
-int							shader(t_shader_info info);
-
-#endif
+	return (encode(info.i_frag_coord.x / info.i_resolution.x,
+		info.i_frag_coord.y / info.i_resolution.y, FRACT(get_time())));
+}
