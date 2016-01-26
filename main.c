@@ -6,19 +6,38 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 18:42:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/01/26 19:26:35 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/01/26 19:37:49 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 #include "mlx.h"
+#include <stdlib.h>
 
 t_mlx		g_mlx;
 t_params	g_pms;
 
 int			draw_frame(int x, int y, int color)
 {
-	return (x + y + color);
+	return (x & y & color);
+}
+
+int			loop_hook(void *params)
+{
+	mlx_put_image_to_window(g_mlx.core, g_mlx.window, g_mlx.frame, 0, 0);
+	return ((int)params);
+}
+
+int			key_hook(int keycode, void *params)
+{
+	if (keycode == 53)
+		exit(0);
+	return ((int)params);
+}
+
+int			mouse_hook(int button, int x,int y, void *params)
+{
+	return ((int)params & button & x & y);
 }
 
 int			main(int ac, char **av)
@@ -45,7 +64,7 @@ int			main(int ac, char **av)
 	**on remplace notre frame buffer avec elle
 	*/
 	free(get_instance()->frame->img->buf);
-	get_instance()->frame->img->buf = mlx_get_data_addr(g_mlx.frame, 0, 0, 0);
+	get_instance()->frame->img->buf = mlx_get_data_addr(g_mlx.frame, &i, &i, &i);
 	mlx_loop_hook(g_mlx.core, &loop_hook, 0);
 	mlx_key_hook(g_mlx.window, &key_hook, 0);
 	mlx_mouse_hook(g_mlx.window, &key_hook, 0);

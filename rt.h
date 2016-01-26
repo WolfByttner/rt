@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 18:42:50 by fnieto            #+#    #+#             */
-/*   Updated: 2016/01/26 19:07:58 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/01/26 19:36:06 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef	struct				s_mlx
 
 typedef	struct				s_params
 {
-	vec2	res;
+	t_vec2	res;
 	int		ac;
 	char	**av;
 }							t_params;
