@@ -6,7 +6,7 @@
 #    By: fnieto <fnieto@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2013/11/19 14:09:58 by apachkof          #+#    #+#              #
-#    Updated: 2016/01/26 20:08:45 by fnieto           ###   ########.fr        #
+#    Updated: 2016/02/09 23:42:42 by fnieto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,32 +18,28 @@ CFLAGS=-Wall -Wextra -Werror -O3
 
 RM=rm -f
 
-SRC=main.c shader.c
+SRC=main.c clutil.c shaderutil.c
 
-LIB= -framework OpenGL -framework AppKit libft/libft.a minilibx_macos/libmlx.a fred_gl/fred_gl.a
+LIB= -framework OpenGL -framework AppKit libft/libft.a minilibx_macos/libmlx.a fred_gl/fred_gl.a -framework OpenCL
 
 INCL=-I libft/includes/ -I minilibx_macos/ -I fred_gl/
 
 OBJ=$(SRC:.c=.o)
 
-$(NAME): rt.h
+$(NAME): $(OBJ)
 		make -C libft/
 		make -C fred_gl/
-		make -C minilibx_macos/
-		$(CC) $(CFLAGS) $(INCL) -c $(SRC)
 		$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(INCL) $(LIB)
 
+%.o: %.c
+		$(CC) $(CFLAGS) $(INCL) -c $< -o $@
 
 all: $(NAME)
 
 clean:
-		make -C libft/ clean
-		make -C fred_gl/ clean
 		$(RM) $(OBJ)
 
 fclean: clean
-		make -C libft/ fclean
-		make -C fred_gl/ fclean
 		$(RM) $(NAME)
 
 re: fclean all
