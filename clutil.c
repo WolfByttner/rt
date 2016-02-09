@@ -6,11 +6,11 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 20:30:28 by fnieto            #+#    #+#             */
-/*   Updated: 2016/02/09 23:24:27 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/02/10 00:11:56 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "rt.h"
 
 static int		init_buffers(t_cl_instance *cl, size_t bufsz)
 {

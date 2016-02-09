@@ -6,11 +6,11 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 18:42:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/02/09 23:44:49 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/02/10 00:24:36 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "rt.h"
 #include "mlx.h"
 
 t_mlx		g_mlx;
@@ -43,7 +43,7 @@ int			loop_hook(void *params)
 	  }*/
 	info = get_shader_info();
 	set_time(get_time() + 0.1);
-	info->time += 0.1;
+	info->time = (double)clock() / CLOCKS_PER_SEC;
 	info->frame++;
 	run_shader(get_instance()->frame->img);
 	mlx_put_image_to_window(g_mlx.core, g_mlx.window, g_mlx.frame, 0, 0);

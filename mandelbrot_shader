@@ -1,0 +1,103 @@
+#pragma OPENCL EXTENSION cl_khr_fp64 : enable
+
+static int					encode(double r, double g, double b)
+{
+	int	val = 0x10000 * (int)(clamp(r, 0., 1.) * 255.);
+	val = val + 0x100 * (int)(clamp(g, 0., 1.) * 255.);
+	val = val + 0x1 * (int)(clamp(b, 0., 1.) * 255.);
+	return (val);
+}
+
+static double3 hsv2rgb_smooth(double3 c)
+{
+	double3 rgb = clamp(fabs(fmod(c.x*6.0+(double3)(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
+
+	rgb = rgb*rgb*(3.0-2.0*rgb); // cubic smoothing
+
+	return (c.z * mix((double3)(1.), rgb, c.y));
+}
+
+static double3 palette(double v, double3 *vals, size_t size)
+{
+	v = clamp(v, 0., 1.);
+	for (size_t i = 0; i < size - 1; i++)
+		if (v < (double)(i + 1) / (double)(size))
+			return mix(vals[i], vals[i + 1] , (v - (double)(i) / (double)(size)) * size);
+	return (vals[size - 1]);
+}
+
+__kernel void		shader(
+		__global const int* input,
+		__global int* output,
+		const size_t count,
+		const double2 res,
+		const double2 rot,
+		const double3 pos,
+		const double4 mouse,
+		const double zoom,
+		const double time,
+		const unsigned int frame,
+		const unsigned int mode)
+{
+	int					id;
+	double2				coord;
+	double2				uv;
+	double2				z, c;
+	double				scale;
+	double3				color;
+	const double2		center = pos.xy;
+	const int			iter = floor(pos.z) + 10;
+	const double4		pal1[] = {
+		{0, 0, 0, 0},
+		{1, 0, 0, 0},
+		{1, 0.55, 0, 0},
+		{1, 1, 1, 0},
+		{1, 0.55, 0, 0},
+		{1, 0, 0, 0},
+		{1, 0, 0, 0},
+		{0, 0, 0, 0}
+	};
+	const double4		pal2[] = {
+		{0, 0, 0, 0},
+		{0, 0, 1, 0},
+		{0.55, 0, 1, 0},
+		{1, 1, 1, 0},
+		{0.55, 0, 1, 0},
+		{0, 0, 1, 0},
+		{0, 0, 0.5, 0},
+		{0, 0, 0, 0}
+	};
+	int					i;
+
+	id = get_global_id(0);
+	if ((size_t)id < count)
+	{
+		coord.y = id / ((int)res.x);
+		coord.x = id % ((int)res.x);
+		uv = coord / res;
+		scale = 8./zoom;
+
+		c = normalize(res) * (uv - 0.5) * scale - center * 16;
+		z = c;
+		for(i = 0; i<iter; i++) {
+			double x = (z.x * z.x - z.y * z.y) + c.x;
+			double y = (z.y * z.x + z.x * z.y) + c.y;
+
+			if((x * x + y * y) > 4.0) break;
+			z.x = x;
+			z.y = y;
+		}
+		int m = (mode + 2) % 4;
+		if (m == 0)
+			color = hsv2rgb_smooth((double3)(((double)(i))/10., 1.0,1.));
+		if (m == 1)
+			color = hsv2rgb_smooth((double3)((double)(i) / iter, 1., 1.));
+		if (m == 2)
+			color = palette(((double)(i))/iter,pal1,sizeof (pal1)/ sizeof (double4));
+		if (m == 3)
+			color = palette(((double)(i))/iter,pal2,sizeof (pal2)/ sizeof (double4));
+		output[id] = encode(color.x, color.y, color.z);
+		//		output[id] = encode(uv.x, uv.y, fabs(sin((double)frame / 100)));
+	}
+}
+

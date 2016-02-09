@@ -6,11 +6,11 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/07 16:51:34 by fnieto            #+#    #+#             */
-/*   Updated: 2016/02/09 23:22:26 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/02/10 00:12:05 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "rt.h"
 
 static int			upload_params(t_cl_instance *cl, t_cl_shader_info *info,
 	size_t global)
