@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/02/10 02:23:24 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/02/10 02:30:03 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,15 @@ static t_ret		sphere_dst(t_cam cam, t_geo sp, t_ret prev)
 __kernel void		shader(
 		__global const int* input,
 		__global int* output,
-		const size_t count,
-		const double2 res,
-		const double2 rot,
-		const double3 pos,
-		const double4 mouse,
-		const double zoom,
-		const double time,
-		const size_t frame,
-		const size_t mode)
+		const size_t count,		//max des ids (ne pas toucher)
+		const double2 res,		//resolution de l'ecran
+		const double2 rot,		//rotation (fleches)
+		const double3 pos,		//position (x: ad; y: ws, z: qe)
+		const double4 mouse,	//position souris: xy, dernier click: zw
+		const double zoom,		//zoom +- (pas pave numerique)
+		const double time,		//temps
+		const size_t frame,		//frame (nombe d'iterations passe, utile pour montecarlo)
+		const size_t mode)		//incrementer avec barre d'espace: il faut le modulo.
 {
 	int		id;
 	double2				coord;
