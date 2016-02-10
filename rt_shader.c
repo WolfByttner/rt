@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/02/10 02:30:03 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/02/10 16:25:03 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ typedef	struct		s_ret
 	double		t;
 	double3		normal;
 	double3		color;
+	t_geo		object;
 }					t_ret;
+
+__constant			PI = 3.14159265358979323846;
 
 static int			encode(double3 col)
 {
@@ -57,13 +60,37 @@ static t_ret		sphere_dst(t_cam cam, t_geo sp, t_ret prev)
 	double st = step(0.0, min(t,d));
 	double m = mix(-1.0, t, st);
 	ret.t = m;
+	if ((ret.t > 0 && prev.t <= 0) || (prev.t > 0 && ret.t < prev.t))
+	{
+		ret.object = sp;
+		return (ret);
+	}
+	ret = prev;
 	return (ret);
 }
 
-/*
- ** float st = step(0.0, min(t,d));
- ** return mix(-1.0, t, st);
- */
+static double3		rotate_vec(double3 vec, double3 angls)
+{
+	double2		xrot;
+	double2		yrot;
+	double2		zrot;
+	double3		tmp;
+
+	xrot.x = cos(angls.x);
+	xrot.y = sin(angls.x);
+	yrot.x = cos(angls.y);
+	yrot.y = sin(angls.y);
+	zrot.x = cos(angls.z);
+	zrot.y = sin(angls.z);
+	tmp = vec;
+	tmp = ((double3)(tmp.x * xrot.x - tmp.y * xrot.y,
+				tmp.x * xrot.y + tmp.y * xrot.x, tmp.z));
+	tmp = ((double3)(tmp.x * yrot.x + tmp.z * xrot.y, tmp.y,
+				-tmp.x * xrot.y + tmp.z * xrot.x));
+	tmp = ((double3)(tmp.x, tmp.y * zrot.x - tmp.z * zrot.y,
+				tmp.y * zrot.y + tmp.z * zrot.x));
+	return (tmp);
+}
 
 __kernel void		shader(
 		__global const int* input,
@@ -88,9 +115,10 @@ __kernel void		shader(
 	if (((size_t)id) >= count)
 		return ;
 	coord = (double2)((id % (int)(res.x)), id / ((int)(res.x)));
-	uv = ((coord / res) - 0.5) * 2 * (double2)(1, -1) * normalize(res) * zoom;
-	cam.ray = normalize((double3)(uv, 1));
-	cam.pos = pos + (double3)(0, 0, -3);
+	uv = ((coord / res) - 0.5) * (double2)(1, -1) * normalize(res) * zoom
+		* PI / 2 + rot * PI / 50;
+	cam.ray = rotate_vec((double3)(0, 0, 1), (double3)(uv.y, 0, uv.x));
+	cam.pos = pos.zxy * (double3)(0.1, 10, 10) + (double3)(0, 0, -3);
 	sphere.pos = (double3)(0, 0, 0);
 	sphere.dim.x = 1;
 	t_ret tmp;
