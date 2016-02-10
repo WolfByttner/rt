@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/02/10 16:25:03 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/02/10 16:27:56 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,28 @@ static double3		rotate_vec(double3 vec, double3 angls)
 	double2		zrot;
 	double3		tmp;
 
-	xrot.x = cos(angls.x);
-	xrot.y = sin(angls.x);
-	yrot.x = cos(angls.y);
-	yrot.y = sin(angls.y);
-	zrot.x = cos(angls.z);
-	zrot.y = sin(angls.z);
 	tmp = vec;
-	tmp = ((double3)(tmp.x * xrot.x - tmp.y * xrot.y,
-				tmp.x * xrot.y + tmp.y * xrot.x, tmp.z));
-	tmp = ((double3)(tmp.x * yrot.x + tmp.z * xrot.y, tmp.y,
-				-tmp.x * xrot.y + tmp.z * xrot.x));
-	tmp = ((double3)(tmp.x, tmp.y * zrot.x - tmp.z * zrot.y,
-				tmp.y * zrot.y + tmp.z * zrot.x));
+	if (angls.x)
+	{
+		xrot.x = cos(angls.x);
+		xrot.y = sin(angls.x);
+		tmp = ((double3)(tmp.x * xrot.x - tmp.y * xrot.y,
+			tmp.x * xrot.y + tmp.y * xrot.x, tmp.z));
+	}
+	if (angls.y)
+	{
+		yrot.x = cos(angls.y);
+		yrot.y = sin(angls.y);
+		tmp = ((double3)(tmp.x * yrot.x + tmp.z * xrot.y, tmp.y,
+			-tmp.x * xrot.y + tmp.z * xrot.x));
+	}
+	if (angls.z)
+	{
+		zrot.x = cos(angls.z);
+		zrot.y = sin(angls.z);
+		tmp = ((double3)(tmp.x, tmp.y * zrot.x - tmp.z * zrot.y,
+			tmp.y * zrot.y + tmp.z * zrot.x));
+	}
 	return (tmp);
 }
 
