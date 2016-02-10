@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/02/10 16:27:56 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/02/10 16:34:42 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,27 +77,18 @@ static double3		rotate_vec(double3 vec, double3 angls)
 	double3		tmp;
 
 	tmp = vec;
-	if (angls.x)
-	{
-		xrot.x = cos(angls.x);
-		xrot.y = sin(angls.x);
-		tmp = ((double3)(tmp.x * xrot.x - tmp.y * xrot.y,
-			tmp.x * xrot.y + tmp.y * xrot.x, tmp.z));
-	}
-	if (angls.y)
-	{
-		yrot.x = cos(angls.y);
-		yrot.y = sin(angls.y);
-		tmp = ((double3)(tmp.x * yrot.x + tmp.z * xrot.y, tmp.y,
-			-tmp.x * xrot.y + tmp.z * xrot.x));
-	}
-	if (angls.z)
-	{
-		zrot.x = cos(angls.z);
-		zrot.y = sin(angls.z);
-		tmp = ((double3)(tmp.x, tmp.y * zrot.x - tmp.z * zrot.y,
-			tmp.y * zrot.y + tmp.z * zrot.x));
-	}
+	xrot.x = cos(angls.x);
+	xrot.y = sin(angls.x);
+	tmp = ((double3)(tmp.x * xrot.x - tmp.y * xrot.y,
+		tmp.x * xrot.y + tmp.y * xrot.x, tmp.z));
+	yrot.x = cos(angls.y);
+	yrot.y = sin(angls.y);
+	tmp = ((double3)(tmp.x * yrot.x + tmp.z * xrot.y, tmp.y,
+		-tmp.x * xrot.y + tmp.z * xrot.x));
+	zrot.x = cos(angls.z);
+	zrot.y = sin(angls.z);
+	tmp = ((double3)(tmp.x, tmp.y * zrot.x - tmp.z * zrot.y,
+		tmp.y * zrot.y + tmp.z * zrot.x));
 	return (tmp);
 }
 
@@ -126,7 +117,7 @@ __kernel void		shader(
 	coord = (double2)((id % (int)(res.x)), id / ((int)(res.x)));
 	uv = ((coord / res) - 0.5) * (double2)(1, -1) * normalize(res) * zoom
 		* PI / 2 + rot * PI / 50;
-	cam.ray = rotate_vec((double3)(0, 0, 1), (double3)(uv.y, 0, uv.x));
+	cam.ray = rotate_vec((double3)(0, 0, 1), (double3)(uv.x, 0, uv.y));
 	cam.pos = pos.zxy * (double3)(0.1, 10, 10) + (double3)(0, 0, -3);
 	sphere.pos = (double3)(0, 0, 0);
 	sphere.dim.x = 1;
