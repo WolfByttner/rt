@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/02/10 18:49:47 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/02/12 19:05:08 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,19 +90,26 @@ static double3		rotate_vec(double3 vec, double3 angls)
 	double3		tmp;
 
 	tmp = vec;
-	xrot.x = cos(angls.x);
-	xrot.y = sin(angls.x);
-	tmp = ((double3)(tmp.x * xrot.x - tmp.y * xrot.y,
-		tmp.x * xrot.y + tmp.y * xrot.x, tmp.z));
-	yrot.x = cos(angls.y);
-	yrot.y = sin(angls.y);
-	tmp = ((double3)(tmp.x * yrot.x + tmp.z * xrot.y, tmp.y,
-		-tmp.x * xrot.y + tmp.z * xrot.x));
 	zrot.x = cos(angls.z);
 	zrot.y = sin(angls.z);
 	tmp = ((double3)(tmp.x, tmp.y * zrot.x - tmp.z * zrot.y,
 		tmp.y * zrot.y + tmp.z * zrot.x));
+		yrot.x = cos(angls.y);
+	yrot.y = sin(angls.y);
+	tmp = ((double3)(tmp.x * yrot.x + tmp.z * xrot.y, tmp.y,
+		-tmp.x * xrot.y + tmp.z * xrot.x));
+	xrot.x = cos(angls.x);
+	xrot.y = sin(angls.x);
+	tmp = ((double3)(tmp.x * xrot.x - tmp.y * xrot.y,
+		tmp.x * xrot.y + tmp.y * xrot.x, tmp.z));
 	return (tmp);
+}
+
+static double3		make_view_vector(double2 angl)
+{
+
+	return (normalize((double3)(sin(angl.y) * cos(angl.x), sin(angl.y) *
+		sin(angl.x), cos(angl.y))).xzy);
 }
 
 __kernel void		shader(
@@ -122,19 +129,19 @@ __kernel void		shader(
 	double2				coord;
 	double2				uv;
 	t_cam				cam;
-	t_geo				spheres[] = {{0, {0, 0, 0}, {1, 0, 0}, {0, 0, 0}}, {0, {0, 2, 2}, {1, 0, 0}, {0, 0, 0}}, {0, {0, 0, 10}, {7, 0, 0}, {0, 0, 0}}};
+	t_geo				spheres[] = {{0, {0, 0, 2}, {1, 0, 0}, {0, 0, 0}}, {0, {0, 0, 10}, {5, 0, 0}, {0, 0, 0}}, {0, {0, 0, 3}, {1, 0, 0}, {0, 0, 0}}};
 
 	id = get_global_id(0);
 	if (((size_t)id) >= count)
 		return ;
 	coord = (double2)((id % (int)(res.x)), id / ((int)(res.x)));
 	uv = -((coord / res) - 0.5) * (double2)(1, -1) * normalize(res) * zoom
-		* PI / 2 - rot * PI / 50;
-	cam.ray = normalize(rotate_vec((double3)(0, 0, 1), (double3)(uv.x, 0, uv.y)));
-	cam.pos = pos.xzy * (double3)(10, 0.1, 10) + (double3)(0, 0, -3);
+		* PI / 2 - rot * PI / 50 + PI / 2;
+	cam.ray = make_view_vector(uv);
+	cam.pos = pos.xzy * (double3)(-10, 0.1, 10) + (double3)(0, 0, 0);
 	t_ret tmp;
 	tmp = raytrace(cam, spheres, sizeof(spheres) / sizeof(t_geo));
-	output[id] = encode((double3)(1 / tmp.t));
 //	output[id] = *(long*)&t;
+	output[id] = encode((double3)(1 / (tmp.t)));
 }
 
