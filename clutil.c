@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/06 20:30:28 by fnieto            #+#    #+#             */
-/*   Updated: 2016/02/10 00:11:56 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/01 23:07:42 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static int		init_buffers(t_cl_instance *cl, size_t bufsz)
 {
-	cl->output = clCreateBuffer(cl->context, CL_MEM_WRITE_ONLY,
+	cl->output = clCreateBuffer(cl->context, CL_MEM_READ_WRITE,
 		sizeof(int) * bufsz, NULL, NULL);
-	cl->input = clCreateBuffer(cl->context, CL_MEM_READ_ONLY,
+	cl->input = clCreateBuffer(cl->context, CL_MEM_READ_WRITE,
 		sizeof(int) * bufsz, NULL, NULL);
 	if (!cl->input || !cl->output)
 		return (-7);
@@ -59,7 +59,7 @@ int				init_cl(cl_device_type type, const char *src, size_t bufsz)
 	cl->program = clCreateProgramWithSource(cl->context, 1, &src, NULL, &err);
 	if (!cl->program || !cl->commands)
 		return ((!cl->commands) ? (-2) : (-3));
-	err = clBuildProgram(cl->program, 0, NULL, "", NULL, NULL);
+	err = clBuildProgram(cl->program, 0, NULL, "-I .", NULL, NULL);
 	if (err != CL_SUCCESS)
 		return (print_cl_log(cl));
 	print_cl_log(cl);

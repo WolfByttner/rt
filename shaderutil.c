@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/07 16:51:34 by fnieto            #+#    #+#             */
-/*   Updated: 2016/02/10 00:12:05 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/01 23:10:17 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,11 @@ int					run_shader(t_buffer *buf)
 	t_cl_instance		*cl;
 	int					err;
 	size_t				global;
+	cl_mem				swap;
 
 	info = get_shader_info();
 	cl = get_cl_instance();
 	global = buf->w * buf->h;
-	err = clEnqueueWriteBuffer(cl->commands, cl->input, CL_TRUE, 0,
-			sizeof(int) * global, buf->buf, 0, NULL, NULL);
-	if (err != CL_SUCCESS)
-		return (-1);
 	err = upload_params(cl, info, global);
 	if (err < 1)
 		return (err);
@@ -66,5 +63,8 @@ int					run_shader(t_buffer *buf)
 			sizeof(int) * global, (int*)buf->buf, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
 		return (-5);
+	swap = cl->input;
+	cl->input = cl->output;
+	cl->output = swap;
 	return (1);
 }

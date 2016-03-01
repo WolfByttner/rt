@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 18:42:50 by fnieto            #+#    #+#             */
-/*   Updated: 2016/02/10 00:11:47 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/01 23:14:01 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@
 # include "fred_gl.h"
 # include <libc.h>
 # include <OpenCL/opencl.h>
+
+/*
+**comment to disable frame upload in input
+*/
+
+# define POSTPROCESS
 
 typedef	struct		s_cl_instance
 {
