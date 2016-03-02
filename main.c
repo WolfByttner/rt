@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 18:42:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/01 23:12:14 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/02 13:59:51 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int			main(int ac, char **av)
 	info->res.y = g_pms.res.y;
 	info->zoom = 1;
 	fred_gl_init(g_pms.res.x, g_pms.res.y, &draw_frame);
-	ft_putnbr(init_cl(CL_DEVICE_TYPE_GPU, "#include <rt_shader.c>",
+	ft_putnbr(init_cl(RT_DEVICE_TYPE, "#include <rt_shader.c>",
 		g_pms.res.x * g_pms.res.y));
 	ft_putchar('\n');
 	g_mlx.window = mlx_new_window(g_mlx.core, g_pms.res.x, g_pms.res.y, "rt");

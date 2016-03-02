@@ -6,35 +6,14 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/02/12 19:05:08 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/02 13:59:22 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#define CL_CONTEXT
+#include "shader.h"
 #pragma OPENCL EXTENSION cl_khr_fp64 : enable
 
-typedef	struct		s_geo
-{
-	size_t		type;
-	double3		pos;
-	double3		dim;
-	double3		rot;
-}					t_geo;
-
-typedef	struct		s_cam
-{
-	double3		pos;
-	double3		ray;
-}					t_cam;
-
-typedef	struct		s_ret
-{
-	double		t;
-	double3		normal;
-	double3		color;
-	t_geo		object;
-}					t_ret;
-
-__constant double	PI = 3.14159265358979323846;
 
 static int			encode(double3 col)
 {
@@ -67,6 +46,11 @@ static t_ret		sphere_dst(t_cam cam, t_geo sp, t_ret prev)
 	}
 	ret = prev;
 	return (ret);
+}
+
+static double3		sphere_norm(t_cam cam, t_ret ret)
+{
+	return (-normalize(ret.object.pos - (cam.pos+cam.ray*ret.t)));
 }
 
 static t_ret		raytrace(t_cam cam, t_geo *geoms, size_t size)
@@ -129,7 +113,9 @@ __kernel void		shader(
 	double2				coord;
 	double2				uv;
 	t_cam				cam;
-	t_geo				spheres[] = {{0, {0, 0, 2}, {1, 0, 0}, {0, 0, 0}}, {0, {0, 0, 10}, {5, 0, 0}, {0, 0, 0}}, {0, {0, 0, 3}, {1, 0, 0}, {0, 0, 0}}};
+	t_geo				spheres[] = {{0, {0, 0, 2}, {1, 0, 0}, {0, 0, 0}},
+		{0, {0, 0, 10}, {5, 0, 0}, {0, 0, 0}},
+		{0, {0, 0, 3}, {1, 0, 0}, {0, 0, 0}}};
 
 	id = get_global_id(0);
 	if (((size_t)id) >= count)
@@ -141,7 +127,9 @@ __kernel void		shader(
 	cam.pos = pos.xzy * (double3)(-10, 0.1, 10) + (double3)(0, 0, 0);
 	t_ret tmp;
 	tmp = raytrace(cam, spheres, sizeof(spheres) / sizeof(t_geo));
+	if (tmp.t > 0)
+		tmp.normal = sphere_norm(cam, tmp.object);
 //	output[id] = *(long*)&t;
-	output[id] = encode((double3)(1 / (tmp.t)));
+	output[id] = encode((double3)(tmp.normal));
 }
 
