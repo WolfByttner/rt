@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/02 13:59:22 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/03/05 20:57:58 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #pragma OPENCL EXTENSION cl_khr_fp64 : enable
 
 
-static int			encode(double3 col)
+static inline int			encode(double3 col)
 {
 	int		val;
 
@@ -25,7 +25,7 @@ static int			encode(double3 col)
 	return (val);
 }
 
-static t_ret		sphere_dst(t_cam cam, t_geo sp, t_ret prev)
+static inline t_ret		sphere_dst(t_cam cam, t_geo sp, t_ret prev)
 {
 	t_ret		ret;
 	double3		rc;
@@ -48,12 +48,12 @@ static t_ret		sphere_dst(t_cam cam, t_geo sp, t_ret prev)
 	return (ret);
 }
 
-static double3		sphere_norm(t_cam cam, t_ret ret)
+static inline double3		sphere_norm(t_cam cam, t_ret ret)
 {
 	return (-normalize(ret.object.pos - (cam.pos+cam.ray*ret.t)));
 }
 
-static t_ret		raytrace(t_cam cam, t_geo *geoms, size_t size)
+static inline t_ret		raytrace(t_cam cam, t_geo *geoms, size_t size)
 {
 	size_t		i;
 	t_ret		tmp;
@@ -66,7 +66,7 @@ static t_ret		raytrace(t_cam cam, t_geo *geoms, size_t size)
 	return (tmp);
 }
 
-static double3		rotate_vec(double3 vec, double3 angls)
+static inline double3		rotate_vec(double3 vec, double3 angls)
 {
 	double2		xrot;
 	double2		yrot;
@@ -89,7 +89,7 @@ static double3		rotate_vec(double3 vec, double3 angls)
 	return (tmp);
 }
 
-static double3		make_view_vector(double2 angl)
+static inline double3		make_view_vector(double2 angl)
 {
 
 	return (normalize((double3)(sin(angl.y) * cos(angl.x), sin(angl.y) *
@@ -128,7 +128,7 @@ __kernel void		shader(
 	t_ret tmp;
 	tmp = raytrace(cam, spheres, sizeof(spheres) / sizeof(t_geo));
 	if (tmp.t > 0)
-		tmp.normal = sphere_norm(cam, tmp.object);
+		tmp.normal = sphere_norm(cam, tmp);
 //	output[id] = *(long*)&t;
 	output[id] = encode((double3)(tmp.normal));
 }
