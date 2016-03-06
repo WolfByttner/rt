@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/26 18:42:50 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/02 13:49:34 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/03/06 15:19:19 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 /*
 **comment to disable frame upload in input
 */
-
-# define POSTPROCESS
 
 typedef	struct		s_cl_instance
 {
