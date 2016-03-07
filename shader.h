@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 13:40:08 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/07 16:48:19 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/07 17:21:38 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 #pragma OPENCL EXTENSION cl_khr_fp64 : enable
 # define CONSTANT		__constant
 # define CL_FUNC		static inline
-# define ITERATIONS		1
-# define WHITE_MAT		{{1, 1, 1}, 1, 0}
-# define RED_MAT		{{1, 0, 0}, 10, 1}
+# define ITERATIONS		3
+# define WHITE_MAT		{{0.9, 0.9, 0.9}, 10, 0.3}
+# define RED_MAT		{{0.9, 0, 0}, 100, 0.8}
 
 typedef	struct		s_mat
 {

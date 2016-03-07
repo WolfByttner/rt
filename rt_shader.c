@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/07 16:49:15 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/07 17:22:49 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,18 @@ CL_FUNC float3		paint(t_cam cam, t_light *lights, t_ret *last, int2 sz)
 	int		i;
 
 	diffuse = (float3)(0, 0, 0);
+	specular = (float3)(0, 0, 0);
 	i = -1;
 	while (++i < sz.x)
 	{
 		li = normalize(lights[i].pos - (last[0].t * cam.ray + cam.pos));
 		diffuse += max(dot(last[0].normal, li), (float)(0)) * lights[i].color;
-		specular = pow(max(dot(reflect(-li, last[0].normal), -cam.ray),
-			(float)(0)), last[0].object.mat.shine_dampener) * lights[i].color *
-			last[0].object.mat.reflectivity;
+		specular += pow(max(dot(reflect(-li, last[0].normal), -cam.ray),
+			(float)(0)), last[0].object.mat.shine_dampener) *
+			last[0].object.mat.reflectivity * lights[i].color;
 	}
+	if (sz.y > 1 && last[1].t > 0)
+		specular += last[1].color * last[0].object.mat.reflectivity;
 	return (diffuse * last[0].object.mat.color + specular);
 }
 
@@ -99,6 +102,7 @@ CL_FUNC t_ret		render(t_cam cam, t_geo *objects, t_light *lights, int2 sz)
 {
 	t_ret	rets[ITERATIONS];
 	t_cam	cams[ITERATIONS];
+	t_cam	new;
 	int		i;
 	int		j;
 
@@ -111,8 +115,9 @@ CL_FUNC t_ret		render(t_cam cam, t_geo *objects, t_light *lights, int2 sz)
 			rets[i].normal = sphere_norm(cams[i], rets[i]);
 		if (i == ITERATIONS - 1 || rets[i].t < 0)
 			break;
-		cams[i + 1].pos = rets[i].t * cams[i].ray - (float)(0.001);
-		cams[i + 1].ray = reflect(cams[i].ray, rets[i].normal);
+		new.pos = rets[i].t * cams[i].ray + cams[i].pos;
+		new.ray = reflect(cams[i].ray, rets[i].normal);
+		cams[i + 1] = new;
 	}
 	j = i + 1;
 	while (--j >= 0)
@@ -146,8 +151,8 @@ __kernel void		shader(
 	float				ftime = convert_float(time);
 	t_geo				spheres[] = {
 		{0, WHITE_MAT, {0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
-		{0, WHITE_MAT, {0, 0, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
-		{0, RED_MAT, {0, 0, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}
+		{0, RED_MAT, {0, 0, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{0, RED_MAT, {0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}
 	};
 	t_light				lights[] = {
 		{{3, 3, -3}, {1, 0.5, 0.5}},
