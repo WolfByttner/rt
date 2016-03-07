@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/07 19:21:08 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/07 19:36:21 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,17 @@ CL_FUNC float3		paint(t_cam cam, t_light *lights, t_ret *last, t_geo *objs, int3
 		newcam.pos = (last[0].t - (float)(0.001)) * cam.ray + cam.pos;
 		li = lights[i].pos - (newcam.pos);
 		newcam.ray = normalize(li);
-		li.x = length(li);
+		li.z = li.x * li.x + li.y * li.y + li.z * li.z;
 		li.y = raytrace(newcam, objs, sz.z).t;
+		li.x = sqrt(li.z);
 		if (li.y < li.x && li.y != -1)
 			continue;
-		li = newcam.ray;
-		diffuse += max(dot(last[0].normal, li), (float)(0)) * lights[i].color;
-		specular += pow(max(dot(reflect(-li, last[0].normal), -cam.ray),
+		li.z = min((float)(1), 1/li.x * 100);
+		diffuse += max(dot(last[0].normal, newcam.ray), (float)(0)) *
+			lights[i].color * li.z;
+		specular += pow(max(dot(reflect(-newcam.ray, last[0].normal), -cam.ray),
 			(float)(AMBIENT)), last[0].object.mat.shine_dampener) *
-			last[0].object.mat.reflectivity * lights[i].color;
+			last[0].object.mat.reflectivity * lights[i].color * li.z;
 	}
 	if (sz.y > 1 && last[1].t > 0)
 		specular += last[1].color * last[0].object.mat.reflectivity;
