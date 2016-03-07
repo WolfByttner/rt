@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/07 18:31:56 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/07 19:21:08 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ CL_FUNC float3		make_view_vector(float2 angl)
 		sin(angl.x), cos(angl.y))).xzy);
 }
 
-CL_FUNC float3		paint(t_cam cam, t_light *lights, t_ret *last, int2 sz)
+CL_FUNC float3		paint(t_cam cam, t_light *lights, t_ret *last, t_geo *objs, int3 sz)
 {
 	float3	diffuse;
 	float3	specular;
@@ -93,7 +93,14 @@ CL_FUNC float3		paint(t_cam cam, t_light *lights, t_ret *last, int2 sz)
 	i = -1;
 	while (++i < sz.x)
 	{
-		li = normalize(lights[i].pos - (last[0].t * cam.ray + cam.pos));
+		newcam.pos = (last[0].t - (float)(0.001)) * cam.ray + cam.pos;
+		li = lights[i].pos - (newcam.pos);
+		newcam.ray = normalize(li);
+		li.x = length(li);
+		li.y = raytrace(newcam, objs, sz.z).t;
+		if (li.y < li.x && li.y != -1)
+			continue;
+		li = newcam.ray;
 		diffuse += max(dot(last[0].normal, li), (float)(0)) * lights[i].color;
 		specular += pow(max(dot(reflect(-li, last[0].normal), -cam.ray),
 			(float)(AMBIENT)), last[0].object.mat.shine_dampener) *
@@ -119,14 +126,14 @@ CL_FUNC t_ret		render(t_cam cam, t_geo *objects, t_light *lights, int2 sz)
 		rets[i] = raytrace(cams[i], objects, sz.x);
 		if (i == ITERATIONS - 1 || rets[i].t < 0)
 			break;
-		new.pos = rets[i].t * cams[i].ray + cams[i].pos;
+		new.pos = (rets[i].t - (float)(0.001)) * cams[i].ray + cams[i].pos;
 		new.ray = reflect(cams[i].ray, rets[i].normal);
 		cams[i + 1] = new;
 	}
 	j = i + 1;
 	while (--j >= 0)
-		rets[j].color = paint(cams[j], lights, &(rets[j]),
-			(int2)(sz.y, 1 + (i != j)));
+		rets[j].color = paint(cams[j], lights, &(rets[j]), objects,
+			(int3)(sz.y, 1 + (i != j), sz.x));
 	return (rets[0]);
 }
 
@@ -157,7 +164,7 @@ __kernel void		shader(
 		{SPHERE, WHITE_MAT, {0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
 		{SPHERE, WHITE_MAT, {0, 0, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
 		{SPHERE, WHITE_MAT, {0, 2, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
-		{PLANE, WHITE_MAT, {0, -4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}
+		{PLANE, WHITE_GLOSSY, {0, -4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}
 	};
 	t_light				lights[] = {
 		{{3, 3, -3}, {1, 0.5, 0.5}},
