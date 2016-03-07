@@ -6,11 +6,16 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/06 14:40:49 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/07 16:06:52 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/07 17:36:02 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shader.h"
+
+CL_FUNC float3		sphere_norm(t_cam cam, t_ret ret)
+{
+	return (-normalize(ret.object.pms.s012 - (cam.pos+cam.ray*ret.t)));
+}
 
 CL_FUNC t_ret		sphere_dst(t_cam cam, t_geo sp, t_ret prev)
 {
@@ -28,14 +33,9 @@ CL_FUNC t_ret		sphere_dst(t_cam cam, t_geo sp, t_ret prev)
 	if ((ret.t > 0 && prev.t <= 0) || (ret.t > 0 && prev.t > 0 && ret.t < prev.t))
 	{
 		ret.object = sp;
+		ret.normal = sphere_norm(cam, ret);
 		return (ret);
 	}
 	ret = prev;
 	return (ret);
 }
-
-CL_FUNC float3		sphere_norm(t_cam cam, t_ret ret)
-{
-	return (-normalize(ret.object.pms.s012 - (cam.pos+cam.ray*ret.t)));
-}
-

@@ -6,13 +6,14 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/07 17:22:49 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/07 18:31:56 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define CL_CONTEXT
 #include "shader.h"
 #include "sphere.c"
+#include "plane.c"
 
 
 CL_FUNC float3 reflect(float3 v, float3 n)
@@ -40,8 +41,12 @@ CL_FUNC t_ret		raytrace(t_cam cam, t_geo *geoms, size_t size)
 	tmp.t = -1;
 	i = -1;
 	while (++i < size)
-		if (geoms[i].type == 0)
+	{
+		if (geoms[i].type == SPHERE)
 			tmp = sphere_dst(cam, geoms[i], tmp);
+		else if (geoms[i].type == PLANE)
+			tmp = plane_dst(cam, geoms[i], tmp);
+	}
 	return (tmp);
 }
 
@@ -80,6 +85,7 @@ CL_FUNC float3		paint(t_cam cam, t_light *lights, t_ret *last, int2 sz)
 	float3	diffuse;
 	float3	specular;
 	float3	li;
+	t_cam	newcam;
 	int		i;
 
 	diffuse = (float3)(0, 0, 0);
@@ -90,7 +96,7 @@ CL_FUNC float3		paint(t_cam cam, t_light *lights, t_ret *last, int2 sz)
 		li = normalize(lights[i].pos - (last[0].t * cam.ray + cam.pos));
 		diffuse += max(dot(last[0].normal, li), (float)(0)) * lights[i].color;
 		specular += pow(max(dot(reflect(-li, last[0].normal), -cam.ray),
-			(float)(0)), last[0].object.mat.shine_dampener) *
+			(float)(AMBIENT)), last[0].object.mat.shine_dampener) *
 			last[0].object.mat.reflectivity * lights[i].color;
 	}
 	if (sz.y > 1 && last[1].t > 0)
@@ -111,8 +117,6 @@ CL_FUNC t_ret		render(t_cam cam, t_geo *objects, t_light *lights, int2 sz)
 	while (++i < ITERATIONS)
 	{
 		rets[i] = raytrace(cams[i], objects, sz.x);
-		if (rets[i].t > 0)
-			rets[i].normal = sphere_norm(cams[i], rets[i]);
 		if (i == ITERATIONS - 1 || rets[i].t < 0)
 			break;
 		new.pos = rets[i].t * cams[i].ray + cams[i].pos;
@@ -150,9 +154,10 @@ __kernel void		shader(
 	float				fzoom = convert_float(zoom);
 	float				ftime = convert_float(time);
 	t_geo				spheres[] = {
-		{0, WHITE_MAT, {0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
-		{0, RED_MAT, {0, 0, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
-		{0, RED_MAT, {0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}
+		{SPHERE, WHITE_MAT, {0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{SPHERE, WHITE_MAT, {0, 0, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{SPHERE, WHITE_MAT, {0, 2, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{PLANE, WHITE_MAT, {0, -4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}
 	};
 	t_light				lights[] = {
 		{{3, 3, -3}, {1, 0.5, 0.5}},
