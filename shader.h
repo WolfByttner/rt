@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 13:40:08 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/06 21:19:19 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/07 16:48:19 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,14 @@
 # define CONSTANT		__constant
 # define CL_FUNC		static inline
 # define ITERATIONS		1
+# define WHITE_MAT		{{1, 1, 1}, 1, 0}
+# define RED_MAT		{{1, 0, 0}, 10, 1}
 
 typedef	struct		s_mat
 {
-	
+	float3		color;
+	float		shine_dampener;
+	float		reflectivity;
 }					t_mat;
 
 typedef	struct		s_light
@@ -32,6 +36,7 @@ typedef	struct		s_light
 typedef	struct		s_geo
 {
 	size_t		type;
+	t_mat		mat;
 	float16		pms;
 }					t_geo;
 

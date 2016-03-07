@@ -6,13 +6,19 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/06 21:24:25 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/07 16:49:15 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define CL_CONTEXT
 #include "shader.h"
 #include "sphere.c"
+
+
+CL_FUNC float3 reflect(float3 v, float3 n)
+{
+	return (v - 2.0f * dot(v, n) * n);
+}
 
 CL_FUNC int			encode(float3 col)
 {
@@ -69,27 +75,49 @@ CL_FUNC float3		make_view_vector(float2 angl)
 		sin(angl.x), cos(angl.y))).xzy);
 }
 
-CL_FUNC t_ret		paint(t_cam cam, t_light *lights, t_ret *last, int sz)
+CL_FUNC float3		paint(t_cam cam, t_light *lights, t_ret *last, int2 sz)
 {
-	return (*last);
+	float3	diffuse;
+	float3	specular;
+	float3	li;
+	int		i;
+
+	diffuse = (float3)(0, 0, 0);
+	i = -1;
+	while (++i < sz.x)
+	{
+		li = normalize(lights[i].pos - (last[0].t * cam.ray + cam.pos));
+		diffuse += max(dot(last[0].normal, li), (float)(0)) * lights[i].color;
+		specular = pow(max(dot(reflect(-li, last[0].normal), -cam.ray),
+			(float)(0)), last[0].object.mat.shine_dampener) * lights[i].color *
+			last[0].object.mat.reflectivity;
+	}
+	return (diffuse * last[0].object.mat.color + specular);
 }
 
 CL_FUNC t_ret		render(t_cam cam, t_geo *objects, t_light *lights, int2 sz)
 {
 	t_ret	rets[ITERATIONS];
+	t_cam	cams[ITERATIONS];
 	int		i;
+	int		j;
 
+	cams[0] = cam;
 	i = -1;
 	while (++i < ITERATIONS)
 	{
-		rets[i] = raytrace(cam, objects, sz.x);
+		rets[i] = raytrace(cams[i], objects, sz.x);
 		if (rets[i].t > 0)
-			rets[i].normal = sphere_norm(cam, rets[i]);
+			rets[i].normal = sphere_norm(cams[i], rets[i]);
+		if (i == ITERATIONS - 1 || rets[i].t < 0)
+			break;
+		cams[i + 1].pos = rets[i].t * cams[i].ray - (float)(0.001);
+		cams[i + 1].ray = reflect(cams[i].ray, rets[i].normal);
 	}
-	i = ITERATIONS;
-	while (--i >= 0)
-	{
-	}
+	j = i + 1;
+	while (--j >= 0)
+		rets[j].color = paint(cams[j], lights, &(rets[j]),
+			(int2)(sz.y, 1 + (i != j)));
 	return (rets[0]);
 }
 
@@ -117,12 +145,14 @@ __kernel void		shader(
 	float				fzoom = convert_float(zoom);
 	float				ftime = convert_float(time);
 	t_geo				spheres[] = {
-		{0, {0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
-		{0, {0, 0, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
-		{0, {0, 0, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}
+		{0, WHITE_MAT, {0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{0, WHITE_MAT, {0, 0, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{0, RED_MAT, {0, 0, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}
 	};
 	t_light				lights[] = {
-		{{10, 10, 10}, {1, 1, 1}}
+		{{3, 3, -3}, {1, 0.5, 0.5}},
+		{{-3, 3, -3}, {0.5, 1, 0.5}},
+		{{0, -3, 0}, {0.5, 0.5, 1}}
 	};
 
 	id = get_global_id(0);
@@ -134,5 +164,16 @@ __kernel void		shader(
 	cam.pos = fpos.xzy * (float3)(-10, 0.1, 10) + (float3)(0, 0, 0);
 	t_ret tmp = render(cam, spheres, lights, (int2)(sizeof(spheres) /
 		sizeof(t_geo), sizeof(lights) / sizeof(t_light)));
-	output[id] = encode((float3)((mode % 2) ? tmp.normal : 1 / (tmp.t + (tmp.t != -1))));
+	int m = mode % 4;
+
+	if (m == 0)
+		output[id] = encode(tmp.normal);
+	else if (m == 1)
+		output[id] = encode((float3)(1 / (tmp.t + (tmp.t != -1))));
+	else if (m == 2)
+		output[id] = encode(length(tmp.color) > 1 ? normalize(tmp.color) : tmp.color);
+	else if (m == 3)
+		output[id] = encode(tmp.color);
+	if (tmp.t == -1)
+		output[id] = 0;
 }
