@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/10 00:00:53 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/07 19:36:21 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/08 20:24:00 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,14 @@ CL_FUNC float3		paint(t_cam cam, t_light *lights, t_ret *last, t_geo *objs, int3
 		newcam.ray = normalize(li);
 		li.z = li.x * li.x + li.y * li.y + li.z * li.z;
 		li.y = raytrace(newcam, objs, sz.z).t;
-		li.x = sqrt(li.z);
+		li.x = half_sqrt(li.z);
 		if (li.y < li.x && li.y != -1)
 			continue;
 		li.z = min((float)(1), 1/li.x * 100);
 		diffuse += max(dot(last[0].normal, newcam.ray), (float)(0)) *
 			lights[i].color * li.z;
 		specular += pow(max(dot(reflect(-newcam.ray, last[0].normal), -cam.ray),
-			(float)(AMBIENT)), last[0].object.mat.shine_dampener) *
+			(float)(0)), last[0].object.mat.shine_dampener) *
 			last[0].object.mat.reflectivity * lights[i].color * li.z;
 	}
 	if (sz.y > 1 && last[1].t > 0)
@@ -158,20 +158,23 @@ __kernel void		shader(
 	t_cam				cam;
 	float2				fres = convert_float2(res);
 	float2				frot = convert_float2(rot);
-	float3				fpos = convert_float3(pos);
+	float3				fpos = convert_float3(pos) * 4;
 	float4				fmouse = convert_float4(mouse);
 	float				fzoom = convert_float(zoom);
 	float				ftime = convert_float(time);
 	t_geo				spheres[] = {
-		{SPHERE, WHITE_MAT, {0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
-		{SPHERE, WHITE_MAT, {0, 0, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
-		{SPHERE, WHITE_MAT, {0, 2, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
-		{PLANE, WHITE_GLOSSY, {0, -4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}
+		{SPHERE, WHITE_MAT, {0, 0, 22, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		//{SPHERE, WHITE_GLOSSY, {0, 0, 30, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		//{SPHERE, BLUE_MAT, {0, 2, 23, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{PLANE, RED_MAT, {0, -5, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		//{PLANE, WHITE_MAT, {0, 5, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		//{PLANE, MIRROR, {-5, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}},
+		{PLANE, MIRROR, {5, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}}
 	};
 	t_light				lights[] = {
-		{{3, 3, -3}, {1, 0.5, 0.5}},
-		{{-3, 3, -3}, {0.5, 1, 0.5}},
-		{{0, -3, 0}, {0.5, 0.5, 1}}
+		{{3, 3, 17}, {1, 0.5, 0.5}},
+		{{-3, 3, 17}, {0.5, 1, 0.5}},
+		{{0, -3,20}, {1, 1, 1}}
 	};
 
 	id = get_global_id(0);
@@ -183,7 +186,7 @@ __kernel void		shader(
 	cam.pos = fpos.xzy * (float3)(-10, 0.1, 10) + (float3)(0, 0, 0);
 	t_ret tmp = render(cam, spheres, lights, (int2)(sizeof(spheres) /
 		sizeof(t_geo), sizeof(lights) / sizeof(t_light)));
-	int m = mode % 4;
+	int m = (mode - 1) % 4;
 
 	if (m == 0)
 		output[id] = encode(tmp.normal);

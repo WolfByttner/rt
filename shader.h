@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 13:40:08 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/07 18:47:09 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/08 20:12:16 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,16 @@
 #pragma OPENCL EXTENSION cl_khr_fp64 : enable
 # define CONSTANT		__constant
 # define CL_FUNC		static inline
-# define AMBIENT		0.2
+# define AMBIENT		0.5
 
-# define ITERATIONS		3
-# define WHITE_MAT		{{0.9, 0.9, 0.9}, 10, 0.2}
-# define WHITE_GLOSSY	{{0.9, 0.9, 0.9}, 100, 0.8}
-# define RED_MAT		{{0.9, 0, 0}, 100, 0.8}
+# define ITERATIONS		1
+# define WHITE_MAT		{{0.9, 0.9, 0.9}, 10, 0}
+# define BLUE_MAT		{{0, 0, 0.9}, 10, 0}
+# define GREEN_MAT		{{0, 0.9, 0}, 10, 0}
+# define RED_MAT		{{0.9, 0, 0}, 10, 0}
+# define WHITE_GLOSSY	{{0.5, 0.5, 0.5}, 10, 0.8}
+# define RED_MAT		{{0.9, 0, 0}, 10, 0.8}
+# define MIRROR			{{0, 0, 0}, 1000, 1}
 
 # define PLANE			0
 # define SPHERE			1
