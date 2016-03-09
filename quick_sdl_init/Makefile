@@ -6,7 +6,7 @@
 #    By: mwilk <mwilk@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/09 16:17:56 by mwilk             #+#    #+#              #
-#    Updated: 2016/03/08 22:11:20 by mwilk            ###   ########.fr        #
+#    Updated: 2016/03/09 19:15:35 by fnieto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,11 +28,12 @@ FLAGS = -Wall -Wextra -Werror
 SRC = main.c\
 
 INC =  -I ./
-INC += -I ./SDL2/include/SDL2/
+INC += -I ~/.brew/Cellar/sdl2/2.0.4/include/SDL2/
 
 OBJ = $(SRC:.c=.o)
 
-LIB = -L `sdl2-config --cflags --libs` -lSDL2
+##LIB = -L `sdl2-config --cflags --libs` -lSDL2
+LIB = -L ~/.brew/Cellar/sdl2/2.0.4/lib/ -lSDL2
 
 ## RULES
 
