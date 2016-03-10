@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/02 13:40:08 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/08 20:12:16 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/09 18:50:55 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define CL_FUNC		static inline
 # define AMBIENT		0.5
 
-# define ITERATIONS		1
+# define ITERATIONS		5
 # define WHITE_MAT		{{0.9, 0.9, 0.9}, 10, 0}
 # define BLUE_MAT		{{0, 0, 0.9}, 10, 0}
 # define GREEN_MAT		{{0, 0.9, 0}, 10, 0}

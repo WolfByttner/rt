@@ -3,44 +3,48 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: fnieto <fnieto@student.42.fr>              +#+  +:+       +#+         #
+#    By: fnieto <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2013/11/19 14:09:58 by apachkof          #+#    #+#              #
-#    Updated: 2016/03/09 21:18:13 by fnieto           ###   ########.fr        #
+#    Created: 2016/03/09 20:50:44 by fnieto            #+#    #+#              #
+#    Updated: 2016/03/10 03:12:29 by fnieto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=rt
 
-CC=gcc
+CC=/Developer/NVIDIA/CUDA-7.5/bin/nvcc
 
-CFLAGS=-Wall -Wextra -Werror -O3
+CFLAGS=-Xptxas -Werror -m64
 
 RM=rm -f
 
-SRC=main.c clutil.c shaderutil.c
+SRC=main.c cudasync.c
 
-LIB= -framework OpenGL -framework AppKit libft/libft.a minilibx_macos/libmlx.a fred_gl/fred_gl.a -framework OpenCL
+LIB=-L ~/.brew/Cellar/glfw3/3.1.2/lib/ -lglfw3 -Xlinker -framework,Cocoa,-framework,OpenGL,-framework,IOKit,-framework,CoreVideo
 
-INCL=-I libft/includes/ -I minilibx_macos/ -I fred_gl/
+INCL=-I ~/.brew/Cellar/glfw3/3.1.2/include/ -I .
 
 OBJ=$(SRC:.c=.o)
 
 $(NAME): $(OBJ)
-		make -C libft/
-		make -C fred_gl/
-		$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(INCL) $(LIB)
+	@$(CC) -o $(NAME) $(OBJ) $(LIB) $(CFLAGS)
+	@echo "[.o] >> [rt]"
 
 %.o: %.c
-		$(CC) $(CFLAGS) $(INCL) -c $< -o $@
+	@mv $< $(<:.c=.cu)
+	@-$(CC) $(INCL) -c $(<:.c=.cu) -o $@ $(CFLAGS)
+	@mv $(<:.c=.cu) $<
+	@echo "$< >> $@"
 
 all: $(NAME)
 
 clean:
-		$(RM) $(OBJ)
+	@$(RM) $(OBJ)
+	@echo "[.o] >> /dev/null"
 
 fclean: clean
-		$(RM) $(NAME)
+	@$(RM) $(NAME)
+	@echo "[rt] >> /dev/null"
 
 re: fclean all
 

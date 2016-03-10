@@ -1,13 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   t_float_dot.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/09 17:36:56 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/09 19:06:34 by fnieto           ###   ########.fr       */
+/*   Created: 2016/03/10 02:31:42 by fnieto            #+#    #+#             */
+/*   Updated: 2016/03/10 03:13:39 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "rt.h"
+#include "gpu"
 
+void		t_float_dot(t_float *res, const t_float *a, const t_float *b)
+{
+	int		size;
+	int		i;
+	t_float	tmp;
+
+	tmp = 0;
+	size = MIN(sizeof(a), sizeof(b)) / sizeof(t_float);
+	i = -1;
+	while (++i < size)
+	{
+		tmp += a[i] * b[i];
+	}
+	*res = tmp;
+}
