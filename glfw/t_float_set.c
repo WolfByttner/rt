@@ -6,12 +6,12 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/10 02:31:42 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/10 04:23:49 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/10 18:54:05 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-#include "gpu"
+#include "cpugpu"
 
 void		t_float_set(t_float *res, const t_float *a)
 {

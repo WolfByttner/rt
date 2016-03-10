@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_float_setv.c                                     :+:      :+:    :+:   */
+/*   err.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/10 02:31:42 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/10 18:54:42 by fnieto           ###   ########.fr       */
+/*   Created: 2016/03/10 19:30:38 by fnieto            #+#    #+#             */
+/*   Updated: 2016/03/10 21:30:26 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-#include "cpugpu"
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-void		t_float_setv(t_float *res, const t_float a)
+void		err(char *str)
 {
-	int		size[1];
-	int		i;
+	while (*str)
+		write(2, str++, 1);
+	exit(1);
+}
 
-	size[0] = sizeof(res) / sizeof(t_float);
-	i = -1;
-	if (size[0] == 1)
-		while (++i < size[0])
-			res[i] = a;
-	else
-		while (++i < size[0])
-			res[i] = a;
+void		cudaerr(cudaError_t error, char *file, int line)
+{
+	if (error != cudaSuccess)
+	{
+		printf("Error: %s\n in file %s at line no %d\n",
+				cudaGetErrorString(error), file, line);
+		exit(EXIT_FAILURE);
+	}
 }

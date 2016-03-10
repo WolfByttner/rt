@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_float_setv.c                                     :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/10 02:31:42 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/10 18:54:42 by fnieto           ###   ########.fr       */
+/*   Created: 2016/03/10 19:50:44 by fnieto            #+#    #+#             */
+/*   Updated: 2016/03/10 19:52:14 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-#include "cpugpu"
 
-void		t_float_setv(t_float *res, const t_float a)
+static int		isblank(int c)
 {
-	int		size[1];
-	int		i;
+	return (c == ' ' || c == '\n' || c == '\t' || c == '\v' || c == '\f'
+		|| c == '\r');
+}
 
-	size[0] = sizeof(res) / sizeof(t_float);
-	i = -1;
-	if (size[0] == 1)
-		while (++i < size[0])
-			res[i] = a;
-	else
-		while (++i < size[0])
-			res[i] = a;
+int				ft_atoi(const char *str)
+{
+	int		res;
+	int		neg;
+
+	res = 0;
+	while (isblank(*str))
+		++str;
+	neg = *str == '-';
+	if (*str == '+' || *str == '-')
+		++str;
+	while (*str >= '0' && *str <= '9')
+		res = res * 10 - (*str++ - '0');
+	return (neg ? res : -res);
 }

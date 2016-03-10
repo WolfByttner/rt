@@ -6,18 +6,16 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/10 03:01:47 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/10 03:13:23 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/10 18:56:17 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-#include "gpu"
+#include "cpugpu"
 
 void		t_float_cross(t_float3 res, const t_float3 a, const t_float3 b)
 {
-	t_float3	tmp;
-
-	tmp[0] = a[1] * b[2] - a[2] * b[1];
-	tmp[1] = a[2] * b[0] - a[0] * b[2];
-	tmp[2] = a[0] * b[1] - a[1] * b[0];
+	res[0] = a[1] * b[2] - a[2] * b[1];
+	res[1] = a[2] * b[0] - a[0] * b[2];
+	res[2] = a[0] * b[1] - a[1] * b[0];
 }

@@ -6,12 +6,12 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/10 02:31:42 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/10 04:15:30 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/10 18:54:55 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-#include "gpu"
+#include "cpugpu"
 
 void		t_float_add(t_float *res, const t_float *a, const t_float *b)
 {

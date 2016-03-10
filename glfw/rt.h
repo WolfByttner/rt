@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/09 21:45:13 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/10 04:03:54 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/10 22:44:24 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 
 # include <string.h>
 
-# define PROJ_NAME						"R.T. (Ronald Trump)"
-# define CUDA_CALL(n, x, y, ...)		n<<<x,y>>>(__VA_ARGS__)
+# define P_NAME							"R.T. (Ronald Trump)"
+# define CUDA_CALL(n, x, y, ...)		n<<<x, y>>>(__VA_ARGS__)
+# define GEN_GRID(x, y)					dim3 grid(x, y)
 
 # define MAX(a, b)						((a > b) ? (a) : (b))
 # define MIN(a, b)						((a < b) ? (a) : (b))
@@ -42,10 +43,32 @@ typedef	struct		s_smem
 
 typedef	struct		s_rt
 {
-	t_smem		map;
-	t_smem		frame;
-	t_smem		result;
+	t_params	*pms;
+	t_smem		*map;
+	t_smem		*frame;
+	t_smem		*result;
 }					t_rt;
+
+typedef	struct		s_spm
+{
+	t_float		zoom;
+	t_float3	pos;
+	t_float2	rot;
+	size_t		frame;
+}					t_spm;
+
+typedef	struct		s_geo
+{
+	size_t		id;
+	t_float		**data;
+}					t_geo;
+
+void				test_kernel(int *res, int frame);
+
+int					ft_atoi(const char *str);
+
+void				err(char *str);
+void				cudaerr(cudaError_t error, char *file, int line);
 
 t_smem				*malloc_smem(size_t size);
 void				free_smem(t_smem **mem);

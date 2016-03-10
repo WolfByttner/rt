@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/09 23:36:09 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/10 01:55:34 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/10 20:37:38 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_smem		*malloc_smem(size_t size)
 		i = -1;
 		while (++i < size)
 			((unsigned char*)n->host)[i] = 0;
-		cudaMalloc(&(n->device), size);
+		cudaerr(cudaMalloc(&(n->device), size), __FILE__, __LINE__);
 	}
 	return (n);
 }
@@ -39,17 +39,19 @@ void		free_smem(t_smem **mem)
 
 	old = *mem;
 	free(old->host);
-	cudaFree(old->device);
+	cudaerr(cudaFree(old->device), __FILE__, __LINE__);
 	free(old);
 	*mem = 0;
 }
 
 void		sync_host(t_smem *mem)
 {
-	cudaMemcpy(mem->device, mem->host, mem->size, cudaMemcpyDeviceToHost);
+	cudaerr(cudaMemcpy(mem->host, mem->device, mem->size,
+		cudaMemcpyDeviceToHost), __FILE__, __LINE__);
 }
 
 void		sync_device(t_smem *mem)
 {
-	cudaMemcpy(mem->host, mem->device, mem->size, cudaMemcpyHostToDevice);
+	cudaerr(cudaMemcpy(mem->device, mem->host, mem->size,
+		cudaMemcpyHostToDevice), __FILE__, __LINE__);
 }
