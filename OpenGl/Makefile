@@ -6,7 +6,7 @@
 #    By: fnieto <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/09 20:50:44 by fnieto            #+#    #+#              #
-#    Updated: 2016/03/21 20:22:39 by jbyttner         ###   ########.fr        #
+#    Updated: 2016/03/22 11:21:47 by fnieto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,13 @@ NAME=rt
 
 CC=gcc
 
-CFLAGS= -Wall -Wextra #-Werror
+CFLAGS= -Wall -Wextra -Werror
 
 RM=rm -f
 
 SRC=main.c\
 	err.c\
+	shader.c\
 
 LIB=-L ~/.brew/Cellar/glfw3/3.1.2/lib/ -lglfw3 -framework OpenGL
 

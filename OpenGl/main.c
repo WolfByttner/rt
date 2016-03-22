@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/21 20:19:36 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/03/22 12:25:39 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 	return (&a);
 }*/
 
-int				main(int ac, char **av)
+int				main(void)
 {
 	GLFWwindow		*window;
 	int				i;
