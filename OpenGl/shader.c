@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/22 11:13:38 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/22 12:53:12 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/22 20:24:29 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ GLuint		shader
 	GLchar			log[4097];
 
 	id = glCreateShader(type);
+	ft_putendl("a");
 	glShaderSource(id, count, (const GLchar**)string, length);
+	ft_putendl("b");
 	glCompileShader(id);
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 	if(status == GL_FALSE)
