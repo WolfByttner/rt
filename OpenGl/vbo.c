@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:49:04 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/22 16:43:04 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/22 17:21:31 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ GLuint	vbo(GLenum target, GLsizeiptr size, GLvoid *data, GLenum usage)
 {
 	GLuint		id;
 
-	id = glGenBuffers();
+	glGenBuffers(1, &id);
 	glBindBuffer(target, id);
 	glBufferData(target, size, (const GLvoid*)data, usage);
 	return (id);

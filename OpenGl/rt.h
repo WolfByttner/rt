@@ -6,12 +6,14 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:50:48 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/22 17:14:33 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/22 17:26:56 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RT_H
 # define RT_H
+# include <OpenGL/gl3.h>
+# define GLFW_INCLUDE_GLCOREARB
 # include <GLFW/glfw3.h>
 # include <string.h>
 # include <stdlib.h>

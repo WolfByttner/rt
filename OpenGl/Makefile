@@ -6,7 +6,7 @@
 #    By: fnieto <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/09 20:50:44 by fnieto            #+#    #+#              #
-#    Updated: 2016/03/22 11:21:47 by fnieto           ###   ########.fr        #
+#    Updated: 2016/03/22 17:21:13 by fnieto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,14 +21,19 @@ RM=rm -f
 SRC=main.c\
 	err.c\
 	shader.c\
+	vao.c\
+	vbo.c\
+	load_file.c\
 
-LIB=-L ~/.brew/Cellar/glfw3/3.1.2/lib/ -lglfw3 -framework OpenGL
+LIB=-L ~/.brew/Cellar/glfw3/3.1.2/lib/ -lglfw3 -framework OpenGL libft/libft.a
 
-INCL=-I ~/.brew/Cellar/glfw3/3.1.2/include/ -I .
+INCL=-I ~/.brew/Cellar/glfw3/3.1.2/include/ -I . -I libft/includes
 
 OBJ=$(SRC:.c=.o)
 
 $(NAME): $(OBJ) $(NAME).h
+	@make -C libft
+	@echo "[>>libft<<]"
 	@$(CC) -o $(NAME) $(OBJ) $(LIB) $(CFLAGS)
 	@echo "[.o] >> [rt]"
 

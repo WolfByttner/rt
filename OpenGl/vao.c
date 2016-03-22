@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/22 16:06:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/22 17:01:52 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/22 17:23:01 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 GLuint		vao(void)
 {
-	return (glGenVertexArrays());
+	GLuint	id;
+
+	glGenVertexArrays(1, &id);
+	return (id);
 }
 
 void		vao_add_indices(GLuint vao, GLuint vbo)
