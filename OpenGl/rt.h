@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:50:48 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/22 16:43:07 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/03/22 17:14:33 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,17 @@
 # include <fcntl.h>
 # include "libft.h"
 # define P_NAME "foobar"
-# define BUFF_LENGTH 100
+# define BUFF_LENGTH 1024
 
 void				err(char *msg);
 void				load_file(char *file, GLchar **ptr, GLint *length);
 GLuint				shader(GLenum t, GLsizei c, GLchar **s, GLint *l);
 GLuint				shader_program(GLuint *shaders, size_t size);
+GLuint				vao(void);
+void				vao_add_indices(GLuint vao, GLuint vbo);
+void				vao_add_vdata(GLuint vao, GLuint vbo, GLint s, GLboolean n);
+GLuint				vbo(GLenum t, GLsizeiptr s, GLvoid *d, GLenum u);
+GLuint				index_buffer(GLvoid *d, GLsizeiptr s);
+GLuint				data_buffer(GLvoid *d, GLsizeiptr s);
 
 #endif
