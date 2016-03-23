@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:50:48 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/22 20:30:26 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/23 12:57:36 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include "libft.h"
+
 # define P_NAME "foobar"
 # define BUFF_LENGTH 1024
 
@@ -35,4 +36,5 @@ GLuint				index_buffer(GLvoid *d, GLsizeiptr s);
 GLuint				data_buffer(GLvoid *d, GLsizeiptr s);
 extern const char vertsrc[];
 extern const char fragsrc[];
+
 #endif

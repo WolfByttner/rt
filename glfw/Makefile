@@ -6,7 +6,7 @@
 #    By: fnieto <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/09 20:50:44 by fnieto            #+#    #+#              #
-#    Updated: 2016/03/10 22:43:13 by fnieto           ###   ########.fr        #
+#    Updated: 2016/03/11 00:45:17 by fnieto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SRC=main.c\
 	t_float_sub.c\
 	err.c\
 	ft_atoi.c\
-	test_kernel.c
+	test_kernel.c\
+	generic.c
 
 LIB=-L ~/.brew/Cellar/glfw3/3.1.2/lib/ -lglfw3 -Xlinker -framework,Cocoa,-framework,OpenGL,-framework,IOKit,-framework,CoreVideo
 
