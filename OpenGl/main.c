@@ -6,20 +6,21 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/23 12:57:14 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/26 21:11:35 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+#define FOO 1
 
 int				main(void)
 {
 	GLFWwindow			*window;
 	int					i;
-	static const float	verts[] = {-0.5f, 0.5f,
-					-0.5f, -0.5f,
-					0.5f, -0.5f,
-					0.5f, 0.5f};
+	static const float	verts[] = {-FOO, FOO,
+					-FOO, -FOO,
+					FOO, -FOO,
+					FOO, FOO};
 	static const GLuint	inds[] = {0, 1, 3, 1, 2, 3};
 
 	if (!glfwInit())
@@ -59,7 +60,7 @@ int				main(void)
 	shaders[0] = shader(GL_VERTEX_SHADER, 1, &(srcs[0]), &(sizes[0]));
 	shaders[1] = shader(GL_FRAGMENT_SHADER, 1, &(srcs[1]), &(sizes[1]));
 	GLuint program = shader_program(shaders, 2);
-
+	GLint ires = glGetUniformLocation(program, "iResolution");
 	ft_putnbr(glGetError());
 	ft_putendl(" 1");
 
@@ -67,6 +68,7 @@ int				main(void)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(program);
+		glUniform2i(ires, 1000, 1000);
 		glBindVertexArray(model);
 		glEnableVertexAttribArray(0);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
