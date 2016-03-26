@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/26 21:11:35 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/03/26 21:45:42 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,8 @@ int				main(void)
 
 	GLint sizes[2];
 	GLchar *srcs[2];
-	srcs[0] = ft_strdup(vertsrc);
-	srcs[1] = ft_strdup(fragsrc);
-	ft_putendl("-");
-	sizes[0] = ft_strlen(srcs[0]);
-	sizes[1] = ft_strlen(srcs[1]);
-	ft_putendl("--");
+	load_file("vertex.c", srcs, sizes);
+	load_file("fragment.c", &(srcs[1]), &(sizes[1]));
 	GLuint shaders[2];
 	shaders[0] = shader(GL_VERTEX_SHADER, 1, &(srcs[0]), &(sizes[0]));
 	shaders[1] = shader(GL_FRAGMENT_SHADER, 1, &(srcs[1]), &(sizes[1]));
