@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/28 01:37:55 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/28 19:27:30 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # define	PLANE		6
 # define	KLEIN		7
 # define	MOBIUS		8
+
+# define	ITERATIONS	13
 
 struct			s_cam
 {
@@ -59,7 +61,7 @@ struct			s_res
 	s_mat		mat;
 };
 
-uniform ivec2 iResolution = ivec2(1, 1);
+uniform ivec2 iResolution;
 uniform vec3 iCameraPosition = vec3(0, 0, 0);
 uniform vec2 iCameraRotation = vec2(0, 0);
 uniform float iCameraZoom = 1;
@@ -110,11 +112,11 @@ void		main()
 	vec2	uv;
 	vec2	fov;
 
-	uv = -(gl_FragCoord.xy / iResolution - 0.5) *
+/*	uv = -(gl_FragCoord.xy / iResolution - 0.5) *
 		iResolution.xy / float(iResolution.y) * iCameraZoom * PI / 2 -
 		iCameraRotation * PI + PI / 2;
-	cam.pos = iCameraPosition;
-	cam.ray = make_view_vector(uv);
+*/	cam.pos = iCameraPosition;
+//	cam.ray = make_view_vector(uv);
 
 	s_geo geo;
 	geo.pos = vec3(5, 5, 10);
@@ -122,8 +124,6 @@ void		main()
 
 	s_res tmp;
 	tmp.dst = -1;
-	for (int i = 0; i < 300; ++i)
-		tmp = sphere_dst(cam, geo, tmp);
-
-	outcol = vec4(vec3(1/tmp.dst), 1);
+	//tmp = sphere_dst(cam, geo, tmp);
+	outcol = vec4(tmp.normal, 1);
 }

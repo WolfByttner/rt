@@ -6,12 +6,12 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/28 02:02:00 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/28 20:04:08 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
-#include <time.h>
+#include <sys/time.h>
 #include <stdio.h>
 #define FOO 1
 
@@ -70,22 +70,27 @@ int					main(void)
 	GLint itime = glGetUniformLocation(program, "iGlobalTimeTime");
 	ft_putnbr(glGetError());
 	ft_putendl(" 1");
-	time_t t = time(0);
-	int t2;
+
+	struct timeval tval;
+	gettimeofday(&tval, 0);
+	long t = tval.tv_sec * 1e6 + tval.tv_usec;
+	long t2 = t;
 	int fps = 0;
+
+	glUseProgram(program);
+	glBindVertexArray(model);
+	glEnableVertexAttribArray(0);
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
-		glUseProgram(program);
 		glUniform2i(ires, 1000, 1000);
-		glUniform1f(itime, (float)((double)(clock()) / .5e6));
-		glBindVertexArray(model);
-		glEnableVertexAttribArray(0);
+		glUniform1f(itime, (float)t / 1000000.0f);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		++fps;
-		if ((t2 = time(0)) > t)
+		gettimeofday(&tval, 0);
+		if ((t2 = tval.tv_sec * 1e6 + tval.tv_usec) > t + 1000000)
 		{
 			printf("%i\n", fps);
 			t = t2;
