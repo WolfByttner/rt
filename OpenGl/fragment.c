@@ -6,13 +6,13 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/28 19:27:30 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/28 21:56:04 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #version 330 core
 
-# define	PI			3.1415926535
+# define PI 3.1415926535897932384626433832795
 
 # define	IGNORE		0
 # define	SPHERE		1
@@ -49,8 +49,13 @@ struct			s_geo
 	vec4		b;
 	vec4		c;
 	vec4		d;
-	vec4		e;
 	s_mat		mat;
+};
+
+struct			s_light
+{
+	vec4		color;
+	vec3		pos;
 };
 
 struct			s_res
@@ -94,7 +99,25 @@ s_res		sphere_dst(s_cam cam, s_geo sp, s_res prev)
 	}
 	return (prev);
 }
+/*
+vec4		paint(s_res res, s_light lights)
+{
+	int		i;
+	vec4	diffuse;
+	vec4	specular;
 
+	i = -1;
+	while (++i < lights.length())
+	{
+		
+	}
+
+	if (res.dst == -1)
+		return (specular);
+	else
+		return (diffuse * res.mat.color * (1 - smoothness) + specular * mat.smoothness);
+}
+*/
 /*
 ** spherical to euclidian coordinates transformation
 */
@@ -112,18 +135,31 @@ void		main()
 	vec2	uv;
 	vec2	fov;
 
-/*	uv = -(gl_FragCoord.xy / iResolution - 0.5) *
+	uv = -(gl_FragCoord.xy / iResolution - 0.5) *
 		iResolution.xy / float(iResolution.y) * iCameraZoom * PI / 2 -
-		iCameraRotation * PI + PI / 2;
-*/	cam.pos = iCameraPosition;
-//	cam.ray = make_view_vector(uv);
+	iCameraRotation * PI + vec2(-iGlobalTime - PI, 0) + PI / 2;
+	cam.pos = iCameraPosition + vec3(sin(iGlobalTime), 0, cos(iGlobalTime)) * 30;
+	cam.ray = make_view_vector(uv);
 
-	s_geo geo;
-	geo.pos = vec3(5, 5, 10);
-	geo.bounds = 1;
+	s_mat ms[1] = s_mat[1](s_mat(vec4(1), 0, 0, vec2(0)));
+
+	s_light lights[] = s_light[](
+		s_light(vec4(1, 1, 1, 1), vec3(0, 10, 0))
+			);
+
+	s_geo geos[] = s_geo[](
+	s_geo(SPHERE, vec3(0, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
+	s_geo(SPHERE, vec3(-2, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
+	s_geo(SPHERE, vec3(2, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0])
+	);
 
 	s_res tmp;
 	tmp.dst = -1;
-	//tmp = sphere_dst(cam, geo, tmp);
+	tmp = sphere_dst(cam, geos[0], tmp);
+	tmp = sphere_dst(cam, geos[1], tmp);
+	tmp = sphere_dst(cam, geos[2], tmp);
+
+	vec4 col = 
+
 	outcol = vec4(tmp.normal, 1);
 }

@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/28 20:04:08 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/28 20:35:20 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,14 @@ int					main(void)
 	shaders[1] = shader(GL_FRAGMENT_SHADER, 1, &(srcs[1]), &(sizes[1]));
 	GLuint program = shader_program(shaders, 2);
 	GLint ires = glGetUniformLocation(program, "iResolution");
-	GLint itime = glGetUniformLocation(program, "iGlobalTimeTime");
+	GLint itime = glGetUniformLocation(program, "iGlobalTime");
 	ft_putnbr(glGetError());
 	ft_putendl(" 1");
 
 	struct timeval tval;
 	gettimeofday(&tval, 0);
 	long t = tval.tv_sec * 1e6 + tval.tv_usec;
+	long st = t;
 	long t2 = t;
 	int fps = 0;
 
@@ -84,7 +85,7 @@ int					main(void)
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUniform2i(ires, 1000, 1000);
-		glUniform1f(itime, (float)t / 1000000.0f);
+		glUniform1f(itime, (float)((double)(t2 - st) / 1000000.0f));
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glfwSwapBuffers(window);
 		glfwPollEvents();
