@@ -6,11 +6,12 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/29 15:19:39 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/29 21:22:57 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
+#include "rt_input.h"
 #include <sys/time.h>
 #include <stdio.h>
 #define FOO 1
@@ -76,11 +77,13 @@ int					main(void)
 	long t = tval.tv_sec * 1e6 + tval.tv_usec;
 	long st = t;
 	long t2 = t;
+	long told = t;
 	int fps = 0;
 
 	glUseProgram(program);
 	glBindVertexArray(model);
 	glEnableVertexAttribArray(0);
+	init_uniforms(program);
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -97,6 +100,8 @@ int					main(void)
 			t = t2;
 			fps = 0;
 		}
+		poll_keys(window, (float)(t2 - told) / 1000000.0f);
+		told = t2;
 	}
 	ft_putnbr(glGetError());
 	ft_putendl(" 2");
