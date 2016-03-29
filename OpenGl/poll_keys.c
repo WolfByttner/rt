@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 20:50:54 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/29 22:06:33 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/03/29 22:15:24 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ static void	poll_movement_keys(GLFWwindow *window, float ftime, t_uniforms *u)
 	int		state;
 
 	if ((state = glfwGetKey(window, GLFW_KEY_W)) == GLFW_PRESS)
-		u->campos[0] += u->cammov * ftime;
-	else if ((state = glfwGetKey(window, GLFW_KEY_S)) == GLFW_PRESS)
-		u->campos[0] -= u->cammov * ftime;
-	else if ((state = glfwGetKey(window, GLFW_KEY_A)) == GLFW_PRESS)
 		u->campos[2] += u->cammov * ftime;
-	else if ((state = glfwGetKey(window, GLFW_KEY_D)) == GLFW_PRESS)
+	else if ((state = glfwGetKey(window, GLFW_KEY_S)) == GLFW_PRESS)
 		u->campos[2] -= u->cammov * ftime;
+	else if ((state = glfwGetKey(window, GLFW_KEY_A)) == GLFW_PRESS)
+		u->campos[0] -= u->cammov * ftime;
+	else if ((state = glfwGetKey(window, GLFW_KEY_D)) == GLFW_PRESS)
+		u->campos[0] += u->cammov * ftime;
 	else if ((state = glfwGetKey(window, GLFW_KEY_SPACE)) == GLFW_PRESS)
 		u->campos[1] += u->cammov * ftime;
 	else if ((state = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) == GLFW_PRESS)

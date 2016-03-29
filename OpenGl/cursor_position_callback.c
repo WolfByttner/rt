@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 21:51:02 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/29 22:07:39 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/03/29 22:11:49 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	cursor_position_callback(GLFWwindow *window, double xpos, double ypos)
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // TODO: Move this (and use window);
 	u = get_uniforms();
-	u->camrot[1] += (xpos - xold) * u->camsr;
-	u->camrot[0] += (ypos - yold) * u->camsr;
+	u->camrot[0] += (xpos - xold) * u->camsr;
+	u->camrot[1] += (ypos - yold) * u->camsr;
 	printf ("rotating by %f| %f\n", u->camrot[1], u->camrot[0]);
 	glUniform2f(u->icamrot, u->camrot[0], u->camrot[1]);
 	xold = xpos;
