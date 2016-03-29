@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/29 21:22:57 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/03/29 22:02:26 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int					main(void)
 	glBindVertexArray(model);
 	glEnableVertexAttribArray(0);
 	init_uniforms(program);
+	glfwSetCursorPosCallback(window, cursor_position_callback);
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);

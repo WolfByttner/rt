@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 20:50:54 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/29 21:48:28 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/03/29 22:06:33 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ static void	poll_movement_keys(GLFWwindow *window, float ftime, t_uniforms *u)
 		u->campos[1] += u->cammov * ftime;
 	else if ((state = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) == GLFW_PRESS)
 		u->campos[1] -= u->cammov * ftime;
+	else if ((state = glfwGetKey(window, GLFW_KEY_ESCAPE)) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, 1);
 	else
 		return ;
-	printf("%f I happened\n", ftime * u->cammov);
+	printf("%f I happened twice\n", ftime * u->cammov);
 	glUniform3f(u->icampos, u->campos[0], u->campos[1], u->campos[2]);
 }
 

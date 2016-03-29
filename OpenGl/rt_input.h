@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 19:19:12 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/29 21:11:43 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/03/29 22:02:01 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 typedef struct		s_uniforms
 {
 	float			cammov;
+	float			camsr;
 	GLint			icampos;
 	float			campos[3];
 	GLint			icamrot;
@@ -34,5 +35,7 @@ void				poll_keys(GLFWwindow *window, float ftime);
 t_uniforms			*get_uniforms(void);
 
 void				init_uniforms(GLuint program);
+
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 
 #endif
