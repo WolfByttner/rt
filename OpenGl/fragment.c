@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/29 21:10:02 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/29 22:09:58 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,8 +200,9 @@ void		main()
 
 	uv = -(gl_FragCoord.xy / iResolution - 0.5) *
 		iResolution.xy / float(iResolution.y) * iCameraZoom * PI * 0.5 -
-		iCameraRotation * PI + vec2(-iGlobalTime - PI, 0) + PI * 0.5;
-	cam.pos = iCameraPosition + vec3(sin(iGlobalTime), 0, cos(iGlobalTime)) * 30;
+		iCameraRotation * PI + PI * 0.5;
+	cam.pos = iCameraPosition;
+	cam.pos.z = -10;
 	cam.ray = make_view_vector(uv);
 
 	s_res tmp = raytrace(cam);
