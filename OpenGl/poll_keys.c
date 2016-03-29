@@ -6,11 +6,12 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 20:50:54 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/29 21:12:42 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/03/29 21:23:25 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt_input.h"
+#include <stdio.h>
 
 static void	poll_movement_keys(GLFWwindow *window, float ftime, t_uniforms *u)
 {
@@ -26,6 +27,7 @@ static void	poll_movement_keys(GLFWwindow *window, float ftime, t_uniforms *u)
 		u->campos[1] -= u->cammov * ftime;
 	else
 		return ;
+	printf("%f I happened\n", ftime * u->cammov);
 	glUniform3f(u->icampos, u->campos[0], u->campos[1], u->campos[2]);
 }
 
