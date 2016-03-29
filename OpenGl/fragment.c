@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/29 22:09:58 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/29 22:29:17 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,12 +121,14 @@ s_res		raytrace(s_cam cam)
 
 	res.dst = -1;
 	res.cam = cam;
-	i = -1;
-	while (++i < geos.length())
-	{
+//	i = -1;
+//	while (++i < geos.length())
+//	{
 	//	if (geos[i].type == SPHERE)
-			res = sphere_dst(cam, geos[i], res);
-	}
+			res = sphere_dst(cam, geos[0], res);
+			res = sphere_dst(cam, geos[1], res);
+			res = sphere_dst(cam, geos[2], res);
+//	}
 	return (res);
 }
 
@@ -202,7 +204,7 @@ void		main()
 		iResolution.xy / float(iResolution.y) * iCameraZoom * PI * 0.5 -
 		iCameraRotation * PI + PI * 0.5;
 	cam.pos = iCameraPosition;
-	cam.pos.z = -10;
+	cam.pos.z -= 10;
 	cam.ray = make_view_vector(uv);
 
 	s_res tmp = raytrace(cam);
