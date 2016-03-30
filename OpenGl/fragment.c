@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/29 22:29:17 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/30 16:15:14 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,40 @@
 
 # define	ITERATIONS	13
 # define	AMBIENT		(vec4(0.06, 0.04, 0.08, 0))
+
+# define	REP_1(r, f, a, b, c)	(r = f( a [0], b, c));
+# define	REP_2(r, f, a, b, c)	REP_1(r, f, a, b, c)(r = f(a[1], b, c));
+# define	REP_3(r, f, a, b, c)	REP_2(r, f, a, b, c)(r = f(a[2], b, c));
+# define	REP_4(r, f, a, b, c)	REP_3(r, f, a, b, c)(r = f(a[3], b, c));
+# define	REP_5(r, f, a, b, c)	REP_4(r, f, a, b, c)(r = f(a[4], b, c));
+# define	REP_6(r, f, a, b, c)	REP_5(r, f, a, b, c)(r = f(a[5], b, c));
+# define	REP_7(r, f, a, b, c)	REP_6(r, f, a, b, c)(r = f(a[6], b, c));
+# define	REP_8(r, f, a, b, c)	REP_7(r, f, a, b, c)(r = f(a[7], b, c));
+# define	REP_9(r, f, a, b, c)	REP_8(r, f, a, b, c)(r = f(a[8], b, c));
+# define	REP_10(r, f, a, b, c)	REP_9(r, f, a, b, c)(r = f(a[9], b, c));
+# define	REP_11(r, f, a, b, c)	REP_10(r, f, a, b, c)(r = f(a[10], b, c));
+# define	REP_12(r, f, a, b, c)	REP_11(r, f, a, b, c)(r = f(a[11], b, c));
+# define	REP_13(r, f, a, b, c)	REP_12(r, f, a, b, c)(r = f(a[12], b, c));
+# define	REP_14(r, f, a, b, c)	REP_13(r, f, a, b, c)(r = f(a[13], b, c));
+# define	REP_15(r, f, a, b, c)	REP_14(r, f, a, b, c)(r = f(a[14], b, c));
+# define	REP_16(r, f, a, b, c)	REP_15(r, f, a, b, c)(r = f(a[15], b, c));
+# define	REP_17(r, f, a, b, c)	REP_16(r, f, a, b, c)(r = f(a[16], b, c));
+# define	REP_18(r, f, a, b, c)	REP_17(r, f, a, b, c)(r = f(a[17], b, c));
+# define	REP_19(r, f, a, b, c)	REP_18(r, f, a, b, c)(r = f(a[18], b, c));
+# define	REP_20(r, f, a, b, c)	REP_19(r, f, a, b, c)(r = f(a[19], b, c));
+# define	REP_21(r, f, a, b, c)	REP_20(r, f, a, b, c)(r = f(a[20], b, c));
+# define	REP_22(r, f, a, b, c)	REP_21(r, f, a, b, c)(r = f(a[21], b, c));
+# define	REP_23(r, f, a, b, c)	REP_22(r, f, a, b, c)(r = f(a[22], b, c));
+# define	REP_24(r, f, a, b, c)	REP_23(r, f, a, b, c)(r = f(a[23], b, c));
+# define	REP_25(r, f, a, b, c)	REP_24(r, f, a, b, c)(r = f(a[24], b, c));
+# define	REP_26(r, f, a, b, c)	REP_25(r, f, a, b, c)(r = f(a[25], b, c));
+# define	REP_27(r, f, a, b, c)	REP_26(r, f, a, b, c)(r = f(a[26], b, c));
+# define	REP_28(r, f, a, b, c)	REP_27(r, f, a, b, c)(r = f(a[27], b, c));
+# define	REP_29(r, f, a, b, c)	REP_28(r, f, a, b, c)(r = f(a[28], b, c));
+# define	REP_30(r, f, a, b, c)	REP_29(r, f, a, b, c)(r = f(a[29], b, c));
+# define	REP_31(r, f, a, b, c)	REP_30(r, f, a, b, c)(r = f(a[30], b, c));
+
+# define	REP(n, r, f, a, b, c)	REP_##n(r, f, a, b, c)
 
 struct			s_cam
 {
@@ -75,25 +109,25 @@ uniform float iGlobalTime = 0;
 
 layout (location = 0) out vec4 outcol;
 
- s_mat ms[] = s_mat[](s_mat(vec4(1), 0.9, 0.8, vec2(0)));
+s_mat ms[] = s_mat[](s_mat(vec4(1), 0.9, 0.8, vec2(0)));
 
-s_light lights[] = s_light[](
-	s_light(vec4(1), vec3(cos(-iGlobalTime) * 10, 0, sin(-iGlobalTime) * 10)),
-	s_light(vec4(1), vec3(-cos(-iGlobalTime) * 10, 0, -sin(-iGlobalTime) * 10))
-	);
+	s_light lights[] = s_light[](
+			s_light(vec4(1), vec3(cos(-iGlobalTime) * 10, 0, sin(-iGlobalTime) * 10)),
+			s_light(vec4(1), vec3(-cos(-iGlobalTime) * 10, 0, -sin(-iGlobalTime) * 10))
+			);
 
-s_geo geos[] = s_geo[](
-	s_geo(SPHERE, vec3(0, 0, 0), 2, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
-	s_geo(SPHERE, vec3(-3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
-	s_geo(SPHERE, vec3(3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0])
-	);
+	s_geo geos[] = s_geo[](
+			s_geo(SPHERE, vec3(0, 0, 0), 2, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
+			s_geo(SPHERE, vec3(-3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
+			s_geo(SPHERE, vec3(3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0])
+			);
 
 vec3		sphere_norm(s_cam cam, s_res ret, s_geo object)
 {
 	return (-normalize(object.pos - (cam.pos + cam.ray * ret.dst)));
 }
 
-s_res		sphere_dst(s_cam cam, s_geo sp, s_res prev)
+s_res		sphere_dst(s_geo sp, s_cam cam, s_res prev)
 {
 	s_res		ret;
 	vec3		rc;
@@ -121,14 +155,7 @@ s_res		raytrace(s_cam cam)
 
 	res.dst = -1;
 	res.cam = cam;
-//	i = -1;
-//	while (++i < geos.length())
-//	{
-	//	if (geos[i].type == SPHERE)
-			res = sphere_dst(cam, geos[0], res);
-			res = sphere_dst(cam, geos[1], res);
-			res = sphere_dst(cam, geos[2], res);
-//	}
+	REP(3, res, sphere_dst, geos, cam, res);
 	return (res);
 }
 
@@ -150,12 +177,13 @@ vec4		paint(s_res res)
 		li.z = dot(li, li);
 		li.y = raytrace(newcam).dst;
 		li.x = sqrt(li.z);
-		if (li.y < li.x && li.y != -1)
-			continue;
-		li.z = min(1, 1 / li.x * 100);
-		diffuse += max(dot(res.normal, newcam.ray), 0) * lights[i].color * li.z;
-		specular += pow(max(dot(reflect(-newcam.ray, res.normal), -cam.ray), 0),
-				1 / (1 - res.mat.smoothness)) * lights[i].color * li.z;
+		if (!(li.y < li.x && li.y != -1))
+		{
+			li.z = min(1, 1 / li.x * 100);
+			diffuse += max(dot(res.normal, newcam.ray), 0) * lights[i].color * li.z;
+			specular += pow(max(dot(reflect(-newcam.ray, res.normal), -cam.ray), 0),
+					5 / (1 - res.mat.smoothness)) * lights[i].color * li.z;
+		}
 	}
 	return (max(diffuse * res.mat.color * (1 - res.mat.smoothness), AMBIENT)
 			+ specular * res.mat.smoothness);
