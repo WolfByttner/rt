@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/30 16:15:14 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/03/30 19:45:34 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,13 @@ struct			s_res
 	s_mat		mat;
 };
 
+struct			s_liret
+{
+	vec4		specular;
+	vec4		diffuse;
+	s_cam		cam;
+};
+
 uniform ivec2 iResolution;
 uniform vec3 iCameraPosition = vec3(0, 0, 0);
 uniform vec2 iCameraRotation = vec2(0, 0);
@@ -111,16 +118,19 @@ layout (location = 0) out vec4 outcol;
 
 s_mat ms[] = s_mat[](s_mat(vec4(1), 0.9, 0.8, vec2(0)));
 
+# define LINUM		2
+
 	s_light lights[] = s_light[](
 			s_light(vec4(1), vec3(cos(-iGlobalTime) * 10, 0, sin(-iGlobalTime) * 10)),
-			s_light(vec4(1), vec3(-cos(-iGlobalTime) * 10, 0, -sin(-iGlobalTime) * 10))
+			s_light(vec4(0.5, 0.5, 1, 1), vec3(-cos(-iGlobalTime) * 10, 0, -sin(-iGlobalTime) * 10))
 			);
+
+# define GEONUM		3
 
 	s_geo geos[] = s_geo[](
 			s_geo(SPHERE, vec3(0, 0, 0), 2, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
 			s_geo(SPHERE, vec3(-3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
-			s_geo(SPHERE, vec3(3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0])
-			);
+			s_geo(SPHERE, vec3(3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]));
 
 vec3		sphere_norm(s_cam cam, s_res ret, s_geo object)
 {
@@ -155,71 +165,70 @@ s_res		raytrace(s_cam cam)
 
 	res.dst = -1;
 	res.cam = cam;
-	REP(3, res, sphere_dst, geos, cam, res);
+	REP(GEONUM, res, sphere_dst, geos, cam, res);
 	return (res);
+}
+
+s_res		iter_scene( s_res res)
+{
+	return (res);
+}
+
+s_liret		iter_light(s_light light, s_liret liret, s_res res)
+{
+	s_liret	ret;
+	vec3	li;
+
+	ret = liret;
+	li = light.pos - liret.cam.pos;
+	liret.cam.ray = normalize(li);
+	li.z = dot(li, li);
+	li.y = raytrace(liret.cam).dst;
+	li.x = sqrt(li.z);
+	if (li.y < li.x && li.y != -1)
+		return (ret);
+	li.z = min(1, 1 / li.x * 100);
+	ret.diffuse += max(dot(res.normal, liret.cam.ray), 0) * light.color * li.z;
+	ret.specular += pow(max(dot(reflect(liret.cam.ray, res.normal), 
+		-liret.cam.ray), 0), 5 / (1 - res.mat.smoothness)) * light.color * li.z;
+	return (ret);
 }
 
 vec4		paint(s_res res)
 {
 	int		i;
-	vec4	diffuse;
-	vec4	specular;
-	s_cam	newcam;
-	vec3	li;
-	s_cam cam = res.cam;
+	s_liret	light;
 
-	newcam.pos = (res.dst - 0.001) * cam.ray + cam.pos;
-	i = -1;
-	while (++i < lights.length())
-	{
-		li = lights[i].pos - (newcam.pos);
-		newcam.ray = normalize(li);
-		li.z = dot(li, li);
-		li.y = raytrace(newcam).dst;
-		li.x = sqrt(li.z);
-		if (!(li.y < li.x && li.y != -1))
-		{
-			li.z = min(1, 1 / li.x * 100);
-			diffuse += max(dot(res.normal, newcam.ray), 0) * lights[i].color * li.z;
-			specular += pow(max(dot(reflect(-newcam.ray, res.normal), -cam.ray), 0),
-					5 / (1 - res.mat.smoothness)) * lights[i].color * li.z;
-		}
-	}
-	return (max(diffuse * res.mat.color * (1 - res.mat.smoothness), AMBIENT)
-			+ specular * res.mat.smoothness);
+	light.cam.pos = (res.dst - 0.001) * res.cam.ray + res.cam.pos;
+	REP(LINUM, light, iter_light, lights, light, res);
+	return (max(light.diffuse * res.mat.color * (1 - res.mat.smoothness),
+				AMBIENT) + light.specular * res.mat.smoothness);
+}
+
+vec4		iter_spec(s_light light, vec4 specular, s_res res)
+{
+	vec3	lpos;
+	vec3	li;
+	vec4	ret;
+
+	ret = specular;
+	lpos = light.pos - res.cam.pos;
+	li.z = dot(lpos, lpos);
+	li.x = sqrt(li.z);
+	if (li.x > res.dst && res.dst > 0)
+		return (ret);
+	li.z = min(1, 1 / li.x * 100);
+	ret += pow(max(dot(-normalize(lpos), -res.cam.ray), 0), 10000)
+		* light.color * li.z;
+	return (ret);
 }
 
 vec4		render_lights(s_res res)
 {
-	int		i;
 	vec4	specular;
-	vec3	li, light;
 
-	i = -1;
-	while (++i < lights.length())
-	{
-		light = lights[i].pos - res.cam.pos;
-		li.z = dot(light, light);
-		li.x = sqrt(li.z);
-		if (li.x > res.dst && res.dst > 0)
-			continue;
-		li.z = min(1, 1 / li.x * 100);
-		specular += pow(max(dot(-normalize(light), -res.cam.ray), 0),
-				10000) * lights[i].color * li.z;
-	}
+	REP(LINUM, specular, iter_spec, lights, specular, res);
 	return (specular);
-
-}
-
-/*
- ** spherical to euclidian coordinates transformation
- */
-
-vec3		make_view_vector(vec2 uv)
-{
-	return (normalize(
-				vec3(sin(uv.y) * cos(uv.x), sin(uv.y) * sin(uv.x), cos(uv.y))
-				).xzy);
 }
 
 void		main()
@@ -227,14 +236,18 @@ void		main()
 	s_cam	cam;
 	vec2	uv;
 	vec2	fov;
+	vec4	sins;
 
 	uv = -(gl_FragCoord.xy / iResolution - 0.5) *
 		iResolution.xy / float(iResolution.y) * iCameraZoom * PI * 0.5 -
-		iCameraRotation * PI + PI * 0.5;
+		iCameraRotation * PI * vec2(1, -1);
+	sins = vec4(sin(uv.x), cos(uv.x), sin(uv.y), cos(uv.y));
 	cam.pos = iCameraPosition;
 	cam.pos.z -= 10;
-	cam.ray = make_view_vector(uv);
-
+	cam.ray = (
+		mat3(sins.y, 0, sins.x, 0, 1, 0, -sins.x, 0, sins.y)
+		* mat3(1, 0, 0, 0, sins.w, -sins.z, 0, sins.z, sins.w)
+		) * vec3(0, 0, 1);
 	s_res tmp = raytrace(cam);
 	if (tmp.dst != -1)
 	{
