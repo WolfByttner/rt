@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 19:19:12 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/29 22:02:01 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/01 15:23:47 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ typedef struct		s_uniforms
 	GLint			itime;
 	float			time;
 }					t_uniforms;
+
+typedef struct		s_mat
+{
+	size_t			width;
+	size_t			height;
+	double			value;
+}					t_mat;
 
 void				poll_keys(GLFWwindow *window, float ftime);
 
