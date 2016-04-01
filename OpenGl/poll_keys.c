@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 20:50:54 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/01 18:45:32 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/01 18:50:35 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,18 @@
 ** Rotation by hardcoded 3x3 rotation matrix
 */
 
-/*
-** -- rot(0) --
-** sins.y,  0, sins.x 
-** 0,       1, 0, 
-** sins.x  0, sins.y
-** -- rot(1) --
-** 1, 0,      0
-** 0, sins.w, -sins.z
-** 0, sins.z, sins.w
-** -- res --
-** sins.y   sins.w          sins.y * sins.w
-** 0        sins.w            0
-** -sins.x  sins.y * sins.z   sins.y * sins.w
+/* -- rot z --
+** 1, 			0,  	    0
+** 0, 			w, 			-z
+** 0, 			z, 			w
+** -- rot y --
+** y,  		0, 			x 
+** 0,    		1, 			0, 
+** x  		0, 			y
+** -- rot res --
+** y			0			x
+** x * z		w			-z * y
+** -w * x		z			y * w
 */
 
 static void	translate_key_move(t_uniforms *u, float move[3])
