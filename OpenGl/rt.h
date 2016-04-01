@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:50:48 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/23 12:57:36 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/01 14:37:49 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@
 
 # define P_NAME "foobar"
 # define BUFF_LENGTH 1024
+
+typedef	struct		s_properties
+{
+	int		width;
+	int		height;
+}					t_properties;
 
 void				err(char *msg);
 void				load_file(char *file, GLchar **ptr, GLint *length);

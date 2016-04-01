@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/29 22:02:26 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/01 14:37:51 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,31 @@
 #include <stdio.h>
 #define FOO 1
 
+static t_properties		*get_properties(void)
+{
+	static t_properties properties;
+
+	return (&properties);
+}
+
+static void window_size_callback(GLFWwindow* window, int width, int height)
+{
+	t_properties *props;
+
+	props = get_properties();
+	props->width = width;
+	props->height = height;
+	window = 0;
+}
+
 static GLFWwindow	*make_glfw(int width, int height)
 {
 	GLFWwindow			*window;
 
 	if (!glfwInit())
 		err("GLFW failed to init\n");
-	glfwWindowHint(GLFW_RESIZABLE, 0);
+	//glfwWindowHint(GLFW_RESIZABLE, 0);
+	//glfwWindowHint(GLFW_DECORATED, 0);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -33,6 +51,7 @@ static GLFWwindow	*make_glfw(int width, int height)
 		glfwTerminate();
 		err("GLFW failed to create window");
 	}
+	glfwSetWindowSizeCallback(window, window_size_callback);
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(0);
 	return (window);
@@ -42,13 +61,17 @@ int					main(void)
 {
 	GLFWwindow			*window;
 	int					i;
+	t_properties		*properties;
 	static const float	verts[] = {-FOO, FOO,
 					-FOO, -FOO,
 					FOO, -FOO,
 					FOO, FOO};
 	static const GLuint	inds[] = {0, 1, 3, 1, 2, 3};
 
-	window = make_glfw(1000, 1000);
+	properties = get_properties();
+	properties->width = 1000;
+	properties->height = 1000;
+	window = make_glfw(properties->width, properties->height);
 	i = -1;
 	glClearColor(0, 0, 0, 1);
 	GLuint model = vao();
@@ -88,7 +111,7 @@ int					main(void)
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
-		glUniform2i(ires, 1000, 1000);
+		glUniform2i(ires, properties->width, properties->height);
 		glUniform1f(itime, (float)((double)(t2 - st) / 1000000.0f));
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glfwSwapBuffers(window);
