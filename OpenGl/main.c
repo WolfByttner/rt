@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/01 14:37:51 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/01 14:48:23 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ int					main(void)
 	GLint itime = glGetUniformLocation(program, "iGlobalTime");
 	ft_putnbr(glGetError());
 	ft_putendl(" 1");
-
 	struct timeval tval;
 	gettimeofday(&tval, 0);
 	long t = tval.tv_sec * 1e6 + tval.tv_usec;
@@ -102,7 +101,6 @@ int					main(void)
 	long t2 = t;
 	long told = t;
 	int fps = 0;
-
 	glUseProgram(program);
 	glBindVertexArray(model);
 	glEnableVertexAttribArray(0);

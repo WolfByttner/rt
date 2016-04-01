@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/03/30 19:45:34 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/01 15:14:54 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,16 +238,23 @@ void		main()
 	vec2	fov;
 	vec4	sins;
 
-	uv = -(gl_FragCoord.xy / iResolution - 0.5) *
-		iResolution.xy / float(iResolution.y) * iCameraZoom * PI * 0.5 -
-		iCameraRotation * PI * vec2(1, -1);
-	sins = vec4(sin(uv.x), cos(uv.x), sin(uv.y), cos(uv.y));
+	uv = gl_FragCoord.xy / iResolution;
+	sins = vec4(sin(iCameraRotation.x), cos(iCameraRotation.x),
+		sin(iCameraRotation.y), cos(iCameraRotation.y));
 	cam.pos = iCameraPosition;
 	cam.pos.z -= 10;
-	cam.ray = (
+	mat3 transform = (
 		mat3(sins.y, 0, sins.x, 0, 1, 0, -sins.x, 0, sins.y)
 		* mat3(1, 0, 0, 0, sins.w, -sins.z, 0, sins.z, sins.w)
-		) * vec3(0, 0, 1);
+		);
+	vec2 ratio = iResolution.xy / float(iResolution.y);
+	vec3 a = vec3(-1, -1, 1) * transform * vec3(iCameraZoom * ratio, 1);
+	vec3 b = vec3(1, -1, 1) * transform * vec3(iCameraZoom * ratio, 1);
+	vec3 c = vec3(-1, 1, 1) * transform * vec3(iCameraZoom * ratio, 1);
+	vec3 d = vec3(1, 1, 1) * transform * vec3(iCameraZoom * ratio, 1);
+	vec3 s = mix(a, b, uv.x);
+	vec3 t = mix(c, d, uv.x);
+	cam.ray = normalize(mix(s, t, uv.y));
 	s_res tmp = raytrace(cam);
 	if (tmp.dst != -1)
 	{
