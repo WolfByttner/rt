@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/01 15:14:54 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/01 15:33:29 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,13 +239,14 @@ void		main()
 	vec4	sins;
 
 	uv = gl_FragCoord.xy / iResolution;
-	sins = vec4(sin(iCameraRotation.x), cos(iCameraRotation.x),
-		sin(iCameraRotation.y), cos(iCameraRotation.y));
+	vec2 camrot = vec2(iCameraRotation.x,
+		clamp(iCameraRotation.y, -PI / 2, PI / 2));
+	sins = vec4(sin(camrot.x), cos(camrot.x), sin(camrot.y), cos(camrot.y));
 	cam.pos = iCameraPosition;
 	cam.pos.z -= 10;
 	mat3 transform = (
-		mat3(sins.y, 0, sins.x, 0, 1, 0, -sins.x, 0, sins.y)
-		* mat3(1, 0, 0, 0, sins.w, -sins.z, 0, sins.z, sins.w)
+		mat3(1, 0, 0, 0, sins.w, -sins.z, 0, sins.z, sins.w)
+		*mat3(sins.y, 0, sins.x, 0, 1, 0, -sins.x, 0, sins.y)
 		);
 	vec2 ratio = iResolution.xy / float(iResolution.y);
 	vec3 a = vec3(-1, -1, 1) * transform * vec3(iCameraZoom * ratio, 1);
