@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/01 15:35:49 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/01 19:02:01 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define	KLEIN		7
 # define	MOBIUS		8
 
-# define	ITERATIONS	13
+# define	ITERATIONS	4
 # define	AMBIENT		(vec4(0.06, 0.04, 0.08, 0))
 
 # define	REP_1(r, f, a, b, c)	(r = f( a [0], b, c));
@@ -61,6 +61,74 @@
 
 # define	REP(n, r, f, a, b, c)	REP_##n(r, f, a, b, c)
 
+# define	REC_1(r, f, a, b)	(r[0] = f(0, a, b));
+# define	REC_2(r, f, a, b)	REC_1(r, f, a, b)(r[1] = f(1, a, b));
+# define	REC_3(r, f, a, b)	REC_2(r, f, a, b)(r[2] = f(2, a, b));
+# define	REC_4(r, f, a, b)	REC_3(r, f, a, b)(r[3] = f(3, a, b));
+# define	REC_5(r, f, a, b)	REC_4(r, f, a, b)(r[4] = f(4, a, b));
+# define	REC_6(r, f, a, b)	REC_5(r, f, a, b)(r[5] = f(5, a, b));
+# define	REC_7(r, f, a, b)	REC_6(r, f, a, b)(r[6] = f(6, a, b));
+# define	REC_8(r, f, a, b)	REC_7(r, f, a, b)(r[7] = f(7, a, b));
+# define	REC_9(r, f, a, b)	REC_8(r, f, a, b)(r[8] = f(8, a, b));
+# define	REC_10(r, f, a, b)	REC_9(r, f, a, b)(r[9] = f(9, a, b));
+# define	REC_11(r, f, a, b)	REC_10(r, f, a, b)(r[10] = f(10, a, b));
+# define	REC_12(r, f, a, b)	REC_11(r, f, a, b)(r[11] = f(11, a, b));
+# define	REC_13(r, f, a, b)	REC_12(r, f, a, b)(r[12] = f(12, a, b));
+# define	REC_14(r, f, a, b)	REC_13(r, f, a, b)(r[13] = f(13, a, b));
+# define	REC_15(r, f, a, b)	REC_14(r, f, a, b)(r[14] = f(14, a, b));
+# define	REC_16(r, f, a, b)	REC_15(r, f, a, b)(r[15] = f(15, a, b));
+# define	REC_17(r, f, a, b)	REC_16(r, f, a, b)(r[16] = f(16, a, b));
+# define	REC_18(r, f, a, b)	REC_17(r, f, a, b)(r[17] = f(17, a, b));
+# define	REC_19(r, f, a, b)	REC_18(r, f, a, b)(r[18] = f(18, a, b));
+# define	REC_20(r, f, a, b)	REC_19(r, f, a, b)(r[19] = f(19, a, b));
+# define	REC_21(r, f, a, b)	REC_20(r, f, a, b)(r[20] = f(20, a, b));
+# define	REC_22(r, f, a, b)	REC_21(r, f, a, b)(r[21] = f(21, a, b));
+# define	REC_23(r, f, a, b)	REC_22(r, f, a, b)(r[22] = f(22, a, b));
+# define	REC_24(r, f, a, b)	REC_23(r, f, a, b)(r[23] = f(23, a, b));
+# define	REC_25(r, f, a, b)	REC_24(r, f, a, b)(r[24] = f(24, a, b));
+# define	REC_26(r, f, a, b)	REC_25(r, f, a, b)(r[25] = f(25, a, b));
+# define	REC_27(r, f, a, b)	REC_26(r, f, a, b)(r[26] = f(26, a, b));
+# define	REC_28(r, f, a, b)	REC_27(r, f, a, b)(r[27] = f(27, a, b));
+# define	REC_29(r, f, a, b)	REC_28(r, f, a, b)(r[28] = f(28, a, b));
+# define	REC_30(r, f, a, b)	REC_29(r, f, a, b)(r[29] = f(29, a, b));
+# define	REC_31(r, f, a, b)	REC_30(r, f, a, b)(r[30] = f(30, a, b));
+
+# define	REC(n, r, f, a, b)	REC_##n(r, f, a, b)
+
+# define	RREC_1(r, f, a, b)	(r[0] = f(0, a, b));
+# define	RREC_2(r, f, a, b)	(r[1] = f(1, a, b)); RREC_1(r, f, a, b)
+# define	RREC_3(r, f, a, b)	(r[2] = f(2, a, b)); RREC_2(r, f, a, b)
+# define	RREC_4(r, f, a, b)	(r[3] = f(3, a, b)); RREC_3(r, f, a, b)
+# define	RREC_5(r, f, a, b)	(r[4] = f(4, a, b)); RREC_4(r, f, a, b)
+# define	RREC_6(r, f, a, b)	(r[5] = f(5, a, b)); RREC_5(r, f, a, b)
+# define	RREC_7(r, f, a, b)	(r[6] = f(6, a, b)); RREC_6(r, f, a, b)
+# define	RREC_8(r, f, a, b)	(r[7] = f(7, a, b)); RREC_7(r, f, a, b)
+# define	RREC_9(r, f, a, b)	(r[8] = f(8, a, b)); RREC_8(r, f, a, b)
+# define	RREC_10(r, f, a, b)	(r[9] = f(9, a, b)); RREC_9(r, f, a, b)
+# define	RREC_11(r, f, a, b)	(r[10] = f(10, a, b)); RREC_10(r, f, a, b)
+# define	RREC_12(r, f, a, b)	(r[11] = f(11, a, b)); RREC_11(r, f, a, b)
+# define	RREC_13(r, f, a, b)	(r[12] = f(12, a, b)); RREC_12(r, f, a, b)
+# define	RREC_14(r, f, a, b)	(r[13] = f(13, a, b)); RREC_13(r, f, a, b)
+# define	RREC_15(r, f, a, b)	(r[14] = f(14, a, b)); RREC_14(r, f, a, b)
+# define	RREC_16(r, f, a, b)	(r[15] = f(15, a, b)); RREC_15(r, f, a, b)
+# define	RREC_17(r, f, a, b)	(r[16] = f(16, a, b)); RREC_16(r, f, a, b)
+# define	RREC_18(r, f, a, b)	(r[17] = f(17, a, b)); RREC_17(r, f, a, b)
+# define	RREC_19(r, f, a, b)	(r[18] = f(18, a, b)); RREC_18(r, f, a, b)
+# define	RREC_20(r, f, a, b)	(r[19] = f(19, a, b)); RREC_19(r, f, a, b)
+# define	RREC_21(r, f, a, b)	(r[20] = f(20, a, b)); RREC_20(r, f, a, b)
+# define	RREC_22(r, f, a, b)	(r[21] = f(21, a, b)); RREC_21(r, f, a, b)
+# define	RREC_23(r, f, a, b)	(r[22] = f(22, a, b)); RREC_22(r, f, a, b)
+# define	RREC_24(r, f, a, b)	(r[23] = f(23, a, b)); RREC_23(r, f, a, b)
+# define	RREC_25(r, f, a, b)	(r[24] = f(24, a, b)); RREC_24(r, f, a, b)
+# define	RREC_26(r, f, a, b)	(r[25] = f(25, a, b)); RREC_25(r, f, a, b)
+# define	RREC_27(r, f, a, b)	(r[26] = f(26, a, b)); RREC_26(r, f, a, b)
+# define	RREC_28(r, f, a, b)	(r[27] = f(27, a, b)); RREC_27(r, f, a, b)
+# define	RREC_29(r, f, a, b)	(r[28] = f(28, a, b)); RREC_28(r, f, a, b)
+# define	RREC_30(r, f, a, b)	(r[29] = f(29, a, b)); RREC_29(r, f, a, b)
+# define	RREC_31(r, f, a, b)	(r[30] = f(30, a, b)); RREC_30(r, f, a, b)
+
+# define	RREC(n, r, f, a, b)	RREC_##n(r, f, a, b)
+
 struct			s_cam
 {
 	vec3		pos;
@@ -70,7 +138,7 @@ struct			s_cam
 struct			s_mat
 {
 	vec4		color;
-	float		metallic;
+	vec3		fresnell;
 	float		smoothness;
 	vec2		opacity;
 };
@@ -99,6 +167,7 @@ struct			s_res
 	vec3		normal;
 	s_cam		cam;
 	s_mat		mat;
+	vec4		color;
 };
 
 struct			s_liret
@@ -116,7 +185,7 @@ uniform float iGlobalTime = 0;
 
 layout (location = 0) out vec4 outcol;
 
-s_mat ms[] = s_mat[](s_mat(vec4(1), 0.9, 0.8, vec2(0)));
+s_mat ms[] = s_mat[](s_mat(vec4(1), vec3(0), 0.8, vec2(0)));
 
 # define LINUM		2
 
@@ -158,6 +227,12 @@ s_res		sphere_dst(s_geo sp, s_cam cam, s_res prev)
 	return (prev);
 }
 
+float		fresnell(s_res res, vec3 pms)
+{
+	return (max(0, min(1, pms.x + pms.y * (1.0 + dot(res.cam.ray, res.normal))
+		* pms.z)));
+}
+
 s_res		raytrace(s_cam cam)
 {
 	int		i;
@@ -194,15 +269,16 @@ s_liret		iter_light(s_light light, s_liret liret, s_res res)
 	return (ret);
 }
 
-vec4		paint(s_res res)
+vec4		paint(s_res res, vec4 lastcol)
 {
 	int		i;
 	s_liret	light;
 
 	light.cam.pos = (res.dst - 0.001) * res.cam.ray + res.cam.pos;
 	REP(LINUM, light, iter_light, lights, light, res);
-	return (max(light.diffuse * res.mat.color * (1 - res.mat.smoothness),
-				AMBIENT) + light.specular * res.mat.smoothness);
+	return (max(mix(mix(light.diffuse * res.mat.color, light.specular,
+		res.mat.smoothness), lastcol, fresnell(res, res.mat.fresnell)),
+		AMBIENT));
 }
 
 vec4		iter_spec(s_light light, vec4 specular, s_res res)
@@ -231,6 +307,49 @@ vec4		render_lights(s_res res)
 	return (specular);
 }
 
+s_res		iterate_cam(int iter, s_res iters[ITERATIONS], s_cam firstcam)
+{
+	s_res current;
+	s_res last;
+
+	if (iter == 0)
+	{
+		current = raytrace(firstcam);
+	}
+	else
+	{
+		last = iters[iter - 1];
+		if (last.dst == -1)
+			return (last);
+		current = raytrace(s_cam(reflect(last.cam.ray, last.normal),
+			last.cam.ray * last.dst + last.cam.pos));
+	}
+	return (current);
+}
+
+s_res		iterate_color(int iter, s_res iters[ITERATIONS], int max_iter)
+{
+	s_res	current;
+	s_res	last;
+
+	if (iter != max_iter)
+	{
+		last = iters[iter + 1];
+	}
+	current = iters[iter];
+	current.color = paint(current, last.color);
+	return (current);
+}
+
+s_res		iterate(s_cam cam)
+{
+	s_res iters[ITERATIONS];
+
+	REC(ITERATIONS, iters, iterate_cam, iters, cam);
+	RREC(ITERATIONS, iters, iterate_color, iters, ITERATIONS - 1);
+	return (iters[0]);
+}
+
 void		main()
 {
 	s_cam	cam;
@@ -246,7 +365,7 @@ void		main()
 	cam.pos.z -= 10;
 	mat3 transform = (
 		mat3(1, 0, 0, 0, sins.w, -sins.z, 0, sins.z, sins.w)
-		*mat3(sins.y, 0, sins.x, 0, 1, 0, -sins.x, 0, sins.y)
+		* mat3(sins.y, 0, sins.x, 0, 1, 0, -sins.x, 0, sins.y)
 		);
 	vec2 ratio = iResolution.xy / float(iResolution.y);
 	vec3 a = vec3(-1, -1, 1) * transform * vec3(iCameraZoom * ratio, 1);
@@ -256,10 +375,10 @@ void		main()
 	vec3 s = mix(a, b, uv.x);
 	vec3 t = mix(c, d, uv.x);
 	cam.ray = normalize(mix(s, t, uv.y));
-	s_res tmp = raytrace(cam);
+	s_res tmp = iterate(cam);
 	if (tmp.dst != -1)
 	{
-		vec4 col = paint(tmp);
+		vec4 col = tmp.color;
 		tmp.cam = cam;
 		col += render_lights(tmp);
 		outcol = vec4(col.xyz, 1);
