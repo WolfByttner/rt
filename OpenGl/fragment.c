@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/04 19:17:59 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/04 22:52:43 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 # define	IGNORE		0
 # define	SPHERE		1
-# define	ELLYPSE		2
+# define	ELLIPSE		2
 # define	CONE		3
 # define	CYLINDER	4
 # define	BOX			5
@@ -133,12 +133,13 @@ s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)));
 			s_light(vec4(0.5, 0.5, 1, 1), vec3(-cos(-10) * 10, 0, -sin(-10) * 10))
 			);
 
-# define GEONUM		3
+# define GEONUM		4
 
 	s_geo geos[] = s_geo[](
 			s_geo(SPHERE, vec3(0, 0, 0), 2, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
 			s_geo(SPHERE, vec3(-3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
-			s_geo(SPHERE, vec3(3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]));
+			s_geo(SPHERE, vec3(3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
+			s_geo(PLANE, vec3(0, -2, 0), 2, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[0]));
 
 vec3		sphere_norm(s_cam cam, s_res ret, s_geo object)
 {
@@ -167,10 +168,87 @@ s_res		sphere_dst(s_geo sp, s_cam cam, s_res prev)
 	return (prev);
 }
 
+/*
+** TODO: Fill in these functions
+** Indicate how you use the variables in s_geo.
+*/
+
+s_res		ellipse_dst(s_geo sp, s_cam cam, s_res prev)
+{
+	return (prev);
+}
+
+s_res		cone_dst(s_geo sp, s_cam cam, s_res prev)
+{
+	return (prev);
+}
+
+s_res		cylinder_dst(s_geo sp, s_cam cam, s_res prev)
+{
+	return (prev);
+}
+
+s_res		box_dst(s_geo sp, s_cam cam, s_res prev)
+{
+	return (prev);
+}
+
+/*
+** sp.a is the normal
+** https://en.wikipedia.org/wiki/Line–plane_intersection
+*/
+
+s_res		plane_dst(s_geo sp, s_cam cam, s_res prev)
+{
+	s_res		ret;
+	vec3		rc;
+	float		tmp;
+
+	ret.normal = -sp.a.xyz;
+	tmp = dot(cam.ray, ret.normal);
+	if ((tmp == 0))
+		return (prev);
+	rc = vec3(sp.pos) - cam.pos;
+	ret.dst = dot(rc, ret.normal) / tmp;
+	if (ret.dst > 0 && (prev.dst <= 0 || (prev.dst > 0 && ret.dst < prev.dst)))
+	{
+		ret.mat = sp.mat;
+		ret.cam = cam;
+		return (ret);
+	}
+	return (prev);
+}
+
+s_res		klein_dst(s_geo sp, s_cam cam, s_res prev)
+{
+	return (prev);
+}
+
+s_res		mobius_dst(s_geo sp, s_cam cam, s_res prev)
+{
+	return (prev);
+}
+
+/*
+** Dynamic dispatch
+*/
+
 s_res		obj_dst(s_geo obj, s_cam cam, s_res prev)
 {
 	if (obj.type == SPHERE)
 		return (sphere_dst(obj, cam, prev));
+	else if (obj.type == ELLIPSE)
+		return (ellipse_dst(obj, cam, prev));
+	else if (obj.type == CONE)
+		return (cone_dst(obj, cam, prev));
+	else if (obj.type == CYLINDER)
+		return (cylinder_dst(obj, cam, prev));
+	else if (obj.type == BOX)
+		return (box_dst(obj, cam, prev));
+	else if (obj.type == PLANE)
+		return (plane_dst(obj, cam, prev));
+	else if (obj.type == MOBIUS)
+		return (mobius_dst(obj, cam, prev));
 	else
 		return (prev);
 }
@@ -205,7 +283,7 @@ s_liret		iter_light(s_light light, s_liret liret, s_res res)
 	if (li.y < li.x && li.y != -1)
 		return (ret);
 	li.z = min(1, 1 / li.x * 100);
-	ret.diffuse += max(dot(res.normal, liret.cam.ray), 0) * light.color * li.z;
+	ret.diffuse += abs(dot(res.normal, liret.cam.ray)) * light.color * li.z;
 	ret.specular += pow(max(dot(reflect(liret.cam.ray, res.normal),
 		-liret.cam.ray), 0), 5 / (1 - res.mat.smoothness)) * light.color * li.z;
 	return (ret);
