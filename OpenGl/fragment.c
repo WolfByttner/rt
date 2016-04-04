@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/04 22:52:43 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/05 01:42:27 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,13 +133,14 @@ s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)));
 			s_light(vec4(0.5, 0.5, 1, 1), vec3(-cos(-10) * 10, 0, -sin(-10) * 10))
 			);
 
-# define GEONUM		4
+# define GEONUM		5
 
 	s_geo geos[] = s_geo[](
 			s_geo(SPHERE, vec3(0, 0, 0), 2, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
 			s_geo(SPHERE, vec3(-3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
 			s_geo(SPHERE, vec3(3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
-			s_geo(PLANE, vec3(0, -2, 0), 2, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[0]));
+			s_geo(PLANE, vec3(0, -2, 0), 0, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[0]),
+			s_geo(CONE, vec3(0, 0, 0), 0, vec4(0, 1, 0, 0.6), vec4(0), vec4(0), vec4(0), ms[0]));
 
 vec3		sphere_norm(s_cam cam, s_res ret, s_geo object)
 {
@@ -178,8 +179,38 @@ s_res		ellipse_dst(s_geo sp, s_cam cam, s_res prev)
 	return (prev);
 }
 
+/*
+** a.w is angle. a.xyz is normal
+** http://hugi.scene.org/online/hugi24/coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
+*/
+
 s_res		cone_dst(s_geo sp, s_cam cam, s_res prev)
 {
+	float		a, b, c;
+	float		root;
+	s_res		ret;
+
+	a = dot(cam.ray, cam.ray) - (1 + sp.a.w * sp.a.w) * pow(dot(cam.ray, sp.a.xyz), 2);
+	b = dot(cam.ray, cam.pos - sp.pos) - (1 + sp.a.w * sp.a.w) * dot(cam.ray, sp.a.xyz) * dot(cam.pos - sp.pos, sp.a.xyz);
+	b *= 2;
+	c = dot(cam.pos - sp.pos, cam.pos - sp.pos) - (1 + sp.a.w * sp.a.w) * pow(dot(cam.pos - sp.pos, sp.a.xyz), 2);
+	root = b * b - 4 * a * c;
+	if (root < 0)
+		return (prev);
+	root = sqrt(root);
+	ret.dst = -b;
+	if (ret.dst - root > 0)
+		ret.dst += root;
+	else
+		ret.dst -= root;
+	ret.dst /= 2 * a;
+	if (ret.dst > 0 && (prev.dst <= 0 || (prev.dst > 0 && ret.dst < prev.dst)))
+	{
+		ret.normal = normalize(cam.ray * ret.dst - cam.pos - sp.pos - (1 + sp.a.w * sp.a.w) * sp.a.xyz * dot(cam.ray, sp.a.xyz) * ret.dst + dot(cam.pos - sp.pos, sp.a.xyz));
+		ret.mat = sp.mat;
+		ret.cam = cam;
+		return (ret);
+	}
 	return (prev);
 }
 
