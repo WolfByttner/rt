@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 20:50:54 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/01 18:50:35 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/04 22:53:54 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,20 +61,18 @@ static void	poll_movement_keys(GLFWwindow *window, float ftime, t_uniforms *u)
 	memset(move, 0, sizeof move);
 	if ((state = glfwGetKey(window, GLFW_KEY_W)) == GLFW_PRESS)
 		move[2] = u->cammov * ftime;
-	else if ((state = glfwGetKey(window, GLFW_KEY_S)) == GLFW_PRESS)
+	if ((state = glfwGetKey(window, GLFW_KEY_S)) == GLFW_PRESS)
 		move[2] = -u->cammov * ftime;
-	else if ((state = glfwGetKey(window, GLFW_KEY_A)) == GLFW_PRESS)
+	if ((state = glfwGetKey(window, GLFW_KEY_A)) == GLFW_PRESS)
 		move[0] = -u->cammov * ftime;
-	else if ((state = glfwGetKey(window, GLFW_KEY_D)) == GLFW_PRESS)
+	if ((state = glfwGetKey(window, GLFW_KEY_D)) == GLFW_PRESS)
 		move[0] = u->cammov * ftime;
-	else if ((state = glfwGetKey(window, GLFW_KEY_SPACE)) == GLFW_PRESS)
+	if ((state = glfwGetKey(window, GLFW_KEY_SPACE)) == GLFW_PRESS)
 		move[1] = u->cammov * ftime;
-	else if ((state = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) == GLFW_PRESS)
+	if ((state = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) == GLFW_PRESS)
 		move[1] = -u->cammov * ftime;
-	else if ((state = glfwGetKey(window, GLFW_KEY_ESCAPE)) == GLFW_PRESS)
+	if ((state = glfwGetKey(window, GLFW_KEY_ESCAPE)) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, 1);
-	else
-		return ;
 	translate_key_move(u, move);
 	glUniform3f(u->icampos, u->campos[0], u->campos[1], u->campos[2]);
 }
