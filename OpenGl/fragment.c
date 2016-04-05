@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/05 15:43:46 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/05 15:53:26 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ s_res		cone_dst(s_geo sp, s_cam cam, s_res prev)
 	pos = cam.pos - sp.pos;
 	rdot = dot(cam.ray, sp.a.xyz);
 	pdot = dot(pos, sp.a.xyz);
-	opa2 = (1 + sp.a.w * sp.a.w);
+	opa2 = (1 + pow(sp.a.w, 2));
 	a = dot(cam.ray, cam.ray) - opa2 * pow(rdot, 2);
 	b = (dot(cam.ray, pos) - opa2 * rdot * pdot) * 2;
 	c = dot(pos, pos) - opa2 * pow(pdot, 2);
@@ -206,7 +206,7 @@ s_res		cone_dst(s_geo sp, s_cam cam, s_res prev)
 	ret.dst = (-b - root) /  (2 * a);
 	if (ret.dst > 0 && (prev.dst <= 0 || (prev.dst > 0 && ret.dst < prev.dst)))
 	{
-		ret.normal = normalize(cam.ray * ret.dst + pos - opa2 * sp.a.xyz * rdot * ret.dst - pdot);
+		ret.normal = normalize(cam.ray * ret.dst + pos - opa2 * sp.a.xyz * rdot * ret.dst + pdot);
 		ret.mat = sp.mat;
 		ret.cam = cam;
 		return (ret);
