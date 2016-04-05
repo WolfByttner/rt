@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/05 01:42:27 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/05 15:21:35 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -326,10 +326,12 @@ vec4		paint(s_res res, vec4 lastcol)
 	s_liret	light;
 
 	light.cam.pos = (res.dst - 0.001) * res.cam.ray + res.cam.pos;
+	light.diffuse = vec4(0);
+	light.specular = vec4(0);
 	REP(LINUM, light, iter_light, lights, light, res);
-	return (max(mix(light.diffuse * res.mat.color, lastcol *
-		res.mat.smoothness, res.mat.metallic) + light.specular *
-		res.mat.smoothness, AMBIENT));
+	return (max(mix(light.diffuse * res.mat.color + light.specular, lastcol,
+		mix((1 - abs(dot(res.cam.ray, res.normal))) * res.mat.smoothness, 1,
+		res.mat.metallic)), AMBIENT));
 }
 
 vec4		iter_spec(s_light light, vec4 specular, s_res res)
