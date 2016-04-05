@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/05 15:21:35 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/05 15:39:26 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,25 +188,26 @@ s_res		cone_dst(s_geo sp, s_cam cam, s_res prev)
 {
 	float		a, b, c;
 	float		root;
+	float		rdot, pdot;
+	vec3		pos;
 	s_res		ret;
 
-	a = dot(cam.ray, cam.ray) - (1 + sp.a.w * sp.a.w) * pow(dot(cam.ray, sp.a.xyz), 2);
-	b = dot(cam.ray, cam.pos - sp.pos) - (1 + sp.a.w * sp.a.w) * dot(cam.ray, sp.a.xyz) * dot(cam.pos - sp.pos, sp.a.xyz);
+	pos = cam.pos - sp.pos;
+	rdot = dot(cam.ray, sp.a.xyz);
+	pdot = dot(pos, sp.a.xyz);
+	a = dot(cam.ray, cam.ray) - (1 + sp.a.w * sp.a.w) * pow(rdot, 2);
+	b = dot(cam.ray, pos) - (1 + sp.a.w * sp.a.w) * rdot * pdot;
 	b *= 2;
-	c = dot(cam.pos - sp.pos, cam.pos - sp.pos) - (1 + sp.a.w * sp.a.w) * pow(dot(cam.pos - sp.pos, sp.a.xyz), 2);
-	root = b * b - 4 * a * c;
+	c = dot(pos, pos) - (1 + pow(sp.a.w, 2)) * pow(pdot, 2);
+	root = pow(b, 2) - 4 * a * c;
 	if (root < 0)
 		return (prev);
 	root = sqrt(root);
 	ret.dst = -b;
-	if (ret.dst - root > 0)
-		ret.dst += root;
-	else
-		ret.dst -= root;
-	ret.dst /= 2 * a;
+	ret.dst = (ret.dst - root) /  (2 * a);
 	if (ret.dst > 0 && (prev.dst <= 0 || (prev.dst > 0 && ret.dst < prev.dst)))
 	{
-		ret.normal = normalize(cam.ray * ret.dst - cam.pos - sp.pos - (1 + sp.a.w * sp.a.w) * sp.a.xyz * dot(cam.ray, sp.a.xyz) * ret.dst + dot(cam.pos - sp.pos, sp.a.xyz));
+		ret.normal = normalize(cam.ray * ret.dst + pos - (1 + pow(sp.a.w, 2)) * sp.a.xyz * rdot * ret.dst - pdot);
 		ret.mat = sp.mat;
 		ret.cam = cam;
 		return (ret);
