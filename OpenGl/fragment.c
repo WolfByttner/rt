@@ -82,6 +82,13 @@ struct			s_mat
 	vec2		opacity;
 };
 
+/*
+**type: le type (pour le dispatch)
+**pos: position
+**bounds: la sphere englobant l'objet, <= 0 pour infini
+**a, b, c, d: attributs supplementaires pouvant varier
+**mat: le materiau de l'objet
+*/
 struct			s_geo
 {
 	int			type;
@@ -100,6 +107,13 @@ struct			s_light
 	vec3		pos;
 };
 
+/*
+**dst: la distance de la surface la plus proche, -1 si non existant
+**normal: la normale de la surface
+**cam: information du rayon
+**mat: information du materiau
+**color: la couleur finale de la surface
+*/
 struct			s_res
 {
 	float		dst;
@@ -109,6 +123,10 @@ struct			s_res
 	vec4		color;
 };
 
+/*
+**specular: la couleur speculaire: simulation de reflection de lumière forte
+**
+*/
 struct			s_liret
 {
 	vec4		specular;
@@ -124,8 +142,15 @@ uniform float iGlobalTime = 0;
 
 layout (location = 0) out vec4 outcol;
 
+/*
+**s_mat[](s_mat(vec4(r, g, b, a), metallic, smoothness, vec2(transparency, refraction indice)))
+**the definition of different materials, can be defined immediately in the object but putting it here is recommended
+*/
 s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)));
 
+/*
+**definition of the lights, to add light, increment LINUM and add an element to the array
+*/
 # define LINUM		2
 
 	s_light lights[] = s_light[](
@@ -133,6 +158,9 @@ s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)));
 			s_light(vec4(0.5, 0.5, 1, 1), vec3(-cos(-10) * 10, 0, -sin(-10) * 10))
 			);
 
+/*
+**definition of the objects, to add object, increment GEONUM and add an element to the array
+*/
 # define GEONUM		5
 
 	s_geo geos[] = s_geo[](
@@ -362,11 +390,12 @@ vec4		render_lights(s_res res)
 
 s_res		iterate(s_cam cam)
 {
+	//recursion stack
 	s_res	iters[ITERATIONS];
 	s_res	cur;
 	int		i;
 	s_cam	curcam;
-
+	//recursion up
 	curcam = cam;
 	i = -1;
 	while (++i < ITERATIONS)
@@ -375,9 +404,11 @@ s_res		iterate(s_cam cam)
 		iters[i] = cur;
 		if (cur.dst == -1)
 			break;
+		//reflection of the camera
 		curcam.pos = curcam.ray * cur.dst * 0.99 + curcam.pos;
 		curcam.ray = reflect(curcam.ray, cur.normal);
 	}
+	//recursion down
 	--i;
 	iters[i].color = paint(iters[i], vec4(0));
 	while (i-- > 0)
@@ -410,6 +441,13 @@ void		main()
 	vec3 s = mix(a, b, uv.x);
 	vec3 t = mix(c, d, uv.x);
 	cam.ray = normalize(mix(s, t, uv.y));
+	
+	/*
+	**rotation d'un cube et l'utilisation d'une face comme la camera ^
+	**
+	**code pour la pseudo recursion et le calcul de la couleur ici v
+	*/
+	
 	s_res tmp = iterate(cam);
 	if (tmp.dst != -1)
 	{
