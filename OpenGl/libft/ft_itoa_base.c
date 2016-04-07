@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/04 09:49:05 by fnieto            #+#    #+#             */
-/*   Updated: 2015/12/04 09:59:27 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/07 16:02:06 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 char	*ft_itoa_base(int n, const char *base)
 {
 	int		len;
-	int		tmp;
 	int		blen;
 	char	*res;
 
-	tmp = n;
 	blen = ft_strlen(base);
 	if (blen < 2)
 		return (0);
@@ -27,7 +25,6 @@ char	*ft_itoa_base(int n, const char *base)
 	res = ft_strnew(len);
 	if (!res)
 		return (0);
-	tmp = 0;
 	if (n < 0)
 		res[0] = '-';
 	res[len--] = 0;
