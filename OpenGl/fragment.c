@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/05 15:53:26 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/08 21:22:14 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,6 +384,7 @@ vec4		render_lights(s_res res)
 {
 	vec4	specular;
 
+	specular = vec4(0);
 	REP(LINUM, specular, iter_spec, lights, specular, res);
 	return (specular);
 }
