@@ -6,15 +6,21 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:50:48 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/01 14:37:49 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/08 20:58:31 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RT_H
 # define RT_H
 # define GLFW_INCLUDE_GLCOREARB
+# if defined __apple__ || defined APPLE
+#  include <OpenGL/gl3.h>
+# elif defined __linux__ || defined LINUX
+#  define GL_GLEXT_PROTOTYPES 0
+# else
+#  error Unknow architecture
+# endif
 # include <GLFW/glfw3.h>
-# include <OpenGL/gl3.h>
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
