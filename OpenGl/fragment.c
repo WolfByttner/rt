@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/08 21:22:14 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/17 22:48:57 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,8 @@ layout (location = 0) out vec4 outcol;
 **s_mat[](s_mat(vec4(r, g, b, a), metallic, smoothness, vec2(transparency, refraction indice)))
 **the definition of different materials, can be defined immediately in the object but putting it here is recommended
 */
-s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)));
+s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)),
+		s_mat(vec4(1, 0, 0, 0), 0.1, 0.4, vec2(0)));
 
 /*
 **definition of the lights, to add light, increment LINUM and add an element to the array
@@ -161,14 +162,17 @@ s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)));
 /*
 **definition of the objects, to add object, increment GEONUM and add an element to the array
 */
-# define GEONUM		5
+# define GEONUM		7
 
 	s_geo geos[] = s_geo[](
 			s_geo(SPHERE, vec3(0, 0, 0), 2, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
 			s_geo(SPHERE, vec3(-3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
 			s_geo(SPHERE, vec3(3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
-			s_geo(PLANE, vec3(0, -2, 0), 0, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[0]),
-			s_geo(CONE, vec3(0, 0, 0), 0, vec4(0, 1, 0, 0.6), vec4(0), vec4(0), vec4(0), ms[0]));
+			s_geo(PLANE, vec3(-5, -2, -50), 0, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[1]),
+			s_geo(SPHERE, vec3(0, 10, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[1]),
+			s_geo(CYLINDER, vec3(10, 10, 10), 0, vec4(0, 1, 0, 0), vec4(0, 3, 1, 0), vec4(0),
+			vec4(0), ms[0]),
+			s_geo(CONE, vec3(0, 5, -5), 0, vec4(0, 1, 0, 0.6), vec4(0, 3, 0, 0), vec4(0), vec4(0), ms[0]));
 
 vec3		sphere_norm(s_cam cam, s_res ret, s_geo object)
 {
@@ -208,13 +212,15 @@ s_res		ellipse_dst(s_geo sp, s_cam cam, s_res prev)
 }
 
 /*
-** a.w is angle. a.xyz is normal
+** a.w is angle. a.xyz is normal (along the cone)
 ** http://hugi.scene.org/online/hugi24/coding%20graphics%20chris%20dragan%20raytracing%20shapes.htm
+** b.x is mmin and b.y is m.max. b.z is radius at base (middle of cylinder)
+** To construct a cone, set a.w to 0 and b.z to radius of cylinder
 */
 
 s_res		cone_dst(s_geo sp, s_cam cam, s_res prev)
 {
-	float		a, b, c;
+	float		a, b, c, m;
 	float		root;
 	float		rdot, pdot, opa2;
 	vec3		pos;
@@ -226,15 +232,44 @@ s_res		cone_dst(s_geo sp, s_cam cam, s_res prev)
 	opa2 = (1 + pow(sp.a.w, 2));
 	a = dot(cam.ray, cam.ray) - opa2 * pow(rdot, 2);
 	b = (dot(cam.ray, pos) - opa2 * rdot * pdot) * 2;
-	c = dot(pos, pos) - opa2 * pow(pdot, 2);
+	c = dot(pos, pos) - opa2 * pow(pdot, 2) - pow(sp.b.z, 2);
 	root = pow(b, 2) - 4 * a * c;
 	if (root < 0)
 		return (prev);
 	root = sqrt(root);
-	ret.dst = (-b - root) /  (2 * a);
-	if (ret.dst > 0 && (prev.dst <= 0 || (prev.dst > 0 && ret.dst < prev.dst)))
+	ret.dst = (-b - root) / (2 * a);
+	m = rdot * ret.dst + pdot;
+	if ((sp.b.x != 0 && sp.b.x > m) || (sp.b.y != 0 && m > sp.b.y))
 	{
-		ret.normal = normalize(cam.ray * ret.dst + pos - opa2 * sp.a.xyz * rdot * ret.dst + pdot);
+		ret.dst = (-b + root) / (2 * a);
+		if (ret.dst < 0)
+			return (prev);
+		m = rdot * ret.dst + pdot;
+		if ((sp.b.x == 0 || sp.b.x <= m) && (sp.b.y == 0 || m <= sp.b.y))
+		{
+			if (rdot == 0)
+				return (prev);
+			else
+			{
+				ret.dst = dot(pos, -sp.a.xyz) / rdot;
+				if (ret.dst < 0)
+					return (prev);
+				ret.normal = -sp.a.xyz;
+				ret.mat = sp.mat;
+				ret.cam = cam;
+				return (ret);
+			}
+		}
+		else
+			return (prev);
+	}
+
+	if (ret.dst > 0 && (prev.dst <= 0
+		|| (prev.dst > 0 && ret.dst < prev.dst))
+		&& (sp.b.x == 0 || sp.b.x <= m) 
+		&& (sp.b.y == 0 || m <= sp.b.y))
+	{
+		ret.normal = normalize(cam.ray * ret.dst + pos - opa2 * sp.a.xyz * m);
 		ret.mat = sp.mat;
 		ret.cam = cam;
 		return (ret);
@@ -244,7 +279,7 @@ s_res		cone_dst(s_geo sp, s_cam cam, s_res prev)
 
 s_res		cylinder_dst(s_geo sp, s_cam cam, s_res prev)
 {
-	return (prev);
+	return (cone_dst(sp, cam, prev));
 }
 
 s_res		box_dst(s_geo sp, s_cam cam, s_res prev)
@@ -267,7 +302,7 @@ s_res		plane_dst(s_geo sp, s_cam cam, s_res prev)
 	tmp = dot(cam.ray, ret.normal);
 	if ((tmp == 0))
 		return (prev);
-	rc = vec3(sp.pos) - cam.pos;
+	rc = sp.pos.xyz - cam.pos;
 	ret.dst = dot(rc, ret.normal) / tmp;
 	if (ret.dst > 0 && (prev.dst <= 0 || (prev.dst > 0 && ret.dst < prev.dst)))
 	{
