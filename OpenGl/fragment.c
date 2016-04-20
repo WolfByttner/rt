@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/17 22:48:57 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/20 23:36:29 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,8 @@ s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)),
 # define LINUM		2
 
 	s_light lights[] = s_light[](
-			s_light(vec4(1), vec3(cos(-10) * 10, 0, sin(-10) * 10)),
-			s_light(vec4(0.5, 0.5, 1, 1), vec3(-cos(-10) * 10, 0, -sin(-10) * 10))
+			s_light(vec4(1), vec3(cos(-10.0) * 10, 0, sin(-10.0) * 10)),
+			s_light(vec4(0.5, 0.5, 1, 1), vec3(-cos(-10.0) * 10, 0, -sin(-10.0) * 10))
 			);
 
 /*
@@ -168,11 +168,14 @@ s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)),
 			s_geo(SPHERE, vec3(0, 0, 0), 2, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
 			s_geo(SPHERE, vec3(-3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
 			s_geo(SPHERE, vec3(3, 0, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
-			s_geo(PLANE, vec3(-5, -2, -50), 0, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[1]),
+			s_geo(PLANE, vec3(-5, -2, -50), 0, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[0]),
 			s_geo(SPHERE, vec3(0, 10, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[1]),
 			s_geo(CYLINDER, vec3(10, 10, 10), 0, vec4(0, 1, 0, 0), vec4(0, 3, 1, 0), vec4(0),
 			vec4(0), ms[0]),
-			s_geo(CONE, vec3(0, 5, -5), 0, vec4(0, 1, 0, 0.6), vec4(0, 3, 0, 0), vec4(0), vec4(0), ms[0]));
+			s_geo(CONE, vec3(0, 5, -5), 0, vec4(0, 1, 0, 0.6), vec4(0, 3, 0, 0), vec4(0),
+			vec4(0), ms[0]),
+			s_geo(ELLIPSE, vec3(-12, 7, 0), 0, vec4(1, 1, 2, 4), vec4(2, 1, 0, 0), vec4(0), vec4(0),
+			ms[1]));
 
 vec3		sphere_norm(s_cam cam, s_res ret, s_geo object)
 {
@@ -206,8 +209,72 @@ s_res		sphere_dst(s_geo sp, s_cam cam, s_res prev)
 ** Indicate how you use the variables in s_geo.
 */
 
+/*
+** Ellipse
+** a.xyz is the x y z 
+** a.w is pointless // length along unit vector
+** http://cudaopencl.blogspot.co.uk/2012/12/ellipsoids-finally-added-to-ray-tracing.html
+*/
+
 s_res		ellipse_dst(s_geo sp, s_cam cam, s_res prev)
+/*
+	Unsuccessful attempt 1
 {
+	float		a1, a2;
+	float		a, b, c;
+	float		r_sq;
+	float		sq;
+	vec3		rc;
+	s_res		ret;
+
+	rc = cam.pos - sp.pos;
+	r_sq = pow(sp.b.x + sp.b.y, 2);
+	a1 = 2 * sp.a.w * dot(cam.ray, sp.a.xyz);
+	a2 = r_sq + 2 * sp.a.w * dot(rc, sp.a.xyz) - sp.a.w;
+	r_sq *= 4;
+	a = r_sq * dot(cam.ray, cam.ray) - pow(a1, 2);
+	b = 2 * r_sq * dot(cam.ray, rc) - a1 * a2;
+	c = r_sq * dot(rc, rc) - pow(a2, 2);
+	sq = b * b - 4 * a * c;
+	if (sq <= 0)
+		return (prev);
+	sq = sqrt(sq);
+	ret.dst = (-b - sq) / (2 * a);
+	if (ret.dst > 0 && (prev.dst <= 0 || ret.dst < prev.dst))
+	{
+		ret.mat = sp.mat;
+		ret.cam = cam;
+		ret.normal = vec3(1, 0, 0);
+		return (ret);
+	}
+	return (prev);
+}*/
+{
+	vec3	dir;
+	vec3	centre;
+	float	a, b, c;
+	float	root;
+	s_res	ret;
+
+	centre = (cam.pos - sp.pos) / sp.a.xyz;
+	dir = cam.ray / sp.a.xyz;
+	a = dot(dir, dir);
+	b = dot(dir, centre) * 2;
+	c = dot(centre, centre) - 1;
+	root = (pow(b, 2) - 4 * a * c);
+	if (root <= 0)
+		return (prev);
+	root = sqrt(root);
+	ret.dst = (-b - root) / (2 * a);
+	if (ret.dst <= 0)
+		ret.dst = (-b + root) / (2 * a);
+	if (ret.dst > 0 && (prev.dst <= 0 || ret.dst < prev.dst))
+	{
+		ret.mat = sp.mat;
+		ret.cam = cam;
+		ret.normal = normalize(cam.pos + cam.ray * ret.dst - sp.pos);
+		return (ret);
+	}
 	return (prev);
 }
 
@@ -238,6 +305,8 @@ s_res		cone_dst(s_geo sp, s_cam cam, s_res prev)
 		return (prev);
 	root = sqrt(root);
 	ret.dst = (-b - root) / (2 * a);
+	if (ret.dst < 0)
+		ret.dst = (-b + root) / (2 * a);
 	m = rdot * ret.dst + pdot;
 	if ((sp.b.x != 0 && sp.b.x > m) || (sp.b.y != 0 && m > sp.b.y))
 	{
@@ -354,7 +423,7 @@ s_res		raytrace(s_cam cam)
 
 	res.dst = -1;
 	res.cam = cam;
-	REP(GEONUM, res, obj_dst, geos, cam, res);
+	REP(8, res, obj_dst, geos, cam, res);
 	return (res);
 }
 
@@ -391,7 +460,7 @@ vec4		paint(s_res res, vec4 lastcol)
 	light.cam.pos = (res.dst - 0.001) * res.cam.ray + res.cam.pos;
 	light.diffuse = vec4(0);
 	light.specular = vec4(0);
-	REP(LINUM, light, iter_light, lights, light, res);
+	REP(2, light, iter_light, lights, light, res);
 	return (max(mix(light.diffuse * res.mat.color + light.specular, lastcol,
 		mix((1 - abs(dot(res.cam.ray, res.normal))) * res.mat.smoothness, 1,
 		res.mat.metallic)), AMBIENT));
@@ -420,7 +489,7 @@ vec4		render_lights(s_res res)
 	vec4	specular;
 
 	specular = vec4(0);
-	REP(LINUM, specular, iter_spec, lights, specular, res);
+	REP(2, specular, iter_spec, lights, specular, res);
 	return (specular);
 }
 
