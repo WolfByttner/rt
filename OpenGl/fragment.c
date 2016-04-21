@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/20 23:36:29 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/21 20:31:15 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)),
 			vec4(0), ms[0]),
 			s_geo(CONE, vec3(0, 5, -5), 0, vec4(0, 1, 0, 0.6), vec4(0, 3, 0, 0), vec4(0),
 			vec4(0), ms[0]),
-			s_geo(ELLIPSE, vec3(-12, 7, 0), 0, vec4(1, 1, 2, 4), vec4(2, 1, 0, 0), vec4(0), vec4(0),
+			s_geo(ELLIPSE, vec3(-12, 7, 0), 0, vec4(1, 4, 2, 4), vec4(2, 1, 0, 0), vec4(0), vec4(0),
 			ms[1]));
 
 vec3		sphere_norm(s_cam cam, s_res ret, s_geo object)
@@ -386,6 +386,24 @@ s_res		klein_dst(s_geo sp, s_cam cam, s_res prev)
 {
 	return (prev);
 }
+
+/*
+I tried deriving this as a cubic from
+y(x**2 + y**2 + z**2 - 1) - 2z(x**2 + y**2 + x) = 0
+from https://calculus7.org/2015/04/27/implicit-mobius-strip/
+
+for a, b, c, d as the constants in a cubic
+
+d is short for d.xyz. Operations are by component
+d.xy
+
+a = (d**2 * d.y - 2 * d.xy**2 * d.z)
+b = (d**2 * p.y + 2 * (d.y * p * d - p.z * d.xy ** 2 - d.x * d.z - 2 * p.xy * d.xy))
+c = (d.y * p ** 2 + 2 * p * d * p.y - 2 * p.z * (d.x * 2 * p.xy * d.xy)
+            p.y - 2 * d.z * (p.xy ** 2 + p.x))
+d = (p.y * p ** 2 - 2 * p.z * (p.xy ** 2 + p.x) - p.y)
+**
+*/
 
 s_res		mobius_dst(s_geo sp, s_cam cam, s_res prev)
 {
