@@ -6,14 +6,14 @@
 /*   By: fnieto <fnieto@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/26 17:22:34 by fnieto            #+#    #+#             */
-/*   Updated: 2015/12/04 08:56:21 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/07 16:02:21 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-size_t static	numsplit(char const *s, char c)
+static size_t	numsplit(char const *s, char c)
 {
 	size_t	n;
 

@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 20:50:54 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/04 22:53:54 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/09 21:42:19 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@
 ** y			0			x
 ** x * z		w			-z * y
 ** -w * x		z			y * w
+** Y-rotation is missing in some cases, so we get
+** y            0           x
+** 0            w           z
+** -w * z       z           y * w
 */
 
 static void	translate_key_move(t_uniforms *u, float move[3])
@@ -43,9 +47,8 @@ static void	translate_key_move(t_uniforms *u, float move[3])
 	sins[2] = sin(a[1]);
 	sins[3] = cos(a[1]);
 	u->campos[0] += sins[1] * move[0] + sins[0] * move[2];
-	u->campos[1] += sins[2] * sins[0] * move[0]
-		+ sins[3] * move[1]
-		- sins[2] * sins[1] * move[2];
+	u->campos[1] += sins[3] * move[1]
+		-sins[2] * move[2];
 	u->campos[2] += -sins[3] * sins[0] * move[0]
 		+ sins[2] * move[1]
 		+ sins[1] * sins[3] * move[2];
@@ -73,6 +76,8 @@ static void	poll_movement_keys(GLFWwindow *window, float ftime, t_uniforms *u)
 		move[1] = -u->cammov * ftime;
 	if ((state = glfwGetKey(window, GLFW_KEY_ESCAPE)) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, 1);
+	if (!(move[0] || move[1] || move[2]))
+		return ;
 	translate_key_move(u, move);
 	glUniform3f(u->icampos, u->campos[0], u->campos[1], u->campos[2]);
 }
