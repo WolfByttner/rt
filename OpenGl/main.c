@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/01 14:48:23 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/24 16:54:17 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,68 @@ static GLFWwindow	*make_glfw(int width, int height)
 	return (window);
 }
 
+GLuint				load_vertex(void)
+{
+	static GLchar	*src = ("#version 330 core\nlayout(location=0)in vec2 pos;"
+	
+	"void main(){gl_Position.xy = pos;}");
+	return (shader(GL_VERTEX_SHADER, 1, &src, 0));
+}
+
+GLchar				*get_frag_params(void)
+{
+	static GLchar	*src = ("uniform ivec2 iResolution;\n"
+
+	"uniform vec3 iCameraPosition = vec3(0, 0, 0);\n"
+	"uniform vec2 iCameraRotation = vec2(0, 0);\n"
+	"uniform float iCameraZoom = 1;\n"
+	"uniform float iGlobalTime = 0;\n"
+	"layout (location = 0) out vec4 outcol;\n");
+	return (src);
+}
+
+void				printsrc(GLchar **src, int size)
+{
+	int	i;
+
+	i = -1;
+	while (++i < size)
+		ft_putstr(src[i]);
+}
+
+GLuint				load_fragment(void)
+{
+	GLint sizes[15];
+	GLchar *srcs[15];
+
+	load_file("fragment.h", &(srcs[0]), &(sizes[0]));
+	srcs[0] = ft_strjoin("#version 330 core\n", srcs[0]);
+	sizes[0] += 18;
+	srcs[1] = get_frag_params();
+	sizes[1] = 0;
+	load_file("shader_default_map", &(srcs[2]), &(sizes[2]));
+	load_file("shader_iterate.c", &(srcs[3]), &(sizes[3]));
+	load_file("shader_paint.c", &(srcs[4]), &(sizes[4]));
+	load_file("shader_render_lights.c", &(srcs[5]), &(sizes[5]));
+	load_file("shader_raytrace.c", &(srcs[6]), &(sizes[6]));
+	load_file("shader_mobius.c", &(srcs[7]), &(sizes[7]));
+	load_file("shader_box.c", &(srcs[8]), &(sizes[8]));
+	load_file("shader_cone.c", &(srcs[9]), &(sizes[9]));
+	load_file("shader_cylinder.c", &(srcs[10]), &(sizes[10]));
+	load_file("shader_ellipse.c", &(srcs[11]), &(sizes[11]));
+	load_file("shader_plane.c", &(srcs[12]), &(sizes[12]));
+	load_file("shader_sphere.c", &(srcs[13]), &(sizes[13]));
+	load_file("shader_main.c", &(srcs[14]), &(sizes[14]));
+	printsrc(srcs, 15);
+	return (shader(GL_FRAGMENT_SHADER, 15, srcs, 0));
+}
+
 int					main(void)
 {
 	GLFWwindow			*window;
 	int					i;
 	t_properties		*properties;
-	static const float	verts[] = {-FOO, FOO,
-					-FOO, -FOO,
-					FOO, -FOO,
-					FOO, FOO};
+	static const float	verts[] = {-1, 1, -1, -1, 1, -1, 1, 1};
 	static const GLuint	inds[] = {0, 1, 3, 1, 2, 3};
 
 	properties = get_properties();
@@ -80,20 +133,16 @@ int					main(void)
 	vao_add_indices(model, in);
 	vao_add_vdata(model, v, 2, GL_FALSE);
 	ft_putnbr(glGetError());
-	ft_putendl(" 0");
+	ft_putendl(" -0");
 
-	GLint sizes[2];
-	GLchar *srcs[2];
-	load_file("vertex.c", srcs, sizes);
-	load_file("fragment.c", &(srcs[1]), &(sizes[1]));
 	GLuint shaders[2];
-	shaders[0] = shader(GL_VERTEX_SHADER, 1, &(srcs[0]), &(sizes[0]));
-	shaders[1] = shader(GL_FRAGMENT_SHADER, 1, &(srcs[1]), &(sizes[1]));
+	shaders[0] = load_vertex();
+	shaders[1] = load_fragment();
 	GLuint program = shader_program(shaders, 2);
 	GLint ires = glGetUniformLocation(program, "iResolution");
 	GLint itime = glGetUniformLocation(program, "iGlobalTime");
 	ft_putnbr(glGetError());
-	ft_putendl(" 1");
+	ft_putendl(" -1");
 	struct timeval tval;
 	gettimeofday(&tval, 0);
 	long t = tval.tv_sec * 1e6 + tval.tv_usec;

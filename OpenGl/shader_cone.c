@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:53:38 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/24 13:59:47 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/24 16:57:26 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ s_res		cone_dst(s_geo sp, s_cam cam, s_res prev)
 		if (ret.dst < 0)
 			return (prev);
 		v.w = rdot * ret.dst + pdot;
-		if ((sp.b.x == 0 || sp.b.x <= m) && (sp.b.y == 0 || m <= sp.b.y))
+		if ((sp.b.x == 0 || sp.b.x <= v.w) && (sp.b.y == 0 || v.w <= sp.b.y))
 		{
 			if (rdot == 0)
 				return (prev);
@@ -66,8 +66,8 @@ s_res		cone_dst(s_geo sp, s_cam cam, s_res prev)
 	}
 	if (ret.dst > 0 && (prev.dst <= 0
 		|| (prev.dst > 0 && ret.dst < prev.dst))
-		& (sp.b.x == 0 || sp.b.x <= v.w)
-		&& (sp.b.y == 0 || m <= sp.b.y))
+		&& (sp.b.x == 0 || sp.b.x <= v.w)
+		&& (sp.b.y == 0 || v.w <= sp.b.y))
 	{
 		ret.normal = normalize(cam.ray * ret.dst + pos - opa2 * sp.a.xyz * v.w);
 		ret.mat = sp.mat;

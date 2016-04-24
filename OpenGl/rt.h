@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:50:48 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/22 13:33:48 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/24 16:35:30 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include "libft.h"
 
 # define P_NAME "foobar"
-# define BUFF_LENGTH 1024
+# define BUFF_LENGTH 1
 
 typedef	struct		s_properties
 {
@@ -46,7 +46,5 @@ void				vao_add_vdata(GLuint vao, GLuint vbo, GLint s, GLboolean n);
 GLuint				vbo(GLenum t, GLsizeiptr s, GLvoid *d, GLenum u);
 GLuint				index_buffer(GLvoid *d, GLsizeiptr s);
 GLuint				data_buffer(GLvoid *d, GLsizeiptr s);
-extern const char vertsrc[];
-extern const char fragsrc[];
 
 #endif
