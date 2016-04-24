@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/24 13:29:37 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/24 14:15:48 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,16 @@ struct			s_res
 };
 
 s_res			iterate(s_cam cam);
+s_res			box_dst(s_geo sp, s_cam cam, s_res prev);
+s_res			cone_dst(s_geo sp, s_cam cam, s_res prev);
+s_res			cyllinder_dst(s_geo sp, s_cam cam, s_res prev);
+s_res			ellipse_dst(s_geo sp, s_cam cam, s_res prev);
+s_res			klein_dst(s_geo sp, s_cam cam, s_res prev);
+s_res			mobius_dst(s_geo sp, s_cam cam, s_res prev);
+s_res			plane_dst(s_geo sp, s_cam cam, s_res prev);
+s_res			sphere_dst(s_geo sp, s_cam cam, s_res prev);
+s_res			iterate(s_cam cam);
+vec4			paint(s_res res, vec4 lastcol);
+s_res			raytrace(s_cam cam);
 
 #endif
