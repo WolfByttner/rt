@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:42:58 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/24 13:46:33 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/24 16:24:22 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,3 +83,4 @@ s_res           mobius_dst(s_geo sp, s_cam cam, s_res prev)
 		return (ret);
 	}
 	return (prev);
+}
