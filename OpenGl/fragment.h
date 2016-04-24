@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/01 13:44:30 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/24 13:16:45 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,12 @@
 # define REP_31(r, f, a, b, c)	REP_30(r, f, a, b, c)(r = f(a[30], b, c));
 
 # define REP(n, r, f, a, b, c)	REP_##n(r, f, a, b, c)
+
+# define VEC2					vec2
+# define VEC3					vec3
+# define VEC4					vec4
+# define MAT3					mat3
+# define FLOAT					float
 
 struct			s_cam
 {

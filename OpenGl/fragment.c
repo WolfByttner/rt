@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/26 21:44:17 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/22 12:40:22 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/24 13:12:37 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@
 # define	REP_31(r, f, a, b, c)	REP_30(r, f, a, b, c)(r = f(a[30], b, c));
 
 # define	REP(n, r, f, a, b, c)	REP_##n(r, f, a, b, c)
+
+# define	VEC2					vec2
 
 struct			s_cam
 {
@@ -162,7 +164,7 @@ s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)),
 /*
 **definition of the objects, to add object, increment GEONUM and add an element to the array
 */
-# define GEONUM		7
+# define GEONUM		6
 
 	s_geo geos[] = s_geo[](
 			s_geo(SPHERE, vec3(0, 5, 0), 2, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
@@ -172,8 +174,7 @@ s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)),
 			s_geo(SPHERE, vec3(0, 10, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[1]),
 			s_geo(CYLINDER, vec3(10, 10, 10), 0, vec4(0, 1, 0, 0), vec4(0, 3, 1, 0), vec4(0),
 			vec4(0), ms[0]),
-			s_geo(MOBIUS, vec3(0, 5, -5), 0, vec4(0, 1, 0, 0.6), vec4(0, 3, 0, 0), vec4(0),
-			vec4(0), ms[1]),
+//			s_geo(MOBIUS, vec3(0, 5, -5), 0, vec4(0, 1, 0, 0.6), vec4(0, 3, 0, 0), vec4(0), vec4(0), ms[1]),
 			s_geo(ELLIPSE, vec3(-12, 7, 0), 0, vec4(1, 4, 2, 4), vec4(2, 1, 0, 0), vec4(0), vec4(0),
 			ms[1]));
 
@@ -455,7 +456,7 @@ s_res		mobius_dst(s_geo sp, s_cam cam, s_res prev)
 	{
 		ret.mat = sp.mat;
 		ret.cam = cam;
-		ret.normal = (0, 1, 0);
+		ret.normal = vec3(0, 1, 0);
 		return (ret);
 	}
 	return (prev);
@@ -492,7 +493,7 @@ s_res		raytrace(s_cam cam)
 
 	res.dst = -1;
 	res.cam = cam;
-	REP(8, res, obj_dst, geos, cam, res);
+	REP(GEONUM, res, obj_dst, geos, cam, res);
 	return (res);
 }
 
@@ -558,7 +559,7 @@ vec4		render_lights(s_res res)
 	vec4	specular;
 
 	specular = vec4(0);
-	REP(2, specular, iter_spec, lights, specular, res);
+	REP(LINUM, specular, iter_spec, lights, specular, res);
 	return (specular);
 }
 
@@ -598,7 +599,7 @@ void		main()
 	vec4	sins;
 
 	uv = gl_FragCoord.xy / iResolution;
-	vec2 camrot = vec2(iCameraRotation.x,
+	vec2 camrot = VEC2(iCameraRotation.x,
 		clamp(iCameraRotation.y, -PI / 2, PI / 2));
 	sins = vec4(sin(camrot.x), cos(camrot.x), sin(camrot.y), cos(camrot.y));
 	cam.pos = iCameraPosition;
