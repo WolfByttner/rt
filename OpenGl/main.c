@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/24 16:54:17 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/25 17:43:14 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ void				printsrc(GLchar **src, int size)
 
 GLuint				load_fragment(void)
 {
-	GLint sizes[15];
-	GLchar *srcs[15];
+	GLint sizes[16];
+	GLchar *srcs[16];
 
 	load_file("fragment.h", &(srcs[0]), &(sizes[0]));
 	srcs[0] = ft_strjoin("#version 330 core\n", srcs[0]);
@@ -97,20 +97,21 @@ GLuint				load_fragment(void)
 	srcs[1] = get_frag_params();
 	sizes[1] = 0;
 	load_file("shader_default_map", &(srcs[2]), &(sizes[2]));
-	load_file("shader_iterate.c", &(srcs[3]), &(sizes[3]));
-	load_file("shader_paint.c", &(srcs[4]), &(sizes[4]));
-	load_file("shader_render_lights.c", &(srcs[5]), &(sizes[5]));
-	load_file("shader_raytrace.c", &(srcs[6]), &(sizes[6]));
-	load_file("shader_mobius.c", &(srcs[7]), &(sizes[7]));
-	load_file("shader_box.c", &(srcs[8]), &(sizes[8]));
-	load_file("shader_cone.c", &(srcs[9]), &(sizes[9]));
-	load_file("shader_cylinder.c", &(srcs[10]), &(sizes[10]));
-	load_file("shader_ellipse.c", &(srcs[11]), &(sizes[11]));
-	load_file("shader_plane.c", &(srcs[12]), &(sizes[12]));
-	load_file("shader_sphere.c", &(srcs[13]), &(sizes[13]));
-	load_file("shader_main.c", &(srcs[14]), &(sizes[14]));
-	printsrc(srcs, 15);
-	return (shader(GL_FRAGMENT_SHADER, 15, srcs, 0));
+	load_file("shader_quadratic.c", &(srcs[3]), &(sizes[3]));
+	load_file("shader_iterate.c", &(srcs[4]), &(sizes[4]));
+	load_file("shader_paint.c", &(srcs[5]), &(sizes[5]));
+	load_file("shader_render_lights.c", &(srcs[6]), &(sizes[6]));
+	load_file("shader_raytrace.c", &(srcs[7]), &(sizes[7]));
+	load_file("shader_mobius.c", &(srcs[8]), &(sizes[8]));
+	load_file("shader_box.c", &(srcs[9]), &(sizes[9]));
+	load_file("shader_cone.c", &(srcs[10]), &(sizes[10]));
+	load_file("shader_cylinder.c", &(srcs[11]), &(sizes[11]));
+	load_file("shader_ellipse.c", &(srcs[12]), &(sizes[12]));
+	load_file("shader_plane.c", &(srcs[13]), &(sizes[13]));
+	load_file("shader_sphere.c", &(srcs[14]), &(sizes[14]));
+	load_file("shader_main.c", &(srcs[15]), &(sizes[15]));
+	printsrc(srcs, 16);
+	return (shader(GL_FRAGMENT_SHADER, 16, srcs, 0));
 }
 
 int					main(void)

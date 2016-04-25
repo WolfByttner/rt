@@ -19,13 +19,13 @@ s_light lights[] = s_light[](
 **definition of the objects, to add object, increment GEONUM and add an element to the array
 */
 
-# define GEONUM		6
+# define GEONUM		7
 
 s_geo geos[] = s_geo[](
 	s_geo(SPHERE, vec3(0, 5, 0), 2, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
 	s_geo(SPHERE, vec3(-3, 5, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
-	s_geo(SPHERE, vec3(3, 5, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
-	s_geo(PLANE, vec3(-5, -10, -50), 0, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[0]),
+	s_geo(CONE, vec3(3, 5, 0), 1, vec4(0,1,0,0.6), vec4(-5, 5, 0, 0), vec4(0), vec4(0), ms[0]),
+	s_geo(PLANE, vec3(-5, -10, -50), 0, vec4(0.1, 0.9, 0, 0), vec4(0), vec4(0), vec4(0), ms[0]),
 	s_geo(SPHERE, vec3(0, 10, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[1]),
 	s_geo(CYLINDER, vec3(10, 10, 10), 0, vec4(0, 1, 0, 0), vec4(0, 3, 1, 0), vec4(0),vec4(0), ms[0]),
 	//s_geo(MOBIUS, vec3(0, 5, -5), 0, vec4(0, 1, 0, 0.6), vec4(0, 3, 0, 0), vec4(0), vec4(0), ms[1]),
