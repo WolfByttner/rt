@@ -6,17 +6,13 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 14:00:26 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/25 17:45:34 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/25 17:48:44 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
-** TODO: put to norm, put vars into vec4s.
 ** Ellipse
-** a.xyz is the x y z
-** a.w is pointless // length along unit vector
-** http://cudaopencl.blogspot.co.uk/2012/12/ \broken line
-** ellipsoids-finally-added-to-ray-tracing.html
+** http://mathforum.org/kb/message.jspa?messageID=5345404
 */
 
 vec3		ellipse_norm(s_cam cam, s_res ret, s_geo sp)
@@ -28,6 +24,13 @@ vec3		ellipse_norm(s_cam cam, s_res ret, s_geo sp)
 	pos /= sp.a.xyz * sp.a.xyz;
 	return (-normalize(pos));
 }
+
+/*
+** a.xyz is the x y z
+** a.w is pointless // length along unit vector
+** http://cudaopencl.blogspot.co.uk/2012/12/ \broken line
+** ellipsoids-finally-added-to-ray-tracing.html
+*/
 
 s_res		ellipse_dst(s_geo sp, s_cam cam, s_res prev)
 {
