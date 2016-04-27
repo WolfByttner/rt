@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 20:35:03 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/27 21:14:51 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,34 +76,34 @@ int					main(void)
 	properties->height = 1000;
 	window = make_glfw(properties->width, properties->height);
 	glClearColor(0, 0, 0, 1);
-	GLuint model = vao();
-	GLuint v = data_buffer((GLvoid*)verts, sizeof(verts));
-	GLuint in = index_buffer((GLvoid*)inds, sizeof(inds));
-	vao_add_indices(model, in);
-	vao_add_vdata(model, v, 2, GL_FALSE);
+	properties->model = vao();
+	properties->verts = data_buffer((GLvoid *)verts, sizeof(verts));
+	properties->indices = index_buffer((GLvoid *)inds, sizeof(inds));
+	vao_add_indices(properties->model, properties->indices);
+	vao_add_vdata(properties->model, properties->verts, 2, GL_FALSE);
 	ft_putnbr(glGetError());
 	ft_putendl(" -0");
-	GLuint shaders[2];
-	shaders[0] = load_vertex();
-	shaders[1] = load_fragment();
-	GLuint program = shader_program(shaders, 2);
+	properties->shaders[0] = load_vertex();
+	properties->shaders[1] = load_fragment();
+	properties->program = shader_program(properties->shaders, 2);
 	ft_putnbr(glGetError());
 	ft_putendl(" -1");
-	glUseProgram(program);
-	glBindVertexArray(model);
+	glUseProgram(properties->program);
+	glBindVertexArray(properties->model);
 	glEnableVertexAttribArray(0);
-	init_uniforms(program);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
-	main_loop(window, glGetUniformLocation(program, "iResolution"),
-			glGetUniformLocation(program, "iGlobalTime"), properties);
+	init_uniforms(properties->program);
+	properties->ires = glGetUniformLocation(properties->program, "iResolution");
+	properties->itime = glGetUniformLocation(properties->program, "iGlobalTime");
+	main_loop(window, properties);
 	ft_putnbr(glGetError());
 	ft_putendl(" 2");
-	glDeleteShader(shaders[0]);
-	glDeleteShader(shaders[1]);
-	glDeleteProgram(program);
-	glDeleteVertexArrays(1, &model);
-	glDeleteBuffers(1, &v);
-	glDeleteBuffers(1, &in);
+	glDeleteShader(properties->shaders[0]);
+	glDeleteShader(properties->shaders[1]);
+	glDeleteProgram(properties->program);
+	glDeleteVertexArrays(1, &(properties->model));
+	glDeleteBuffers(1, &(properties->verts));
+	glDeleteBuffers(1, &(properties->indices));
 	glfwTerminate();
 	return (0);
 }
