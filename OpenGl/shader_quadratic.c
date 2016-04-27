@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 17:26:26 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/25 17:40:49 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/27 20:23:23 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,9 @@ float		solve_quadratic(float a, float b, float c)
 	t2 = (-b + root) / (2 * a);
 	if (t1 >= 0 && t2 >= 0)
 		return (min(t1, t2));
-	else if (t1 >= 0)
+	if (t1 >= 0)
 		return (t1);
-	else if (t2 >= 0)
+	if (t2 >= 0)
 		return (t2);
-	else
-		return (-1);
+	return (-1);
 }

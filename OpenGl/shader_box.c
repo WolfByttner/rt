@@ -6,7 +6,7 @@
 /*   By: mdeken <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/26 19:33:43 by mdeken            #+#    #+#             */
-/*   Updated: 2016/04/26 19:52:50 by mdeken           ###   ########.fr       */
+/*   Updated: 2016/04/27 20:38:41 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,21 @@
  **Method: http://www.cs.cornell.edu/courses/Cs4620/2013fa/lectures/03raytracing1.pdf Ray-slab intersection chapter
  */
 
-
 vec3		box_norm(float tin, vec3 tvin, vec3 tvout)
 {
-	vec3 norm;
-
-	norm = (tin == tvin.x) ? VEC3(1, 0, 0) : norm;
-	norm = (tin == tvin.y) ? VEC3(0, 1, 0) : norm;
-	norm = (tin == tvin.z) ? VEC3(0, 0, 1) : norm;
-	norm = (tin == tvout.x) ? VEC3(-1, 0, 0) : norm;
-	norm = (tin == tvout.y) ? VEC3(0, -1, 0) : norm;
-	norm = (tin == tvout.z) ? VEC3(0, 0, -1) : norm;
-	return (norm);
+	if (tin == tvin.x)
+		return (VEC3(1, 0, 0));
+	if (tin == tvin.y)
+		return (VEC3(0, 1, 0));
+	if (tin == tvin.z)
+		return (VEC3(0, 0, 1));
+	if (tin == tvout.x)
+		return (VEC3(-1, 0, 0));
+	if (tin == tvout.y)
+		return (VEC3(0, -1, 0));
+	if (tin == tvout.z)
+		return (VEC3(0, 0, -1));
+	return (VEC3(0));
 }
 
 s_res		box_dst(s_geo sp, s_cam cam, s_res prev)
