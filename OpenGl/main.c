@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 20:24:35 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/27 20:35:03 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ GLuint				load_vertex(void)
 int					main(void)
 {
 	GLFWwindow			*window;
-	int					i;
 	t_properties		*properties;
 	static const float	verts[] = {-1, 1, -1, -1, 1, -1, 1, 1};
 	static const GLuint	inds[] = {0, 1, 3, 1, 2, 3};
@@ -76,7 +75,6 @@ int					main(void)
 	properties->width = 1000;
 	properties->height = 1000;
 	window = make_glfw(properties->width, properties->height);
-	i = -1;
 	glClearColor(0, 0, 0, 1);
 	GLuint model = vao();
 	GLuint v = data_buffer((GLvoid*)verts, sizeof(verts));
@@ -85,13 +83,10 @@ int					main(void)
 	vao_add_vdata(model, v, 2, GL_FALSE);
 	ft_putnbr(glGetError());
 	ft_putendl(" -0");
-
 	GLuint shaders[2];
 	shaders[0] = load_vertex();
 	shaders[1] = load_fragment();
 	GLuint program = shader_program(shaders, 2);
-	GLint ires = glGetUniformLocation(program, "iResolution");
-	GLint itime = glGetUniformLocation(program, "iGlobalTime");
 	ft_putnbr(glGetError());
 	ft_putendl(" -1");
 	glUseProgram(program);
@@ -99,7 +94,8 @@ int					main(void)
 	glEnableVertexAttribArray(0);
 	init_uniforms(program);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
-	main_loop(window, ires, itime, properties);
+	main_loop(window, glGetUniformLocation(program, "iResolution"),
+			glGetUniformLocation(program, "iGlobalTime"), properties);
 	ft_putnbr(glGetError());
 	ft_putendl(" 2");
 	glDeleteShader(shaders[0]);
