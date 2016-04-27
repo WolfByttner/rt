@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:35:01 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/27 18:38:21 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/27 20:29:13 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ s_liret		iter_light(s_light light, s_liret liret, s_res res)
 	li.x = sqrt(li.z);
 	if (li.y < li.x && li.y != -1)
 		return (ret);
-	pos = light.pos - (res.cam.pos + res.cam.ray * res.dst);
+	pos = light.pos - liret.cam.pos;
 	li.z = min(1, 1 / li.x * 100);
 	ret.diffuse += abs(dot(res.normal, liret.cam.ray)) * light.color * li.z;
 	ret.specular += pow(max(dot(reflect(res.cam.ray, res.normal),

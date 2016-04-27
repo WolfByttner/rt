@@ -6,14 +6,9 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 14:06:00 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/25 17:55:04 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/27 20:27:34 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-vec3		sphere_norm(s_cam cam, s_res ret, s_geo object)
-{
-	return (-normalize(object.pos - (cam.pos + cam.ray * ret.dst)));
-}
 
 s_res		sphere_dst(s_geo sp, s_cam cam, s_res prev)
 {
@@ -31,7 +26,7 @@ s_res		sphere_dst(s_geo sp, s_cam cam, s_res prev)
 	{
 		ret.mat = sp.mat;
 		ret.cam = cam;
-		ret.normal = sphere_norm(cam, ret, sp);
+		ret.normal = (-normalize(sp.pos - (cam.pos + cam.ray * ret.dst)));
 		return (ret);
 	}
 	return (prev);

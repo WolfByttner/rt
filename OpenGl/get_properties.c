@@ -1,37 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shader_quadratic.c                                 :+:      :+:    :+:   */
+/*   get_properties.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/04/25 17:26:26 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 20:23:23 by fnieto           ###   ########.fr       */
+/*   Created: 2016/04/27 21:46:19 by jbyttner          #+#    #+#             */
+/*   Updated: 2016/04/27 21:46:52 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-** Gives lowest non-negative t
-** Returns -1 on failure
-*/
+#include "rt.h"
 
-float		solve_quadratic(float a, float b, float c)
+t_properties	*get_properties(void)
 {
-	float	root;
-	float	t1;
-	float	t2;
+	static t_properties	properties;
 
-	root = (pow(b, 2) - 4 * a * c);
-	if (root <= 0)
-		return (-1);
-	root = sqrt(root);
-	t1 = (-b - root) / (2 * a);
-	t2 = (-b + root) / (2 * a);
-	if (t1 >= 0 && t2 >= 0)
-		return (min(t1, t2));
-	if (t1 >= 0)
-		return (t1);
-	if (t2 >= 0)
-		return (t2);
-	return (-1);
+	return (&properties);
 }

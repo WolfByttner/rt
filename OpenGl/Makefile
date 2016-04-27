@@ -6,7 +6,7 @@
 #    By: fnieto <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/09 20:50:44 by fnieto            #+#    #+#              #
-#    Updated: 2016/04/22 12:46:30 by fnieto           ###   ########.fr        #
+#    Updated: 2016/04/27 21:47:23 by jbyttner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,15 @@ CFLAGS= -Wall -Wextra #-Werror
 RM=rm -f
 
 SRC=main.c\
+	main_loop.c\
+	setup_program.c\
 	err.c\
 	shader.c\
 	vao.c\
 	vbo.c\
 	load_file.c\
-	simpleshader.c\
+	load_fragment.c\
+	get_properties.c\
 	poll_keys.c\
 	init_uniforms.c\
 	get_uniforms.c\

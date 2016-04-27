@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:53:38 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/24 16:57:26 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/27 21:18:11 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,15 @@ s_res		cone_dst(s_geo sp, s_cam cam, s_res prev)
 		{
 			if (rdot == 0)
 				return (prev);
-			else
-			{
-				ret.dst = dot(pos, -sp.a.xyz) / rdot;
-				if (ret.dst < 0)
-					return (prev);
-				ret.normal = -sp.a.xyz;
-				ret.mat = sp.mat;
-				ret.cam = cam;
-				return (ret);
-			}
+			ret.dst = dot(pos, -sp.a.xyz) / rdot;
+			if (ret.dst < 0)
+				return (prev);
+			ret.normal = -sp.a.xyz;
+			ret.mat = sp.mat;
+			ret.cam = cam;
+			return (ret);
 		}
-		else
-			return (prev);
+		return (prev);
 	}
 	if (ret.dst > 0 && (prev.dst <= 0
 		|| (prev.dst > 0 && ret.dst < prev.dst))
