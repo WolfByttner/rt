@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:35:01 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/24 13:38:52 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/27 18:38:21 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ s_liret		iter_light(s_light light, s_liret liret, s_res res)
 {
 	s_liret	ret;
 	vec3	li;
+	vec3	pos;
 
 	ret = liret;
 	li = light.pos - liret.cam.pos;
@@ -27,10 +28,12 @@ s_liret		iter_light(s_light light, s_liret liret, s_res res)
 	li.x = sqrt(li.z);
 	if (li.y < li.x && li.y != -1)
 		return (ret);
+	pos = light.pos - (res.cam.pos + res.cam.ray * res.dst);
 	li.z = min(1, 1 / li.x * 100);
 	ret.diffuse += abs(dot(res.normal, liret.cam.ray)) * light.color * li.z;
-	ret.specular += pow(max(dot(reflect(liret.cam.ray, res.normal),
-		-liret.cam.ray), 0), 5 / (1 - res.mat.smoothness)) * light.color * li.z;
+	ret.specular += pow(max(dot(reflect(res.cam.ray, res.normal),
+		normalize(pos)), 0), 50 / (1 - res.mat.smoothness)) * light.color *
+		li.z;
 	return (ret);
 }
 
@@ -47,7 +50,7 @@ vec4		paint(s_res res, vec4 lastcol)
 	light.diffuse = VEC4(0);
 	light.specular = VEC4(0);
 	REP(LINUM, light, iter_light, lights, light, res);
-	return (max(mix(light.diffuse * res.mat.color + light.specular, lastcol,
+	return (max(mix(light.diffuse * res.mat.color, lastcol + light.specular,
 		mix((1 - abs(dot(res.cam.ray, res.normal))) * res.mat.smoothness, 1,
 		res.mat.metallic)), AMBIENT));
 }
