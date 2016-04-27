@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/25 17:43:14 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/27 20:24:35 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 #include "rt_input.h"
 #include <sys/time.h>
 #include <stdio.h>
-#define FOO 1
 
-static t_properties		*get_properties(void)
+static t_properties	*get_properties(void)
 {
-	static t_properties properties;
+	static t_properties	properties;
 
 	return (&properties);
 }
 
-static void window_size_callback(GLFWwindow* window, int width, int height)
+static void			window_size_callback(GLFWwindow *window,
+						int width, int height)
 {
-	t_properties *props;
+	t_properties		*props;
 
 	props = get_properties();
 	props->width = width;
@@ -39,8 +39,6 @@ static GLFWwindow	*make_glfw(int width, int height)
 
 	if (!glfwInit())
 		err("GLFW failed to init\n");
-	//glfwWindowHint(GLFW_RESIZABLE, 0);
-	//glfwWindowHint(GLFW_DECORATED, 0);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -59,59 +57,11 @@ static GLFWwindow	*make_glfw(int width, int height)
 
 GLuint				load_vertex(void)
 {
-	static GLchar	*src = ("#version 330 core\nlayout(location=0)in vec2 pos;"
-	
+	static GLchar		*src = ("#version 330 core\n"
+
+	"layout(location=0)in vec2 pos;"
 	"void main(){gl_Position.xy = pos;}");
 	return (shader(GL_VERTEX_SHADER, 1, &src, 0));
-}
-
-GLchar				*get_frag_params(void)
-{
-	static GLchar	*src = ("uniform ivec2 iResolution;\n"
-
-	"uniform vec3 iCameraPosition = vec3(0, 0, 0);\n"
-	"uniform vec2 iCameraRotation = vec2(0, 0);\n"
-	"uniform float iCameraZoom = 1;\n"
-	"uniform float iGlobalTime = 0;\n"
-	"layout (location = 0) out vec4 outcol;\n");
-	return (src);
-}
-
-void				printsrc(GLchar **src, int size)
-{
-	int	i;
-
-	i = -1;
-	while (++i < size)
-		ft_putstr(src[i]);
-}
-
-GLuint				load_fragment(void)
-{
-	GLint sizes[16];
-	GLchar *srcs[16];
-
-	load_file("fragment.h", &(srcs[0]), &(sizes[0]));
-	srcs[0] = ft_strjoin("#version 330 core\n", srcs[0]);
-	sizes[0] += 18;
-	srcs[1] = get_frag_params();
-	sizes[1] = 0;
-	load_file("shader_default_map", &(srcs[2]), &(sizes[2]));
-	load_file("shader_quadratic.c", &(srcs[3]), &(sizes[3]));
-	load_file("shader_iterate.c", &(srcs[4]), &(sizes[4]));
-	load_file("shader_paint.c", &(srcs[5]), &(sizes[5]));
-	load_file("shader_render_lights.c", &(srcs[6]), &(sizes[6]));
-	load_file("shader_raytrace.c", &(srcs[7]), &(sizes[7]));
-	load_file("shader_mobius.c", &(srcs[8]), &(sizes[8]));
-	load_file("shader_box.c", &(srcs[9]), &(sizes[9]));
-	load_file("shader_cone.c", &(srcs[10]), &(sizes[10]));
-	load_file("shader_cylinder.c", &(srcs[11]), &(sizes[11]));
-	load_file("shader_ellipse.c", &(srcs[12]), &(sizes[12]));
-	load_file("shader_plane.c", &(srcs[13]), &(sizes[13]));
-	load_file("shader_sphere.c", &(srcs[14]), &(sizes[14]));
-	load_file("shader_main.c", &(srcs[15]), &(sizes[15]));
-	printsrc(srcs, 16);
-	return (shader(GL_FRAGMENT_SHADER, 16, srcs, 0));
 }
 
 int					main(void)
@@ -144,37 +94,12 @@ int					main(void)
 	GLint itime = glGetUniformLocation(program, "iGlobalTime");
 	ft_putnbr(glGetError());
 	ft_putendl(" -1");
-	struct timeval tval;
-	gettimeofday(&tval, 0);
-	long t = tval.tv_sec * 1e6 + tval.tv_usec;
-	long st = t;
-	long t2 = t;
-	long told = t;
-	int fps = 0;
 	glUseProgram(program);
 	glBindVertexArray(model);
 	glEnableVertexAttribArray(0);
 	init_uniforms(program);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
-	while (!glfwWindowShouldClose(window))
-	{
-		glClear(GL_COLOR_BUFFER_BIT);
-		glUniform2i(ires, properties->width, properties->height);
-		glUniform1f(itime, (float)((double)(t2 - st) / 1000000.0f));
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-		++fps;
-		gettimeofday(&tval, 0);
-		if ((t2 = tval.tv_sec * 1e6 + tval.tv_usec) > t + 1000000)
-		{
-			printf("%i\n", fps);
-			t = t2;
-			fps = 0;
-		}
-		poll_keys(window, (float)(t2 - told) / 1000000.0f);
-		told = t2;
-	}
+	main_loop(window, ires, itime, properties);
 	ft_putnbr(glGetError());
 	ft_putendl(" 2");
 	glDeleteShader(shaders[0]);
