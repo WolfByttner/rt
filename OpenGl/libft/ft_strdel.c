@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fnieto <fnieto@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbyttner <jbyttner@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/26 14:58:00 by fnieto            #+#    #+#             */
-/*   Updated: 2015/11/26 14:59:13 by fnieto           ###   ########.fr       */
+/*   Created: 2015/11/25 16:56:35 by jbyttner          #+#    #+#             */
+/*   Updated: 2015/11/27 23:31:00 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
 void	ft_strdel(char **as)
 {
-	ft_memdel((void**)as);
+	if (as && *as)
+		ft_memdel((void *)as);
 }

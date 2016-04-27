@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strclr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fnieto <fnieto@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbyttner <jbyttner@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/26 15:00:29 by fnieto            #+#    #+#             */
-/*   Updated: 2015/12/06 16:28:43 by fnieto           ###   ########.fr       */
+/*   Created: 2015/11/25 16:58:10 by jbyttner          #+#    #+#             */
+/*   Updated: 2016/02/04 16:21:39 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+
 void	ft_strclr(char *s)
 {
-	while (*s)
-		*s++ = 0;
+	if (s)
+		ft_bzero((void *)s, ft_strlen(s));
 }
