@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/27 20:09:53 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 20:27:55 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/27 21:18:38 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static inline long	get_program_time(void)
 }
 
 static inline void	init_main_loop(long t[2], long *start_t, long *told,
-						int *fps)
+		int *fps)
 {
 	t[0] = get_program_time();
 	*start_t = t[0];
@@ -31,8 +31,19 @@ static inline void	init_main_loop(long t[2], long *start_t, long *told,
 	*fps = 0;
 }
 
-void				main_loop(GLFWwindow *window,
-		GLint ires, GLint itime, t_properties *properties)
+static inline void	send_data_to_gpu(GLFWwindow *window,
+		t_properties *properties, long t[2], long start_t)
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+	glUniform2i(properties->ires, properties->width, properties->height);
+	glUniform1f(properties->itime,
+		(float)((double)(t[1] - start_t) / 1000000.0f));
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glfwSwapBuffers(window);
+	glfwPollEvents();
+}
+
+void				main_loop(GLFWwindow *window, t_properties *properties)
 {
 	long	t[2];
 	long	start_t;
@@ -42,12 +53,7 @@ void				main_loop(GLFWwindow *window,
 	init_main_loop(t, &start_t, &told, &fps);
 	while (!glfwWindowShouldClose(window))
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
-		glUniform2i(ires, properties->width, properties->height);
-		glUniform1f(itime, (float)((double)(t[1] - start_t) / 1000000.0f));
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		send_data_to_gpu(window, properties, t, start_t);
 		++fps;
 		if ((t[1] = get_program_time()) > t[0] + 1000000)
 		{
