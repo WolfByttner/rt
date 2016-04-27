@@ -6,9 +6,13 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/24 17:00:56 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/27 18:19:30 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/*
+** Include in GPU code
+*/
 
 #ifndef FRAGMENT_H
 # define FRAGMENT_H
@@ -142,6 +146,7 @@ struct			s_liret
 	s_cam		cam;
 };
 
+float			solve_quadratic(float a, float b, float c);
 s_res			iterate(s_cam cam);
 s_res			box_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			cone_dst(s_geo sp, s_cam cam, s_res prev);

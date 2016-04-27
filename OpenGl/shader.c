@@ -6,19 +6,14 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/22 11:13:38 by fnieto            #+#    #+#             */
-/*   Updated: 2016/03/22 20:24:29 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/27 18:23:23 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 
-GLuint		shader
-
-(GLenum type,
- GLsizei count,
- GLchar **string,
- GLint *length)
-
+GLuint		shader(GLenum type, GLsizei count, GLchar **string,
+				GLint *length)
 {
 	GLuint			id;
 	GLint			status;
@@ -30,7 +25,7 @@ GLuint		shader
 	ft_putendl("b");
 	glCompileShader(id);
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
-	if(status == GL_FALSE)
+	if (status == GL_FALSE)
 	{
 		glGetShaderInfoLog(id, 4096, 0, log);
 		err(log);
