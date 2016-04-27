@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 19:19:12 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/01 15:23:47 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/27 22:02:51 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ t_uniforms			*get_uniforms(void);
 
 void				init_uniforms(GLuint program);
 
-void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
+void				cursor_position_callback(GLFWwindow *window,
+						double xpos, double ypos);
 
 #endif
