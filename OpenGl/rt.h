@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:50:48 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 21:49:54 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/27 21:55:52 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,33 @@ typedef	struct		s_properties
 }					t_properties;
 
 void				err(char *msg);
+
 void				load_file(char *file, GLchar **ptr, GLint *length);
+
 GLuint				load_fragment(void);
+
 GLuint				shader(GLenum t, GLsizei c, GLchar **s, GLint *l);
+
 GLuint				shader_program(GLuint *shaders, size_t size);
+
 GLuint				vao(void);
+
 void				main_loop(GLFWwindow *window, t_properties *properties);
+
 GLFWwindow			*setup_program(t_properties *properties);
+
 void				poll_keys(GLFWwindow *window, float ftime);
+
 void				vao_add_indices(GLuint vao, GLuint vbo);
+
 void				vao_add_vdata(GLuint vao, GLuint vbo, GLint s, GLboolean n);
+
 t_properties		*get_properties(void);
+
 GLuint				vbo(GLenum t, GLsizeiptr s, GLvoid *d, GLenum u);
+
 GLuint				index_buffer(GLvoid *d, GLsizeiptr s);
+
 GLuint				data_buffer(GLvoid *d, GLsizeiptr s);
 
 #endif
