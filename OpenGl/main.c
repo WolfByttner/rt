@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 21:53:37 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/28 19:44:54 by mdeken           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int					main(void)
 	properties->itime = glGetUniformLocation(properties->program,
 			"iGlobalTime");
 	glfwSetCursorPosCallback(window, cursor_position_callback);
+	glfwSetWindowSizeCallback(window, window_size_callback);
 	main_loop(window, properties);
 	ft_putnbr(glGetError());
 	ft_putendl(" 2");

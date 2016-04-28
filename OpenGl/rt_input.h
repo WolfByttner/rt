@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 19:19:12 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 22:02:51 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/28 20:00:00 by mdeken           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct		s_uniforms
 	int				res[2];
 	GLint			itime;
 	float			time;
+	int				mouse_moving;
 }					t_uniforms;
 
 typedef struct		s_mat
@@ -45,5 +46,6 @@ void				init_uniforms(GLuint program);
 
 void				cursor_position_callback(GLFWwindow *window,
 						double xpos, double ypos);
+void				window_size_callback(GLFWwindow *window, int width, int height);
 
 #endif

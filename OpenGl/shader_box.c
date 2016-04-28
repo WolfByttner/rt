@@ -6,17 +6,47 @@
 /*   By: mdeken <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/26 19:33:43 by mdeken            #+#    #+#             */
-/*   Updated: 2016/04/27 22:32:09 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/28 20:44:30 by mdeken           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
-** sp.pos is the position of the point on the front/left/bottom face
-** sp.a contains the lenght of each edge along the x, y and z axis
-** Method:
-** http://www.cs.cornell.edu/courses/Cs4620/2013fa/lectures/03raytracing1.pdf
-** Ray-slab intersection chapter
-*/
+ ** sp.pos is the position of the point on the front/left/bottom face
+ ** sp.a contains the lenght of each edge along the x, y and z axis
+ ** Method:
+ ** http://www.cs.cornell.edu/courses/Cs4620/2013fa/lectures/03raytracing1.pdf
+ ** Ray-slab intersection chapter
+ */
+
+mat3		box_rot(vec4 angle, int i)
+{
+	mat3	matx;
+	mat3	maty;
+	mat3	matz;
+
+//	mat4	matx;
+//	mat4	maty;
+//	mat4	matz;
+//	vec4	tmp;
+
+	matx[0] = VEC3(1, 0, 0);
+	matx[1] = VEC3(0, cos(angle.x), sin(angle.x));
+	matx[1] = VEC3(0, -sin(angle.x), cos(angle.x));
+
+	maty[0] = VEC3(cos(angle.y), 0, -sin(angle.y));
+	maty[1] = VEC3(0, 1, 0);
+	maty[2] = VEC3(sin(angle.y), 0, cos(angle.y));
+
+	matz[0] = VEC3(cos(angle.z), sin(angle.z), 0);
+	matz[1] = VEC3(-sin(angle.z), cos(angle.z), 0);
+	matz[2] = VEC3(0, 0, 1);
+
+	matx = inverse(matx);
+	maty = inverse(maty);
+	matz = inverse(matz);
+
+	return (matx * maty * matz);
+}
 
 vec3		box_norm(float tin, vec3 tvin, vec3 tvout)
 {
@@ -36,9 +66,9 @@ vec3		box_norm(float tin, vec3 tvin, vec3 tvout)
 }
 
 /*
-** We do variable juggling to stay within the norm.
-** ttmp is tmin and tvout is temporarily tmax.
-*/
+ ** We do variable juggling to stay within the norm.
+ ** ttmp is tmin and tvout is temporarily tmax.
+ */
 
 s_res		box_dst(s_geo sp, s_cam cam, s_res prev)
 {
@@ -46,9 +76,16 @@ s_res		box_dst(s_geo sp, s_cam cam, s_res prev)
 	vec3	tvout;
 	vec3	ttmp;
 	s_res	ret;
+	mat3	tmp;
 
-	ttmp = (sp.pos - cam.pos) / cam.ray;
-	tvout = (sp.pos + sp.a.xyz - cam.pos) / cam.ray;
+	//sp.pos = sp.pos + (sp.a.xyz / 2);
+	tmp = box_rot(sp.b, 0);
+	ret.cam.pos = tmp * cam.pos;
+	tmp = box_rot(sp.b, 1);
+	ret.cam.ray = tmp * cam.ray;
+	ret.cam.ray = normalize(ret.cam.ray);
+	ttmp = (sp.pos - ret.cam.pos) / ret.cam.ray;
+	tvout = (sp.pos + sp.a.xyz- ret.cam.pos) / ret.cam.ray;
 	tvin = min(ttmp, tvout);
 	tvout = max(ttmp, tvout);
 	ret.dst = max(max(tvin.x, tvin.y), tvin.z);

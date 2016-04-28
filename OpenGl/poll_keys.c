@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 20:50:54 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 22:29:41 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/28 19:17:58 by mdeken           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,10 @@ static void	poll_movement_keys(GLFWwindow *window, float ftime, t_uniforms *u)
 		move[1] = -u->cammov * ftime;
 	if ((state = glfwGetKey(window, GLFW_KEY_ESCAPE)) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, 1);
+	if ((state = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL)) == GLFW_PRESS)
+		u->mouse_moving = 0;
+	if ((state = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL)) == GLFW_RELEASE)
+		u->mouse_moving = 1;
 	if (!(move[0] || move[1] || move[2]))
 		return ;
 	translate_key_move(u, move);

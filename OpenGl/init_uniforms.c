@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 21:02:29 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 18:21:30 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/28 19:16:46 by mdeken           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,5 @@ void		init_uniforms(GLuint program)
 	u->icamzoom = glGetUniformLocation(program, "iCameraZoom");
 	u->ires = glGetUniformLocation(program, "iResolution");
 	u->itime = glGetUniformLocation(program, "iGlobalTime");
+	u->mouse_moving = 1;
 }
