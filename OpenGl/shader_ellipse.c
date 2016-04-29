@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 14:00:26 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/27 21:32:38 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/29 19:50:10 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ vec3		ellipse_norm(s_cam cam, s_res ret, s_geo sp)
 {
 	vec3	pos;
 
-	pos = 2 * (cam.pos + cam.ray * ret.dst - sp.pos) / pow(sp.a.xyz, vec3(2));
+	pos = 2 * (cam.pos + cam.ray * ret.dst - sp.pos) / pow(sp.a.xyz, VEC3(2));
 	return (-normalize(pos));
 }
 
