@@ -1,0 +1,13 @@
+s_mat	ms[] = s_mat[](
+	s_mat(vec4(0, 1, 0, 1), 0, 0, vec2(0))
+);
+
+#define LINUM	1
+s_light	lights[] = s_light[](
+	s_light(vec4(1), vec3(6, 0, -10))
+);
+
+#define GEONUM	1
+s_geo	geos[] = s_geo[](
+	s_geo(CYLINDER, vec3(0), 0, vec4(0, 1, 0, 0), vec4(0, 0, 3, 0),vec4(0), vec4(0), ms[0])
+);

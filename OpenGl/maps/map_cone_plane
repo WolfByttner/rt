@@ -1,0 +1,17 @@
+s_mat ms[] = s_mat[](
+		s_mat(vec4(1, 1, 0, 1), 0, 0, vec2(0)),
+		s_mat(vec4(0, 0, 1, 1), 0, 0, vec2(0))
+);
+
+# define LINUM 1
+
+s_light lights[] = s_light[](
+		s_light(vec4(1), vec3(6, 0, -10))
+);
+
+# define GEONUM 2
+
+s_geo geos[] = s_geo[](
+		s_geo(CONE, vec3(0, -1, -3), 1, vec4(0, 1, 0, 0.9), vec4(-5, 0, 0, 0), vec4(0), vec4(0), ms[0]),
+		s_geo(PLANE, vec3(0, -3, 0), 0, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[1])
+);
