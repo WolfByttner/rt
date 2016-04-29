@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 17:26:26 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 20:23:23 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/29 21:29:46 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ float		solve_quadratic(float a, float b, float c)
 	float	t2;
 
 	root = (pow(b, 2) - 4 * a * c);
-	if (root <= 0)
+	if (root < 0)
 		return (-1);
 	root = sqrt(root);
 	t1 = (-b - root) / (2 * a);

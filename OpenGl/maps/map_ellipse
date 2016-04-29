@@ -1,0 +1,17 @@
+s_mat ms[] = s_mat[](
+		s_mat(vec4(1, 0, 0, 0), 0.6, 0.8, vec2(0))
+);
+
+#define LINUM	1
+
+s_light lights[] = s_light[](
+		s_light(vec4(1), vec3(6, 0, -10))
+);
+
+#define GEONUM	1
+#undef AMBIENT
+#define AMBIENT 0.05
+
+s_geo geos[] = s_geo[](
+	s_geo(ELLIPSE, vec3(0, 0, 0), 0, vec4(1, 4, 1, 0), vec4(0), vec4(0), vec4(0), ms[0])
+);
