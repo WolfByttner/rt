@@ -29,6 +29,7 @@ Credited to @Octocat
 *.log
 *.sql
 *.sqlite
+*log
 
 # OS generated files #
 ######################
