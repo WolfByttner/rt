@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 19:19:12 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/28 20:00:00 by mdeken           ###   ########.fr       */
+/*   Updated: 2016/04/29 20:37:49 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void				init_uniforms(GLuint program);
 
 void				cursor_position_callback(GLFWwindow *window,
 						double xpos, double ypos);
-void				window_size_callback(GLFWwindow *window, int width, int height);
+void				window_size_callback(GLFWwindow *window,
+						int width, int height);
 
 #endif

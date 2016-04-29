@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/29 17:41:11 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/29 20:15:33 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@
 
 # define MAT3					mat3
 # define FLOAT					float
+# define S_GEO					s_geo
 
 struct			s_cam
 {
