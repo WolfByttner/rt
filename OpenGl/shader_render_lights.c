@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:31:08 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/24 13:34:50 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/29 17:39:14 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ vec4		iter_spec(s_light light, vec4 specular, s_res res)
 	if (li.x > res.dst && res.dst > 0)
 		return (ret);
 	li.z = min(1, 1 / li.x * 100);
-	ret += pow(max(dot(normalize(lpos), res.cam.ray), 0), length(lpos) * 50)
+	ret += pow(max(dot(normalize(lpos), res.cam.ray), 0), length(lpos) * 20)
 		* light.color * li.z;
 	return (ret);
 }

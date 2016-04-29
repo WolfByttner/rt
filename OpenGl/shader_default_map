@@ -3,7 +3,7 @@
 **the definition of different materials, can be defined immediately in the object but putting it here is recommended
 */
 s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)),
-		s_mat(vec4(1, 0, 1, 0), 0.1, 0.4, vec2(0)));
+		s_mat(vec4(1, 0, 1, 0), 0.9, 0.999, vec2(0)));
 
 /*
 **definition of the lights, to add light, increment LINUM and add an element to the array
@@ -11,7 +11,7 @@ s_mat ms[] = s_mat[](s_mat(vec4(1), 0.1, 0.8, vec2(0)),
 # define LINUM		2
 
 s_light lights[] = s_light[](
-	s_light(vec4(1), vec3(cos(-10.0) * 10, 5, sin(-10.0) * 10)),
+	s_light(vec4(1), vec3(cos(-10.0) * 10, 20, sin(-10.0) * 10)),
 	s_light(vec4(0.5, 0.5, 1, 1), vec3(-cos(-10.0) * 10, 5, -sin(-10.0) * 10))
 );
 
@@ -27,6 +27,6 @@ s_geo geos[] = s_geo[](
 	s_geo(CONE, vec3(3, 5, 0), 1, vec4(0,1,0,0.6), vec4(-5, 5, 0, 0), vec4(0), vec4(0), ms[0]),
 	s_geo(PLANE, vec3(-5, -10, -50), 0, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[0]),
 	s_geo(SPHERE, vec3(0, 10, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[1]),
-	s_geo(CYLINDER, vec3(10, 10, 10), 0, vec4(0, 1, 0, 0), vec4(0, 3, 1, 0), vec4(0),vec4(0), ms[0]),
+	s_geo(CYLINDER, vec3(10, 10, 10), 0, vec4(0.707, 0.707, 0, 0), vec4(0, 3, 1, 0), vec4(0),vec4(0), ms[0]),
 	//s_geo(MOBIUS, vec3(0, 5, -5), 0, vec4(0, 1, 0, 0.6), vec4(0, 3, 0, 0), vec4(0), vec4(0), ms[1]),
 	s_geo(ELLIPSE, vec3(-12, 7, 0), 0, vec4(1, 4, 2, 4), vec4(2, 1, 0, 0), vec4(0), vec4(0), ms[1]));
