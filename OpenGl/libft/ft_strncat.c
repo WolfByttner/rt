@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fnieto <fnieto@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jbyttner <jbyttner@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/25 14:16:24 by fnieto            #+#    #+#             */
-/*   Updated: 2015/12/02 19:20:38 by fnieto           ###   ########.fr       */
+/*   Created: 2015/11/25 15:35:20 by jbyttner          #+#    #+#             */
+/*   Updated: 2015/11/25 15:35:21 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 
 char	*ft_strncat(char *dest, const char *src, size_t n)
 {
-	char	*tmp;
+	size_t	dest_length;
+	size_t	i;
 
-	tmp = dest;
-	while (*tmp)
-		tmp++;
-	ft_strncpy(tmp, src, n);
+	dest_length = ft_strlen(dest);
+	i = 0;
+	while (src[i] != '\0' && i < n)
+	{
+		dest[dest_length + i] = src[i];
+		i++;
+	}
+	dest[dest_length + i] = '\0';
 	return (dest);
 }

@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmap.c                                        :+:      :+:    :+:   */
+/*   get_properties.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbyttner <jbyttner@42.fr>                  +#+  +:+       +#+        */
+/*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/25 17:07:57 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/02/04 16:23:15 by jbyttner         ###   ########.fr       */
+/*   Created: 2016/04/27 21:46:19 by jbyttner          #+#    #+#             */
+/*   Updated: 2016/04/27 21:46:52 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "rt.h"
 
-char	*ft_strmap(const char *s, char (*f)(char))
+t_properties	*get_properties(void)
 {
-	char	*ptr;
-	size_t	i;
+	static t_properties	properties;
 
-	if (!(s))
-		return (0);
-	if (!(ptr = ft_strnew(ft_strlen(s))))
-		return (0);
-	i = 0;
-	while (s[i] != '\0')
-	{
-		ptr[i] = f(s[i]);
-		i++;
-	}
-	return (ptr);
+	return (&properties);
 }
