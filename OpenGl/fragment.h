@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/27 18:45:14 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/29 17:27:15 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define	KLEIN		7
 # define	MOBIUS		8
 
-# define	ITERATIONS	4
+# define	ITERATIONS	8
 # define	AMBIENT		(vec4(0.06, 0.04, 0.08, 0))
 
 # define	REP_1(r, f, a, b, c)	(r = f( a [0], b, c));
