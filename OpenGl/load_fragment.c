@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/27 18:53:22 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/29 17:24:07 by mdeken           ###   ########.fr       */
+/*   Updated: 2016/04/29 19:31:21 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,8 @@ GLuint				load_fragment(char *map)
 	sizes[0] += 18;
 	srcs[1] = get_frag_params();
 	sizes[1] = 0;
-	if (map == NULL)
-		load_file("shader_default_map", &(srcs[2]), &(sizes[2]));
-	else
-		load_file(map, &(srcs[2]), &(sizes[2]));
+	load_file(map == NULL ? "shader_default_map" : map,
+			&(srcs[2]), &(sizes[2]));
 	load_file("shader_quadratic.c", &(srcs[3]), &(sizes[3]));
 	load_file("shader_iterate.c", &(srcs[4]), &(sizes[4]));
 	load_file("shader_paint.c", &(srcs[5]), &(sizes[5]));

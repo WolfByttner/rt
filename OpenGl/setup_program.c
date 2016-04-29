@@ -6,23 +6,12 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/27 21:38:37 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/29 17:31:29 by mdeken           ###   ########.fr       */
+/*   Updated: 2016/04/29 19:32:00 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 #include "rt_input.h"
-
-/*static void			window_size_callback(GLFWwindow *window,
-						int width, int height)
-{
-	t_properties		*props;
-
-	props = get_properties();
-	props->width = width;
-	props->height = height;
-	window = 0;
-}*/
 
 static GLFWwindow	*make_glfw(int width, int height)
 {

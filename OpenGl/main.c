@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/29 17:29:19 by mdeken           ###   ########.fr       */
+/*   Updated: 2016/04/29 19:28:27 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@ int					main(int argc, char **argv)
 	GLFWwindow			*window;
 	t_properties		*properties;
 
-
-	(void)argc;
 	properties = get_properties();
-	properties->map = argv[1];
+	properties->map = (argc > 1 ? argv[1] : NULL);
 	window = setup_program(properties);
 	properties->ires = glGetUniformLocation(properties->program, "iResolution");
 	properties->itime = glGetUniformLocation(properties->program,

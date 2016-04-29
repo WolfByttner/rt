@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 20:50:54 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/28 19:17:58 by mdeken           ###   ########.fr       */
+/*   Updated: 2016/04/29 19:34:42 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ static void	poll_movement_keys(GLFWwindow *window, float ftime, t_uniforms *u)
 		move[1] = u->cammov * ftime;
 	if ((state = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) == GLFW_PRESS)
 		move[1] = -u->cammov * ftime;
-	if ((state = glfwGetKey(window, GLFW_KEY_ESCAPE)) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, 1);
 	if ((state = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL)) == GLFW_PRESS)
 		u->mouse_moving = 0;
 	if ((state = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL)) == GLFW_RELEASE)
@@ -86,8 +84,12 @@ static void	poll_movement_keys(GLFWwindow *window, float ftime, t_uniforms *u)
 
 void		poll_keys(GLFWwindow *window, float ftime)
 {
+	int				state;
 	t_uniforms		*u;
 
 	u = get_uniforms();
-	poll_movement_keys(window, ftime, u);
+	if ((state = glfwGetKey(window, GLFW_KEY_ESCAPE)) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, 1);
+	else
+		poll_movement_keys(window, ftime, u);
 }
