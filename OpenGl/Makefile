@@ -6,7 +6,7 @@
 #    By: fnieto <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/09 20:50:44 by fnieto            #+#    #+#              #
-#    Updated: 2016/04/28 19:51:32 by mdeken           ###   ########.fr        #
+#    Updated: 2016/04/29 20:48:00 by jbyttner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,4 +78,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean fclean
+.PHONY: clean fclean all norm re
