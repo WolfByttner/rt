@@ -22,7 +22,7 @@ s_light lights[] = s_light[](
 # define GEONUM		7
 
 s_geo geos[] = s_geo[](
-	s_geo(BOX, vec3(0, 5, 0), 2, vec4(-2), vec4(0), vec4(0), vec4(0), ms[0]),
+	s_geo(BOX, vec3(0, 5, 0), 2, vec4(2), vec4(0.5), vec4(0), vec4(0), ms[0]),
 	s_geo(SPHERE, vec3(-3, 5, 0), 1, vec4(0), vec4(0), vec4(0), vec4(0), ms[0]),
 	s_geo(CONE, vec3(3, 5, 0), 1, vec4(0,1,0,0.6), vec4(-5, 5, 0, 0), vec4(0), vec4(0), ms[0]),
 	s_geo(PLANE, vec3(-5, -10, -50), 0, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[0]),
