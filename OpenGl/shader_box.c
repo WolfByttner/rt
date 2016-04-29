@@ -6,7 +6,7 @@
 /*   By: mdeken <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/26 19:33:43 by mdeken            #+#    #+#             */
-/*   Updated: 2016/04/28 20:44:30 by mdeken           ###   ########.fr       */
+/*   Updated: 2016/04/29 17:21:09 by mdeken           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  ** Ray-slab intersection chapter
  */
 
-mat3		box_rot(vec4 angle, int i)
+mat3		box_rot(vec4 angle)
 {
 	mat3	matx;
 	mat3	maty;
@@ -78,14 +78,13 @@ s_res		box_dst(s_geo sp, s_cam cam, s_res prev)
 	s_res	ret;
 	mat3	tmp;
 
-	//sp.pos = sp.pos + (sp.a.xyz / 2);
-	tmp = box_rot(sp.b, 0);
-	ret.cam.pos = tmp * cam.pos;
-	tmp = box_rot(sp.b, 1);
-	ret.cam.ray = tmp * cam.ray;
-	ret.cam.ray = normalize(ret.cam.ray);
-	ttmp = (sp.pos - ret.cam.pos) / ret.cam.ray;
-	tvout = (sp.pos + sp.a.xyz- ret.cam.pos) / ret.cam.ray;
+//	sp.pos = sp.pos + (sp.a.xyz / 2);
+	tmp = box_rot(sp.b);
+//	sp.pos = tmp * sp.pos;
+//	ret.cam.ray = tmp * cam.ray;
+//	ret.cam.ray = normalize(ret.cam.ray);
+	ttmp = (sp.pos - cam.pos) / cam.ray;
+	tvout = (sp.pos + sp.a.xyz - cam.pos) / cam.ray;
 	tvin = min(ttmp, tvout);
 	tvout = max(ttmp, tvout);
 	ret.dst = max(max(tvin.x, tvin.y), tvin.z);
@@ -93,7 +92,10 @@ s_res		box_dst(s_geo sp, s_cam cam, s_res prev)
 		return (prev);
 	if (ret.dst > 0 && (prev.dst <= 0 || ret.dst < prev.dst))
 	{
-		ret.cam = cam;
+		//ret.cam = cam;
+		//ret.cam.pos = tmp * cam.pos;
+		//ret.cam.ray = tmp * cam.ray;
+		//ret.cam.ray = normalize(ret.cam.ray);
 		ret.mat = sp.mat;
 		ret.normal = box_norm(ret.dst, tvin, tvout);
 		return (ret);

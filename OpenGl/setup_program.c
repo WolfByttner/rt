@@ -6,14 +6,14 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/27 21:38:37 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 21:53:43 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/29 17:31:29 by mdeken           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 #include "rt_input.h"
 
-static void			window_size_callback(GLFWwindow *window,
+/*static void			window_size_callback(GLFWwindow *window,
 						int width, int height)
 {
 	t_properties		*props;
@@ -22,7 +22,7 @@ static void			window_size_callback(GLFWwindow *window,
 	props->width = width;
 	props->height = height;
 	window = 0;
-}
+}*/
 
 static GLFWwindow	*make_glfw(int width, int height)
 {
@@ -73,7 +73,7 @@ GLFWwindow			*setup_program(t_properties *properties)
 	ft_putnbr(glGetError());
 	ft_putendl(" -0");
 	properties->shaders[0] = load_vertex();
-	properties->shaders[1] = load_fragment();
+	properties->shaders[1] = load_fragment(properties->map);
 	properties->program = shader_program(properties->shaders, 2);
 	ft_putnbr(glGetError());
 	ft_putendl(" -1");

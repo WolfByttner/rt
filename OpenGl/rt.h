@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:50:48 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 21:55:52 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/29 17:31:50 by mdeken           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,14 @@ typedef	struct		s_properties
 	GLuint	program;
 	GLint	ires;
 	GLint	itime;
+	char	*map;
 }					t_properties;
 
 void				err(char *msg);
 
 void				load_file(char *file, GLchar **ptr, GLint *length);
 
-GLuint				load_fragment(void);
+GLuint				load_fragment(char *map);
 
 GLuint				shader(GLenum t, GLsizei c, GLchar **s, GLint *l);
 

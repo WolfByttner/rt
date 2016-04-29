@@ -6,19 +6,22 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 19:38:41 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/28 19:44:54 by mdeken           ###   ########.fr       */
+/*   Updated: 2016/04/29 17:29:19 by mdeken           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rt.h"
 #include "rt_input.h"
 
-int					main(void)
+int					main(int argc, char **argv)
 {
 	GLFWwindow			*window;
 	t_properties		*properties;
 
+
+	(void)argc;
 	properties = get_properties();
+	properties->map = argv[1];
 	window = setup_program(properties);
 	properties->ires = glGetUniformLocation(properties->program, "iResolution");
 	properties->itime = glGetUniformLocation(properties->program,
