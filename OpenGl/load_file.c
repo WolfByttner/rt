@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/22 16:04:19 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/27 17:48:48 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/04/30 17:08:47 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	load_file(char *file, GLchar **ptr, GLint *length)
 		memcpy(res + *length, buf, r);
 		*length += r;
 	}
-	if (r == -1)
+	if (r == -1 || *length == 0)
 		err("Failed reading file!");
 	res[*length++] = 0;
 	*ptr = res;
