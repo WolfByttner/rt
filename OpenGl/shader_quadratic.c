@@ -6,9 +6,13 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 17:26:26 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/29 21:29:46 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/30 15:49:42 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#if ITERATIONS > 30
+# error "Too many iterations"
+#endif
 
 /*
 ** Gives lowest non-negative t
