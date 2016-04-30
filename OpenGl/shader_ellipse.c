@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 14:00:26 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/29 21:27:13 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/30 15:55:40 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ s_res		ellipse_dst(s_geo sp, s_cam cam, s_res prev)
 	centre = (cam.pos - sp.pos) / sp.a.xyz;
 	dir = cam.ray / sp.a.xyz;
 	if ((ret.dst = solve_quadratic(dot(dir, dir),
-			dot(dir, centre) * 2, dot(centre, centre) -1)) == -1)
+			dot(dir, centre) * 2, dot(centre, centre) - 1)) == -1)
 		return (prev);
 	if (ret.dst > 0 && (prev.dst <= 0 || ret.dst < prev.dst))
 	{
