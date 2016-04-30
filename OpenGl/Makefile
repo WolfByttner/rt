@@ -6,11 +6,12 @@
 #    By: fnieto <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/09 20:50:44 by fnieto            #+#    #+#              #
-#    Updated: 2016/04/29 20:48:00 by jbyttner         ###   ########.fr        #
+#    Updated: 2016/04/30 16:27:50 by jbyttner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME=rt
+PARENT=rt
+NAME=rtv1
 
 CC=gcc
 
@@ -47,7 +48,7 @@ endif
 
 OBJ=$(SRC:.c=.o)
 
-$(NAME): $(OBJ) $(NAME).h
+$(NAME): $(OBJ) $(PARENT).h
 	@echo "Compiling for " $(UNAME)
 	@make -C libft
 	@echo "[>>libft<<]"
@@ -64,7 +65,7 @@ announce_name:
 	@echo "Making $(NAME)"
 
 norm:
-	@norminette $(SRC) $(NAME).h
+	@norminette $(SRC) $(PARENT).h
 
 clean:
 	@make -C libft/ clean
