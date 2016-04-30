@@ -6,12 +6,33 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 17:26:26 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/30 15:49:42 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/04/30 16:44:05 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef ITERATIONS
+# error "Iterations not defined"
+#endif
 #if ITERATIONS > 30
 # error "Too many iterations"
+#elif ITERATIONS < 1
+# error "Too few iterations"
+#endif
+#ifndef GEONUM
+# error "Geonum not defined"
+#endif
+#if GEONUM > 30
+# error "Too many objects"
+#elif GEONUM < 1
+# error "Too few objects"
+#endif
+#ifndef LINUM
+# error "Linum not defined"
+#endif
+#if LINUM > 30
+# error "Too many lights"
+#elif LINUM < 1
+# error "Too few lights"
 #endif
 
 /*

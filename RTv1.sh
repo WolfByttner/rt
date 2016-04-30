@@ -2,7 +2,9 @@ mkdir ~/RTv1
 
 cd OpenGl
 make fclean
-echo $1 > auteur
 cp -R * ~/RTv1
+echo $1 > ~/RTv1/auteur
+echo "Your auteur file contains"
+cat -e ~/RTv1/auteur
 echo "Remember to check your auteur file"
 
