@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/27 18:53:22 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/29 19:31:21 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/05/01 19:58:33 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,15 @@ void				printsrc(GLchar **src, int size)
 
 GLuint				load_fragment(char *map)
 {
-	GLint				sizes[16];
-	GLchar				*srcs[16];
+	GLint				sizes[17];
+	GLchar				*srcs[17];
 
 	load_file("fragment.h", &(srcs[0]), &(sizes[0]));
 	srcs[0] = ft_strjoin("#version 330 core\n", srcs[0]);
 	sizes[0] += 18;
 	srcs[1] = get_frag_params();
 	sizes[1] = 0;
-	load_file(map == NULL ? "shader_default_map" : map,
-			&(srcs[2]), &(sizes[2]));
+	load_file(!map ? "shader_default_map" : map, &(srcs[2]), &(sizes[2]));
 	load_file("shader_quadratic.c", &(srcs[3]), &(sizes[3]));
 	load_file("shader_iterate.c", &(srcs[4]), &(sizes[4]));
 	load_file("shader_paint.c", &(srcs[5]), &(sizes[5]));
@@ -57,7 +56,8 @@ GLuint				load_fragment(char *map)
 	load_file("shader_ellipse.c", &(srcs[12]), &(sizes[12]));
 	load_file("shader_plane.c", &(srcs[13]), &(sizes[13]));
 	load_file("shader_sphere.c", &(srcs[14]), &(sizes[14]));
-	load_file("shader_main.c", &(srcs[15]), &(sizes[15]));
-	printsrc(srcs, 16);
-	return (shader(GL_FRAGMENT_SHADER, 16, srcs, 0));
+	load_file("shader_klein.c", &(srcs[15]), &(sizes[15]));
+	load_file("shader_main.c", &(srcs[16]), &(sizes[16]));
+	printsrc(srcs, 17);
+	return (shader(GL_FRAGMENT_SHADER, 17, srcs, 0));
 }

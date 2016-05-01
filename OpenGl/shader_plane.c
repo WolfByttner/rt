@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:48:42 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/27 20:23:51 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/01 18:30:06 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ s_res	plane_dst(s_geo sp, s_cam cam, s_res prev)
 	vec3			rc;
 	float			tmp;
 
-	ret.normal = -sp.a.xyz;
+	ret.normal = -sp.a.xyz * sign(dot(sp.a.xyz, cam.ray));
 	tmp = dot(cam.ray, ret.normal);
 	if (tmp == 0)
 		return (prev);

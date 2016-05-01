@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:39:27 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/27 20:26:55 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/01 19:56:07 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ s_res		obj_dst(s_geo obj, s_cam cam, s_res prev)
 		return (plane_dst(obj, cam, prev));
 	if (obj.type == MOBIUS)
 		return (mobius_dst(obj, cam, prev));
+	if (obj.type == KLEIN)
+		return (klein_dst(obj, cam, prev));
 	return (prev);
 }
 

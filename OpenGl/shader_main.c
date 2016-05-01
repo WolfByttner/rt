@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 12:35:26 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/24 17:02:47 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/01 20:38:18 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	main(void)
 		col = tmp.color;
 		tmp.cam = cam;
 		col += render_lights(tmp);
-		outcol = VEC4(col.xyz, 1);
+		outcol = VEC4(tmp.normal, 1);
 	}
 	else
 		outcol = VEC4(render_lights(tmp).xyz, 1);

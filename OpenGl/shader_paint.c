@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:35:01 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/29 20:13:03 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/01 17:54:30 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ s_liret		iter_light(s_light light, s_liret liret, s_res res)
 	s_liret	ret;
 	vec3	li;
 	vec3	pos;
+	float	occlu;
 
 	ret = liret;
 	li = light.pos - liret.cam.pos;
@@ -30,10 +31,10 @@ s_liret		iter_light(s_light light, s_liret liret, s_res res)
 		return (ret);
 	pos = light.pos - liret.cam.pos;
 	li.z = min(1, 1 / li.x * 100);
-	ret.diffuse += abs(dot(res.normal, liret.cam.ray)) * light.color * li.z;
+	ret.diffuse += (occlu = max(dot(res.normal, liret.cam.ray), 0)) * light.color * li.z;
 	ret.specular += pow(max(dot(reflect(res.cam.ray, res.normal),
 		normalize(pos)), 0), length(pos) * 20 * res.mat.smoothness) *
-		light.color * li.z * res.mat.metallic;
+		light.color * li.z * res.mat.metallic * step(0, occlu);
 	return (ret);
 }
 
