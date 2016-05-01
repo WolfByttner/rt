@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shader_paint.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: mdeken <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/04/24 13:35:01 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/29 20:13:03 by fnieto           ###   ########.fr       */
+/*   Created: 2016/04/30 14:56:01 by mdeken            #+#    #+#             */
+/*   Updated: 2016/05/01 20:56:17 by mdeken           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,26 @@ s_liret		iter_light(s_light light, s_liret liret, s_res res)
 	li.z = min(1, 1 / li.x * 100);
 	ret.diffuse += abs(dot(res.normal, liret.cam.ray)) * light.color * li.z;
 	ret.specular += pow(max(dot(reflect(res.cam.ray, res.normal),
-		normalize(pos)), 0), length(pos) * 20 * res.mat.smoothness) *
-		light.color * li.z * res.mat.metallic;
+		normalize(pos)), 0), length(pos) * 20 * res.mat.metallic) *
+		light.color * li.z;
 	return (ret);
+}
+
+
+
+vec4		get_texture(s_mat mat, vec3 pos)
+{
+	int	checkboard;
+	vec3	tmp;
+
+	if (mat.mode_id == CHECKBOARD)
+	{
+		tmp = pos * mat.mode_param.xyz;
+		checkboard = int(floor(tmp.x) + floor(tmp.y) + floor(tmp.z));
+			if (checkboard % 2 == 0)
+				return (mat.mode_color);
+	}
+	return (mat.color);
 }
 
 /*
@@ -43,10 +60,10 @@ s_liret		iter_light(s_light light, s_liret liret, s_res res)
 
 vec4		paint(s_res res, vec4 lastcol)
 {
-	int		i;
 	s_liret	light;
 
 	light.cam.pos = (res.dst - 0.001) * res.cam.ray + res.cam.pos;
+	res.mat.color = get_texture(res.mat, light.cam.pos);
 	light.diffuse = VEC4(0);
 	light.specular = VEC4(0);
 	REP(LINUM, light, iter_light, lights, light, res);
