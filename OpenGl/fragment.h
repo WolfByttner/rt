@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/01 19:59:43 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/02 00:38:35 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,12 @@
 # define CYLINDER	4
 # define BOX		5
 # define PLANE		6
-# define KLEIN		7
 # define MOBIUS		8
+
+# define FLAT		9
+# define CHECKBOARD	10
+# define BUMP		11
+# define WAVE		12
 
 # define ITERATIONS	4
 # define AMBIENT		(vec4(0.06, 0.04, 0.08, 0))
@@ -92,7 +96,9 @@ struct			s_mat
 	vec4		color;
 	float		metallic;
 	float		smoothness;
-	vec2		opacity;
+	int			mode_id;
+	vec4		mode_param;
+	vec4		mode_color;
 };
 
 /*
