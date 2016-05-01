@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/02 00:38:35 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/02 00:40:53 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define CYLINDER	4
 # define BOX		5
 # define PLANE		6
+# define KLEIN		7
 # define MOBIUS		8
 
 # define FLAT		9
