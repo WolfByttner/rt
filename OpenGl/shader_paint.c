@@ -6,7 +6,7 @@
 /*   By: mdeken <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:35:01 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/02 00:38:19 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/02 19:06:49 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,78 @@ s_liret		iter_light(s_light light, s_liret liret, s_res res)
 	return (ret);
 }
 
-
-
-vec4		get_texture(s_mat mat, vec3 pos)
+float		nrand(vec3 n)
 {
-	int	checkboard;
-	vec3	tmp;
+	return (fract(sin(dot(n, VEC3(12.9898, 78.233, 34.1509)))* 43758.5453));
+}
 
-	if (mat.mode_id == CHECKBOARD)
+float		noise(vec3 p, int iter)
+{
+	int		i;
+	float	tmp;
+
+	i = -1;
+	while (++i < iter)
 	{
-		tmp = pos * mat.mode_param.xyz;
-		checkboard = int(floor(tmp.x) + floor(tmp.y) + floor(tmp.z));
-			if (checkboard % 2 == 0)
-				return (mat.mode_color);
+		tmp += nrand(floor((p += p * tmp) * i) / i);
 	}
-	return (mat.color);
+	return (tmp / iter);
+}
+
+s_texmod	get_texture(s_mat mat, vec3 pos, vec3 normal)
+{
+	int			val;
+	vec3		tmp;
+	vec4		v;
+
+	if (mat.m_id == CHECKBOARD)
+	{
+		tmp = pos / mat.m_param.xyz;
+		if (int(floor(tmp.x) + floor(tmp.y) + floor(tmp.z)) % 2 == 1)
+			return (S_TEXMOD(mat.m_color, normal, mat.m_prop.x, mat.m_prop.y));
+		return (S_TEXMOD(mat.color, normal, mat.smoothness, mat.metallic));
+	}
+	if (mat.m_id == BUMP)
+	{
+		tmp = pos / mat.m_param.xyz;
+		tmp = vec3(sin(tmp.x), 0, cos(tmp.z));
+		v.x = length(tmp);
+		return (S_TEXMOD(mat.color, normalize(normal + mat.m_param.w * tmp),
+			mat.smoothness * v.x, mat.metallic * v.x));
+	}
+	if (mat.m_id == WAVE)
+	{
+		tmp = pos / mat.m_param.xyz;
+		tmp = floor(tmp + sin(tmp.zyx));
+		if (int(tmp.x + tmp.y + tmp.z) % 2 == 1)
+			return (S_TEXMOD(mat.m_color, normal, mat.m_prop.x, mat.m_prop.y));
+		return (S_TEXMOD(mat.color, normal, mat.smoothness, mat.metallic));
+	}
+	if (mat.m_id == RTILES)
+	{
+		tmp = pos / mat.m_param.xyz;
+		tmp += sin(tmp);
+		if (int(floor(tmp.x) + floor(tmp.y) + floor(tmp.z)) % 2 == 1)
+			return (S_TEXMOD(mat.m_color, normal, mat.m_prop.x, mat.m_prop.y));
+		return (S_TEXMOD(mat.color, normal, mat.smoothness, mat.metallic));
+	}
+	if (mat.m_id == RAND)
+	{
+		tmp = pos / mat.m_param.xyz;
+		tmp = tmp * nrand(floor(tmp * mat.m_param.w) / mat.m_param.w);
+		if (int(floor(tmp.x) + floor(tmp.y) + floor(tmp.z)) % 2 == 1)
+			return (S_TEXMOD(mat.m_color, normal, mat.m_prop.x, mat.m_prop.y));
+		return (S_TEXMOD(mat.color, normal, mat.smoothness, mat.metallic));
+	}
+	if (mat.m_id == PERLIN)
+	{
+		tmp = pos / mat.m_param.xyz;
+		v.x = noise(tmp, 5);
+		return (S_TEXMOD(mix(mat.color, mat.m_color, v.x), normal,
+			mix(mat.smoothness, mat.m_prop.x, v.x), mix(mat.metallic,
+				mat.m_prop.y, v.x)));
+	}
+	return (S_TEXMOD(mat.color, normal, mat.smoothness, mat.metallic));
 }
 
 /*
@@ -61,14 +118,19 @@ vec4		get_texture(s_mat mat, vec3 pos)
 
 vec4		paint(s_res res, vec4 lastcol)
 {
-	s_liret	light;
+	s_liret		light;
+	s_texmod	mod;
 
 	light.cam.pos = (res.dst - 0.001) * res.cam.ray + res.cam.pos;
-	res.mat.color = get_texture(res.mat, light.cam.pos);
+	mod = get_texture(res.mat, light.cam.pos, res.normal);
 	light.diffuse = VEC4(0);
 	light.specular = VEC4(0);
+	res.mat.color = mod.color;
+	res.normal = mod.normal;
+	res.mat.smoothness = mod.smoothness;
+	res.mat.metallic = mod.metallic;
 	REP(LINUM, light, iter_light, lights, light, res);
-	return (max(mix(light.diffuse * res.mat.color, lastcol * res.mat.metallic
+	return (max(mix(light.diffuse * mod.color, lastcol * res.mat.metallic
 		+ light.specular, mix((1 - abs(dot(res.cam.ray, res.normal))) *
 		res.mat.smoothness, 1, res.mat.metallic)), AMBIENT * res.mat.color));
 }
