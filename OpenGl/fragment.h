@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/02 00:40:53 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/02 18:34:06 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,15 @@
 # define CYLINDER	4
 # define BOX		5
 # define PLANE		6
-# define KLEIN		7
-# define MOBIUS		8
 
-# define FLAT		9
-# define CHECKBOARD	10
-# define BUMP		11
-# define WAVE		12
+# define KLEIN		11
+# define MOBIUS		12
+# define HEART		13
+
+# define FLAT		21
+# define CHECKBOARD	22
+# define BUMP		23
+# define WAVE		24
 
 # define ITERATIONS	4
 # define AMBIENT		(vec4(0.06, 0.04, 0.08, 0))
@@ -163,6 +165,7 @@ s_res			klein_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			mobius_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			plane_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			sphere_dst(s_geo sp, s_cam cam, s_res prev);
+s_res			heart_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			iterate(s_cam cam);
 vec4			paint(s_res res, vec4 lastcol);
 s_res			raytrace(s_cam cam);

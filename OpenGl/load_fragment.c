@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/27 18:53:22 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/05/01 19:58:33 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/02 18:29:30 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void				printsrc(GLchar **src, int size)
 
 GLuint				load_fragment(char *map)
 {
-	GLint				sizes[17];
-	GLchar				*srcs[17];
+	GLint				sizes[18];
+	GLchar				*srcs[18];
 
 	load_file("fragment.h", &(srcs[0]), &(sizes[0]));
 	srcs[0] = ft_strjoin("#version 330 core\n", srcs[0]);
@@ -57,7 +57,8 @@ GLuint				load_fragment(char *map)
 	load_file("shader_plane.c", &(srcs[13]), &(sizes[13]));
 	load_file("shader_sphere.c", &(srcs[14]), &(sizes[14]));
 	load_file("shader_klein.c", &(srcs[15]), &(sizes[15]));
-	load_file("shader_main.c", &(srcs[16]), &(sizes[16]));
-	printsrc(srcs, 17);
-	return (shader(GL_FRAGMENT_SHADER, 17, srcs, 0));
+	load_file("shader_heart.c", &(srcs[16]), &(sizes[16]));
+	load_file("shader_main.c", &(srcs[17]), &(sizes[17]));
+	printsrc(srcs, 18);
+	return (shader(GL_FRAGMENT_SHADER, 18, srcs, 0));
 }

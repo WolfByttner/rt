@@ -11,5 +11,5 @@ s_light	lights[] = s_light[](
 
 #define GEONUM	1
 s_geo	geos[] = s_geo[](
-	s_geo(SPHERE, vec3(0), 5, vec4(0), vec4(0), vec4(0), vec4(0), ms[0])
+	s_geo(KLEIN, vec3(0), 5, vec4(0), vec4(0), vec4(0), vec4(0), ms[0])
 );
