@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:42:58 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/02 00:33:10 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/02 19:09:37 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@ s_res		mobius_dst(s_geo sp, s_cam cam, s_res prev)
 	vec4	p;
 	s_res	ret;
 	int		i;
+	float	step;
+	float	tmp;
+
+	step = 0.05 / 1.5;
 
 	pos = cam.pos - sp.pos;
 	ret.dst = length(pos) <= sp.bounds ? 0.1 : sphere_dst(sp, cam, prev).dst;
@@ -75,16 +79,27 @@ s_res		mobius_dst(s_geo sp, s_cam cam, s_res prev)
 		p.xyz = cam.pos + ret.dst * cam.ray;
 		p.w = mobius((p.xyz - sp.pos) * 1.5 / sp.bounds, 0.03);
 		i = -1;
-		while (++i < int(300 * sp.bounds))
+		while (++i < int(60 * sp.bounds))
 		{
 			if (p.w > 0)
 				break;
 			p.w = mobius((p.xyz - sp.pos) * 1.5 / sp.bounds, 0.03);
-			ret.dst += 0.01 / 1.5;
+			ret.dst += step;//0.01 / 1.5;
 			p.xyz = cam.pos + ret.dst * cam.ray;
 		}
 		if (p.w <= 0)
 			return (prev);
+		i = 0;
+		step = -step / 2;
+		while (++i < 50)
+		{
+			ret.dst += step;
+			p.xyz = cam.pos + ret.dst * cam.ray;
+			tmp = p.w;
+			p.w = mobius((p.xyz - sp.pos) * 1.5 / sp.bounds, 0.03);
+			if (sign(tmp) != sign(p.w))
+				step = -step / 2;
+		}
 		ret.cam = cam;
 		ret.mat = sp.mat;
 		ret.normal = normalize(-mobius_grad((p.xyz - sp.pos) * 1.5 / sp.bounds,
