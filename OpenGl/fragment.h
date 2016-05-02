@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/02 18:44:08 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/02 20:10:24 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,5 +179,7 @@ s_res			sphere_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			iterate(s_cam cam);
 vec4			paint(s_res res, vec4 lastcol);
 s_res			raytrace(s_cam cam);
+float			nrand(vec3 n);
+float			noise(vec3 p, int iter);
 
 #endif
