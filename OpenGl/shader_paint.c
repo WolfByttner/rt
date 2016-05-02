@@ -6,7 +6,7 @@
 /*   By: mdeken <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:35:01 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/02 20:24:00 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/02 23:32:06 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ vec4		paint(s_res res, vec4 lastcol)
 	s_liret		light;
 	s_texmod	mod;
 
-	light.cam.pos = (res.dst - 0.001) * res.cam.ray + res.cam.pos;
+	light.cam.pos = (res.dst - 0.1) * res.cam.ray + res.cam.pos;
 	mod = get_texture(res.mat, light.cam.pos, res.normal);
 	light.diffuse = VEC4(0);
 	light.specular = VEC4(0);

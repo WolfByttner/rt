@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/02 20:25:38 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/02 23:18:24 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define KLEIN		11
 # define MOBIUS		12
 # define HEART		13
+# define TORUS		14
 
 # define FLAT		21
 # define CHECKBOARD	22
@@ -90,6 +91,7 @@
 
 # define MAT3					mat3
 # define FLOAT					float
+# define INT					int
 # define S_GEO					s_geo
 # define S_TEXMOD				s_texmod
 
@@ -133,6 +135,7 @@ struct			s_light
 {
 	vec4		color;
 	vec3		pos;
+	vec4		cone;
 };
 
 /*
@@ -180,6 +183,7 @@ s_res			mobius_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			plane_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			sphere_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			heart_dst(s_geo sp, s_cam cam, s_res prev);
+s_res			torus_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			iterate(s_cam cam);
 vec4			paint(s_res res, vec4 lastcol);
 s_res			raytrace(s_cam cam);
