@@ -1,5 +1,5 @@
 s_mat	ms[] = s_mat[](
-	s_mat(vec4(1, 1, 1, 1), .5, .5,0, vec4(0), vec4(0))
+	s_mat(vec4(1, 1, 1, 1), 0,0, PERLIN, vec4(1), vec2(0), vec4(0))
 );
 
 #define LINUM	3

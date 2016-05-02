@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/02 00:40:53 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/02 18:44:08 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,13 @@
 # define KLEIN		7
 # define MOBIUS		8
 
-# define FLAT		9
-# define CHECKBOARD	10
-# define BUMP		11
-# define WAVE		12
+# define FLAT		0
+# define CHECKBOARD	1
+# define BUMP		2
+# define WAVE		3
+# define RTILES		4
+# define RAND		5
+# define PERLIN		6
 
 # define ITERATIONS	4
 # define AMBIENT		(vec4(0.06, 0.04, 0.08, 0))
@@ -85,6 +88,7 @@
 # define MAT3					mat3
 # define FLOAT					float
 # define S_GEO					s_geo
+# define S_TEXMOD				s_texmod
 
 struct			s_cam
 {
@@ -97,9 +101,10 @@ struct			s_mat
 	vec4		color;
 	float		metallic;
 	float		smoothness;
-	int			mode_id;
-	vec4		mode_param;
-	vec4		mode_color;
+	int			m_id;
+	vec4		m_param;
+	vec2		m_prop;
+	vec4		m_color;
 };
 
 /*
@@ -151,6 +156,14 @@ struct			s_liret
 	vec4		specular;
 	vec4		diffuse;
 	s_cam		cam;
+};
+
+struct			s_texmod
+{
+	vec4		color;
+	vec3		normal;
+	float		smoothness;
+	float		metallic;
 };
 
 float			solve_quadratic(float a, float b, float c);
