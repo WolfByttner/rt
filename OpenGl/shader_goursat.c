@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/03 11:55:09 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/05/03 16:22:19 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/05/03 16:26:24 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ s_res		goursat_dst(s_geo sp, s_cam cam, s_res prev)
 		return (prev);
 	p.xyz = cam.pos + ret.dst * cam.ray;
 	i = -1;
-	tmp = 120 * int(sp.bounds);
+	tmp = INT(sp.bounds) * 120;
 	while (++i < tmp)
 	{
 		if ((p.w = goursat((p.xyz - sp.pos) * 5 / sp.bounds, sp.a.xyz)) > 0)
