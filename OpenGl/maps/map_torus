@@ -4,9 +4,9 @@ s_mat	ms[] = s_mat[](
 
 #define LINUM	3
 s_light	lights[] = s_light[](
-	s_light(vec4(1, 0, 0, 0), vec3(6, 5, -10), vec4(0)),
-	s_light(vec4(0, 1, 0, 0), vec3(-6, 5, -10), vec4(0)),
-	s_light(vec4(0, 0, 1, 0), vec3(0, 11, -10), vec4(0))
+	s_light(vec4(1, 0, 0, 0), vec3(6, 5, -10)),
+	s_light(vec4(0, 1, 0, 0), vec3(-6, 5, -10)),
+	s_light(vec4(0, 0, 1, 0), vec3(0, 11, -10))
 );
 
 #undef ITERATIONS

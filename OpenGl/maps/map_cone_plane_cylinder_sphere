@@ -3,11 +3,11 @@
 **the definition of different materials, can be defined immediately in the object but putting it here is recommended
 */
 s_mat ms[] = s_mat[](
-	s_mat(vec4(1, 0, 0, 1), 0.2, 0, vec2(0)),
-	s_mat(vec4(0.5, 0.5, 0.5, 1), 0, 0, vec2(0)),
-	s_mat(vec4(0, 0, 1, 1), 0, 0, vec2(0)),
-	s_mat(vec4(0, 1, 0, 1), 0, 0, vec2(0)),
-	s_mat(vec4(1, 1, 0, 1), 0, 0, vec2(0))
+	s_mat(vec4(1, 0, 0, 1), 0.2, 0, 0, vec4(0), vec2(0), vec4(0)),
+	s_mat(vec4(0.5, 0.5, 0.5, 1), 0, 0, 0, vec4(0), vec2(0), vec4(0)),
+	s_mat(vec4(0, 0, 1, 1), 0, 0, 0, vec4(0), vec2(0), vec4(0)),
+	s_mat(vec4(0, 1, 0, 1), 0, 0, 0, vec4(0), vec2(0), vec4(0)),
+	s_mat(vec4(1, 1, 0, 1), 0, 0, 0, vec4(0), vec2(0), vec4(0))
 );
 
 /*

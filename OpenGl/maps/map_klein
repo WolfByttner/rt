@@ -4,9 +4,9 @@ s_mat	ms[] = s_mat[](
 
 #define LINUM	3
 s_light	lights[] = s_light[](
-	s_light(vec4(1, 0, 0, 0), vec3(6, 0, -10), vec4(0)),
-	s_light(vec4(0, 1, 0, 0), vec3(-6, 0, -10), vec4(0)),
-	s_light(vec4(0, 0, 1, 0), vec3(0, 6, -10), vec4(0))
+	s_light(vec4(1, 0, 0, 0), vec3(6, 0, -10)),
+	s_light(vec4(0, 1, 0, 0), vec3(-6, 0, -10)),
+	s_light(vec4(0, 0, 1, 0), vec3(0, 6, -10))
 );
 
 #define GEONUM	1

@@ -1,21 +1,23 @@
 /*
-**s_mat[](s_mat(vec4(r, g, b, a), metallic, smoothness, vec2(transparency, refraction indice)))
-**the definition of different materials, can be defined immediately in the object but putting it here is recommended
+** s_mat[](s_mat(vec4(r, g, b, a), metallic, smoothness, modid, params, matmods,
+** colmod)))
+** the definition of different materials, can be defined immediately in the
+** object but putting it here is recommended
 */
 
 # undef ITERATIONS
 # define ITERATIONS 3
 
 s_mat ms[] = s_mat[](
-	s_mat(vec4(1, 0, 0, 1), 0.2, 0, vec2(0)),
-	s_mat(vec4(0.5, 0.5, 0.5, 1), 0, 0, vec2(0)),
-	s_mat(vec4(0, 0, 1, 1), 0, 0, vec2(0)),
-	s_mat(vec4(0, 1, 1, 1), 0, 0, vec2(0)),
-	s_mat(vec4(1, 0, 1, 1), 0, 0, vec2(0)),
-	s_mat(vec4(0, 1, 0, 1), 0, 0, vec2(0)),
-	s_mat(vec4(1, 1, 0, 1), 0, 0, vec2(0)),
-	s_mat(vec4(1, 0, 0, 1), 0.8, 0.5, vec2(0)),
-	s_mat(vec4(1, 0, 0, 1), 0.5, 0.1, vec2(0))
+	s_mat(vec4(1, 0, 0, 1), 0.2, 0, 0, vec4(0), vec2(0), vec4(0)),
+	s_mat(vec4(0.5, 0.5, 0.5, 1), 0, 0, 0, vec4(0), vec2(0), vec4(0)),
+	s_mat(vec4(0, 0, 1, 1), 0, 0, 0, vec4(0), vec2(0), vec4(0)),
+	s_mat(vec4(0, 1, 1, 1), 0, 0, 0, vec4(0), vec2(0), vec4(0)),
+	s_mat(vec4(1, 0, 1, 1), 0, 0, 0, vec4(0), vec2(0), vec4(0)),
+	s_mat(vec4(0, 1, 0, 1), 0, 0, 0, vec4(0), vec2(0), vec4(0)),
+	s_mat(vec4(1, 1, 0, 1), 0, 0, 0, vec4(0), vec2(0), vec4(0)),
+	s_mat(vec4(1, 0, 0, 1), 0.8, 0.5, 0, vec4(0), vec2(0), vec4(0)),
+	s_mat(vec4(1, 0, 0, 1), 0.5, 0.1, 0, vec4(0), vec2(0), vec4(0))
 );
 
 /*
