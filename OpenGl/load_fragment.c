@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/27 18:53:22 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/05/03 12:43:36 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/05/03 17:28:33 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void				printsrc(GLchar **src, int size)
 
 GLuint				load_fragment(char *map)
 {
-	GLint				sizes[22];
-	GLchar				*srcs[22];
+	GLint				sizes[23];
+	GLchar				*srcs[23];
 
 	load_file("fragment.h", &(srcs[0]), &(sizes[0]));
 	srcs[0] = ft_strjoin("#version 330 core\n", srcs[0]);
@@ -63,6 +63,7 @@ GLuint				load_fragment(char *map)
 	load_file("shader_torus.c", &(srcs[19]), &(sizes[19]));
 	load_file("shader_doublesphere.c", &(srcs[20]), &(sizes[20]));
 	load_file("shader_main.c", &(srcs[21]), &(sizes[21]));
-	printsrc(srcs, 22);
-	return (shader(GL_FRAGMENT_SHADER, 22, srcs, 0));
+	load_file("geo_cam.c", &(srcs[22]), &(sizes[22]));
+	printsrc(srcs, 23);
+	return (shader(GL_FRAGMENT_SHADER, 23, srcs, 0));
 }
