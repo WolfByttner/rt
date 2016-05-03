@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/02 20:24:08 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/05/03 11:55:50 by jbyttner         ###   ########.fr       */
 /*   Updated: 2016/05/02 18:44:08 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -39,6 +39,7 @@
 # define KLEIN		11
 # define MOBIUS		12
 # define HEART		13
+# define GOURSAT	14
 
 # define FLAT		21
 # define CHECKBOARD	22
@@ -181,6 +182,7 @@ s_res			mobius_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			plane_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			sphere_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			heart_dst(s_geo sp, s_cam cam, s_res prev);
+s_res			goursat_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			iterate(s_cam cam);
 vec4			paint(s_res res, vec4 lastcol);
 s_res			raytrace(s_cam cam);
