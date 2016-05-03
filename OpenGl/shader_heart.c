@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/02 18:20:20 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/05/02 23:55:54 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/03 13:31:53 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ s_res		heart_dst(s_geo sp, s_cam cam, s_res prev)
 	step = 0.2 / 5;
 	pos = cam.pos - sp.pos;
 	ret.dst = length(pos) <= sp.bounds ? 0 : sphere_dst(sp, cam, prev).dst;
-	if (ret.dst >= 0)
+	if (ret.dst != prev.dst)
 	{
 		p.xyz = cam.pos + ret.dst * cam.ray;
 		p.w = heart((p.xyz - sp.pos) * 5 / sp.bounds);

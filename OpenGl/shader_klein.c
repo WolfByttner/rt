@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:46:54 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/03 00:00:39 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/03 13:31:01 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ s_res		klein_dst(s_geo sp, s_cam cam, s_res prev)
 	step = 0.05 / 5;
 	ret.dst = length(cam.pos - sp.pos) <= sp.bounds ? 0 :
 		sphere_dst(sp, cam, prev).dst;
-	if (ret.dst >= 0 && ret.dst != prev.dst)
+	if (ret.dst != prev.dst)
 	{
 		p.xyz = cam.pos + ret.dst * cam.ray;
 		i = -1;
