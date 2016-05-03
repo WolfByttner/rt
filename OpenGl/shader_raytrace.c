@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:39:27 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/03 11:59:55 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/05/03 12:46:50 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ s_res		obj_dst(s_geo obj, s_cam cam, s_res prev)
 		return (heart_dst(obj, cam, prev));
 	if (obj.type == GOURSAT)
 		return (goursat_dst(obj, cam, prev));
+	if (obj.type == TORUS)
+		return (torus_dst(obj, cam, prev));
 	return (prev);
 }
 

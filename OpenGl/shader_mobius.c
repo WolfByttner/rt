@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:42:58 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/02 19:09:37 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/05/03 00:01:04 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ s_res		mobius_dst(s_geo sp, s_cam cam, s_res prev)
 
 	pos = cam.pos - sp.pos;
 	ret.dst = length(pos) <= sp.bounds ? 0.1 : sphere_dst(sp, cam, prev).dst;
-	if (ret.dst >= 0)
+	if (ret.dst >= 0 && ret.dst != prev.dst)
 	{
 		p.xyz = cam.pos + ret.dst * cam.ray;
 		p.w = mobius((p.xyz - sp.pos) * 1.5 / sp.bounds, 0.03);
@@ -100,6 +100,8 @@ s_res		mobius_dst(s_geo sp, s_cam cam, s_res prev)
 			if (sign(tmp) != sign(p.w))
 				step = -step / 2;
 		}
+		if (prev.dst > 0 && ret.dst > prev.dst)
+			return (prev);
 		ret.cam = cam;
 		ret.mat = sp.mat;
 		ret.normal = normalize(-mobius_grad((p.xyz - sp.pos) * 1.5 / sp.bounds,

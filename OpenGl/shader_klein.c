@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:46:54 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/02 20:22:08 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/05/03 00:00:39 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ s_res		klein_dst(s_geo sp, s_cam cam, s_res prev)
 	float	step_last;
 
 	step = 0.05 / 5;
-	ret.dst = length(cam.pos - sp.pos) <=
-		sp.bounds ? 0.1 : sphere_dst(sp, cam, prev).dst;
-	if (ret.dst >= 0)
+	ret.dst = length(cam.pos - sp.pos) <= sp.bounds ? 0 :
+		sphere_dst(sp, cam, prev).dst;
+	if (ret.dst >= 0 && ret.dst != prev.dst)
 	{
 		p.xyz = cam.pos + ret.dst * cam.ray;
 		i = -1;
@@ -66,6 +66,8 @@ s_res		klein_dst(s_geo sp, s_cam cam, s_res prev)
 			if (sign(step_last) != sign(p.w))
 				step = -step / 2;
 		}
+		if (prev.dst > 0 && ret.dst > prev.dst)
+			return (prev);
 		ret.cam = cam;
 		ret.mat = sp.mat;
 		ret.normal = normalize(-klein_grad((p.xyz - sp.pos) * 5 / sp.bounds));

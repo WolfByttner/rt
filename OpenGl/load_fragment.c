@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/27 18:53:22 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/05/03 11:57:16 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/05/03 12:43:36 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void				printsrc(GLchar **src, int size)
 
 GLuint				load_fragment(char *map)
 {
-	GLint				sizes[19];
-	GLchar				*srcs[19];
+	GLint				sizes[22];
+	GLchar				*srcs[22];
 
 	load_file("fragment.h", &(srcs[0]), &(sizes[0]));
 	srcs[0] = ft_strjoin("#version 330 core\n", srcs[0]);
@@ -59,7 +59,10 @@ GLuint				load_fragment(char *map)
 	load_file("shader_klein.c", &(srcs[15]), &(sizes[15]));
 	load_file("shader_heart.c", &(srcs[16]), &(sizes[16]));
 	load_file("shader_goursat.c", &(srcs[17]), &(sizes[17]));
-	load_file("shader_main.c", &(srcs[18]), &(sizes[18]));
-	printsrc(srcs, 19);
-	return (shader(GL_FRAGMENT_SHADER, 19, srcs, 0));
+	load_file("shader_noise.c", &(srcs[18]), &(sizes[18]));
+	load_file("shader_torus.c", &(srcs[19]), &(sizes[19]));
+	load_file("shader_doublesphere.c", &(srcs[20]), &(sizes[20]));
+	load_file("shader_main.c", &(srcs[21]), &(sizes[21]));
+	printsrc(srcs, 22);
+	return (shader(GL_FRAGMENT_SHADER, 22, srcs, 0));
 }
