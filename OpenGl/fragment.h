@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/03 13:11:40 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/03 17:30:38 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,12 @@ struct			s_light
 	vec3		pos;
 };
 
+struct		s_geo_cam
+{
+	s_geo	sp;
+	s_cam	cam;
+};
+
 /*
 **dst: la distance de la surface la plus proche, -1 si non existant
 **normal: la normale de la surface
@@ -190,5 +196,6 @@ vec4			paint(s_res res, vec4 lastcol);
 s_res			raytrace(s_cam cam);
 float			nrand(vec3 n);
 float			noise(vec3 p, int iter);
+s_geo_cam		geo_cam(s_geo sp, s_cam cam);
 
 #endif

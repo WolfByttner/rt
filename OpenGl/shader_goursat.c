@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/03 11:55:09 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/05/03 16:26:24 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/05/03 17:38:25 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ vec3		goursat_grad(vec3 p, vec3 mods)
 		goursat(p + q.xxy, mods) - goursat(p - q.xxy, mods)));
 }
 
-s_res		end(s_geo sp, s_cam cam, float step, s_res ret, vec4 p)
+s_res		end(s_geo_cam gc, float step, s_res ret, vec4 p)
 {
 	int		i;
 	float	step_last;
@@ -54,16 +54,16 @@ s_res		end(s_geo sp, s_cam cam, float step, s_res ret, vec4 p)
 	while (i++ < 50)
 	{
 		ret.dst += step;
-		p.xyz = cam.pos + ret.dst * cam.ray;
+		p.xyz = gc.cam.pos + ret.dst * gc.cam.ray;
 		step_last = p.w;
-		p.w = goursat((p.xyz - sp.pos) * 5 / sp.bounds, sp.a.xyz);
+		p.w = goursat((p.xyz - gc.sp.pos) * 5 / gc.sp.bounds, gc.sp.a.xyz);
 		if (sign(step_last) != sign(p.w))
 			step = -step / 2;
 	}
-	ret.cam = cam;
-	ret.mat = sp.mat;
-	ret.normal = normalize(-goursat_grad((p.xyz - sp.pos) * 5 /
-				sp.bounds, sp.a.xyz));
+	ret.cam = gc.cam;
+	ret.mat = gc.sp.mat;
+	ret.normal = normalize(-goursat_grad((p.xyz - gc.sp.pos) * 5 /
+				gc.sp.bounds, gc.sp.a.xyz));
 	return (ret);
 }
 
@@ -82,8 +82,7 @@ s_res		goursat_dst(s_geo sp, s_cam cam, s_res prev)
 		return (prev);
 	p.xyz = cam.pos + ret.dst * cam.ray;
 	i = -1;
-	tmp = INT(sp.bounds) * 120;
-	while (++i < tmp)
+	while (++i < INT(sp.bounds) * 120)
 	{
 		if ((p.w = goursat((p.xyz - sp.pos) * 5 / sp.bounds, sp.a.xyz)) > 0)
 			break ;
@@ -92,5 +91,5 @@ s_res		goursat_dst(s_geo sp, s_cam cam, s_res prev)
 	}
 	if (p.w < 0)
 		return (prev);
-	return (end(sp, cam, step, ret, p));
+	return (end(geo_cam(sp, cam), step, ret, p));
 }
