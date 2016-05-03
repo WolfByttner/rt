@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/03 11:55:09 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/05/03 16:04:59 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/05/03 16:22:19 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ vec3		goursat_grad(vec3 p, vec3 mods)
 		goursat(p + q.xxy, mods) - goursat(p - q.xxy, mods)));
 }
 
-s_res		end(s_geo sp, s_cam, float step, s_res ret, vec4 p)
+s_res		end(s_geo sp, s_cam cam, float step, s_res ret, vec4 p)
 {
 	int		i;
 	float	step_last;
@@ -82,7 +82,7 @@ s_res		goursat_dst(s_geo sp, s_cam cam, s_res prev)
 		return (prev);
 	p.xyz = cam.pos + ret.dst * cam.ray;
 	i = -1;
-	tmp = 120 * sp.bounds;
+	tmp = 120 * int(sp.bounds);
 	while (++i < tmp)
 	{
 		if ((p.w = goursat((p.xyz - sp.pos) * 5 / sp.bounds, sp.a.xyz)) > 0)
