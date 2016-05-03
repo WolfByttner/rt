@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:42:58 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/03 00:01:04 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/03 18:13:30 by jpiniau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,14 @@
 ** http://www.math.vanderbilt.edu/~schectex/courses/cubic/
 */
 
-float		mobius(vec3 p, float b) {
+float		mobius(vec3 p, float b)
+{
 	vec3	p2;
 	vec2	p3;
 	vec4	v;
 	vec2	k;
 
-	p2 = pow(p, vec3(2));
+	p2 = pow(p, VEC3(2));
 	p3 = p2.xy * p.xy;
 	v.x = p2.x + p2.y;
 	v.y = 2 * b;
@@ -52,61 +53,63 @@ float		mobius(vec3 p, float b) {
 	return (pow(k.x, 2) - pow(k.y, 2) * v.x);
 }
 
-vec3	mobius_grad(vec3 p, float b) {
+vec3		mobius_grad(vec3 p, float b)
+{
 	vec2 q;
 
-	q = vec2(0.0, 0.01);
-	return (vec3(mobius(p + q.yxx, b) - mobius(p - q.yxx, b),
+	q = VEC2(0.0, 0.01);
+	return (VEC3(mobius(p + q.yxx, b) - mobius(p - q.yxx, b),
 		mobius(p + q.xyx, b) - mobius(p - q.xyx, b),
 		mobius(p + q.xxy, b) - mobius(p - q.xxy, b)));
 }
 
+s_res		end_mobius(s_geo_cam gc, float step, s_res ret, vec4 p)
+{
+	int		i;
+	float	tmp;
+
+	step = -step / 2;
+	while (++i < 50)
+	{
+		ret.dst += step;
+		p.xyz = gc.cam.pos + ret.dst * gc.cam.ray;
+		tmp = p.w;
+		p.w = mobius((p.xyz - gc.sp.pos) * 1.5 / gc.sp.bounds, 0.03);
+		if (sign(tmp) != sign(p.w))
+			step = -step / 2;
+	}
+	ret.cam = gc.cam;
+	ret.mat = gc.sp.mat;
+	ret.normal = normalize(-mobius_grad((p.xyz - gc.sp.pos) * 1.5 /
+				gc.sp.bounds, 0.01));
+	return (ret);
+}
+
 s_res		mobius_dst(s_geo sp, s_cam cam, s_res prev)
 {
-	vec3	pos;
 	vec4	p;
 	s_res	ret;
 	int		i;
 	float	step;
-	float	tmp;
 
 	step = 0.05 / 1.5;
-
-	pos = cam.pos - sp.pos;
-	ret.dst = length(pos) <= sp.bounds ? 0.1 : sphere_dst(sp, cam, prev).dst;
-	if (ret.dst >= 0 && ret.dst != prev.dst)
+	ret.dst = length(cam.pos - sp.pos) <= sp.bounds ?
+		0.1 : sphere_dst(sp, cam, prev).dst;
+	if (ret.dst < 0 || ret.dst == prev.dst)
+		return (prev);
+	p.xyz = cam.pos + ret.dst * cam.ray;
+	p.w = mobius((p.xyz - sp.pos) * 1.5 / sp.bounds, 0.03);
+	i = -1;
+	while (++i < INT(sp.bounds) * 60 && p.w <= 0)
 	{
-		p.xyz = cam.pos + ret.dst * cam.ray;
 		p.w = mobius((p.xyz - sp.pos) * 1.5 / sp.bounds, 0.03);
-		i = -1;
-		while (++i < int(60 * sp.bounds))
-		{
-			if (p.w > 0)
-				break;
-			p.w = mobius((p.xyz - sp.pos) * 1.5 / sp.bounds, 0.03);
-			ret.dst += step;//0.01 / 1.5;
-			p.xyz = cam.pos + ret.dst * cam.ray;
-		}
-		if (p.w <= 0)
-			return (prev);
-		i = 0;
-		step = -step / 2;
-		while (++i < 50)
-		{
-			ret.dst += step;
-			p.xyz = cam.pos + ret.dst * cam.ray;
-			tmp = p.w;
-			p.w = mobius((p.xyz - sp.pos) * 1.5 / sp.bounds, 0.03);
-			if (sign(tmp) != sign(p.w))
-				step = -step / 2;
-		}
-		if (prev.dst > 0 && ret.dst > prev.dst)
-			return (prev);
-		ret.cam = cam;
-		ret.mat = sp.mat;
-		ret.normal = normalize(-mobius_grad((p.xyz - sp.pos) * 1.5 / sp.bounds,
-			0.01));
-		return (ret);
+		ret.dst += step;
+		p.xyz = cam.pos + ret.dst * cam.ray;
 	}
-	return (prev);
+	if (p.w <= 0)
+		return (prev);
+	ret = end_mobius(geo_cam(sp, cam), step, ret, p);
+	if (prev.dst > 0 && ret.dst > prev.dst)
+		return (prev);
+	return (ret);
 }
