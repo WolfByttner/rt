@@ -6,7 +6,7 @@
 /*   By: mdeken <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/26 19:33:43 by mdeken            #+#    #+#             */
-/*   Updated: 2016/04/27 22:32:09 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/05/04 19:53:22 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ vec3		box_norm(float tin, vec3 tvin, vec3 tvout)
 	if (tin == tvin.x)
 		return (VEC3(1, 0, 0));
 	if (tin == tvin.y)
-		return (VEC3(0, 1, 0));
+		return (VEC3(0, -1, 0));
 	if (tin == tvin.z)
 		return (VEC3(0, 0, 1));
 	if (tin == tvout.x)
 		return (VEC3(-1, 0, 0));
 	if (tin == tvout.y)
-		return (VEC3(0, -1, 0));
+		return (VEC3(0, 1, 0));
 	if (tin == tvout.z)
 		return (VEC3(0, 0, -1));
 	return (VEC3(0));
@@ -58,7 +58,7 @@ s_res		box_dst(s_geo sp, s_cam cam, s_res prev)
 	{
 		ret.cam = cam;
 		ret.mat = sp.mat;
-		ret.normal = box_norm(ret.dst, tvin, tvout);
+		ret.normal = -box_norm(ret.dst, tvin, tvout);
 		return (ret);
 	}
 	return (prev);
