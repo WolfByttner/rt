@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 12:35:26 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/02 23:27:35 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/04 19:00:49 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ vec3	make_cam_ray(vec2 uv)
 	ratio = iResolution.xy / FLOAT(iResolution.y);
 	transform = make_matrix(
 		VEC4(sin(camrot.x), cos(camrot.x), sin(camrot.y), cos(camrot.y)));
-	return (normalize(mix(mix(VEC3(-1, -1, 1) * transform *
-		VEC3(iCameraZoom * ratio, 1), VEC3(1, -1, 1) * transform *
-		VEC3(iCameraZoom * ratio, 1), uv.x), mix(VEC3(-1, 1, 1) * transform *
-		VEC3(iCameraZoom * ratio, 1), VEC3(1, 1, 1) * transform *
-		VEC3(iCameraZoom * ratio, 1), uv.x), uv.y)));
+	return (normalize(mix(mix(VEC3(-1, -1, 1) *
+		VEC3(iCameraZoom * ratio, 1) * transform, VEC3(1, -1, 1) *
+		VEC3(iCameraZoom * ratio, 1) * transform, uv.x), mix(VEC3(-1, 1, 1) *
+		VEC3(iCameraZoom * ratio, 1) * transform, VEC3(1, 1, 1) *
+		VEC3(iCameraZoom * ratio, 1) * transform, uv.x), uv.y)));
 }
 
 /*
