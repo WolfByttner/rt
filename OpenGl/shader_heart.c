@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/02 18:20:20 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/05/03 17:59:06 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/05/04 17:52:57 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ float		heart(vec3 p)
 
 	p2 = pow(p, VEC3(2));
 	z3 = pow(p.z, 3);
-	return (-(pow(2 * (p2.x + p2.y) + p2.z - 1, 3)
-		- 0.1 * p2.x * z3 - p2.y * z3));
+	//return (-(pow(2 * (p2.x + p2.y) + p2.z - 1, 3)
+	//	- 0.1 * p2.x * z3 - p2.y * z3));
+	return (-(pow((p2.x + (9.0 / 4.0) * p2.y) + p2.z - 1, 3)
+		- p2.x * z3 - (9.0 / 80.0) * p2.y * z3));
+
 }
 
 vec3		heart_grad(vec3 p)
