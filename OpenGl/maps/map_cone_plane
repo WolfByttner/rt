@@ -4,8 +4,8 @@
 */
 
 s_mat ms[] = s_mat[](
-		s_mat(vec4(1, 1, 0, 1), 0, 0, CHECKBOARD, vec4(0.707, 0, 0.707, 2), vec2(0), vec4(1, 1, 1, 1)),
-		s_mat(vec4(0, 0, 1, 1), 0, 0, CHECKBOARD, vec4(1, 0, 0, 0), vec2(0), vec4(0))
+		s_mat(vec4(1, 1, 0, 1), 0, 0, 0, vec4(0), vec2(0), vec4(0)),
+		s_mat(vec4(0, 0, 1, 1), 0, 0, 0, vec4(0, 0, 0, 0), vec2(0), vec4(0))
 );
 
 # define LINUM 1
