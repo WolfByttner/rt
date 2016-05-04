@@ -6,9 +6,65 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/02 22:44:31 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/03 17:01:15 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/05/04 05:42:03 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+float		torus_res_2(float d1, float d2, float p3, float z)
+{
+	float	result;
+	float	t1;
+	float	t2;
+	float	h;
+
+	result = 1e20;
+	if ((h = sqrt(d1 * d1 - z + d2)) > 0.0)
+	{
+		t1 = -d1 - h - p3;
+		t2 = -d1 + h - p3;
+		if (t1 > 0.0)
+			result = t1;
+		else if (t2 > 0.0)
+			result = t2;
+	}
+	if ((h = sqrt(d1 * d1 - z - d2)) > 0.0)
+	{
+		t1 = d1 - h - p3;
+		t2 = d1 + h - p3;
+		if (t1 > 0.0)
+			result = min(result, t1);
+		else if (t2 > 0.0)
+			result = min(result, t2);
+	}
+	return (result);
+}
+
+float		torus_res_1(vec4 p3)
+{
+	vec3	p1;
+	vec4	p2;
+	vec3	p4;
+
+	p1.x = (-3 * pow(p3.x, 2) + 2 * p3.y) / 3;
+	p1.y = 2 * pow(p3.x, 3) - 2 * p3.x * p3.y + 2.0 * p3.z;
+	p1.z = (-3 * pow(p3.x, 4) + 4 * p3.x * p3.x * p3.y - 8 * p3.x * p3.z + 4
+		* p3.w) / 3;
+	p2.x = p1.x * p1.x + p1.z;
+	p2.y = 3 * p1.z * p1.x - p1.x * p1.x * p1.x - p1.y * p1.y;
+	p2.z = p2.y * p2.y - pow(p2.x, 3);
+	p4.z = 0;
+	p2.w = (p2.z < 0) ? sqrt(p2.x) : pow(sqrt(p2.z) + abs(p2.y), 1. / 3);
+	p4.z = (p2.z < 0) ? 2 * p2.w * cos(acos(p2.y / (p2.w * p2.x)) / 3) :
+		sign(p2.y) * abs(p2.w + p2.x / p2.w);
+	p4.z = p1.x - p4.z;
+	p4.x = p4.z - 3.0 * p1.x;
+	p4.y = p4.z * p4.z - 3.0 * p1.z;
+	if ((abs(p4.x) < 1.0e-4) ? p4.y < 0 : p4.x < 0)
+		return (-1.0);
+	p4.x = (abs(p4.x) < 1.0e-4) ? p4.x : sqrt(p4.x / 2.0);
+	p4.y = (abs(p4.x) < 1.0e-4) ? sqrt(p4.y) : p1.y / p4.x;
+	return (torus_res_2(p4.x, p4.y, p3.x, p4.z));
+}
 
 /*
 ** sp.a.x is radius;
@@ -23,101 +79,19 @@ float		torus(s_cam cam, s_geo sp)
 	vec4	p3;
 	float	odst;
 
-	float	p;
-	float	q;
-	float	r;
-	float	qq;
-	float	rr;
-	float	h;
-	float	z;
-	float	sqq;
-
-	float	d1;
-	float	d2;
-	float	t1;
-	float	t2;
-	float	result;
-
-	vec3	rd;
-	vec2	torus;
-
 	pos = cam.pos - sp.pos;
-	odst = (length(pos) - sp.a.x - 1);
-	if (odst > sp.a.x - 1)
-		pos += cam.ray * odst;
-	rd = cam.ray;
-	torus = sp.a.xy;
 	p1.x = sp.a.x * sp.a.x;
 	p1.y = sp.a.y * sp.a.y;
 	p1.z = dot(pos, pos);
 	p1.w = dot(pos, cam.ray);
-	if (p1.w > 0 && p1.z > pow(sp.a.x, 2))
+	if (p1.w > 0 && p1.z > pow(sp.a.x + sp.a.y, 2))
 		return (-1);
 	p2.x = (p1.z - p1.y - p1.x) * .5;
 	p3.x = p1.w;
-	p3.y = p1.w * p1.w + p1.x * rd.z * rd.z + p2.x;
-	p3.z = p2.x * p1.w + p1.x * pos.z * rd.z;
+	p3.y = p1.w * p1.w + p1.x * cam.ray.z * cam.ray.z + p2.x;
+	p3.z = p2.x * p1.w + p1.x * pos.z * cam.ray.z;
 	p3.w = p2.x * p2.x + p1.x * pos.z * pos.z - p1.x * p1.y;
-	//----------------------------------
-	p = (-3 * pow(p3.x, 2) + 2 * p3.y) / 3;
-	q = 2 * pow(p3.x, 3) - 2 * p3.x * p3.y + 2.0 * p3.z;
-	r = (-3 * pow(p3.x, 4) + 4 * p3.x * p3.x * p3.y - 8.0 * p3.x * p3.z + 4.0 * p3.w) / 3;
-	qq = p * p + r;
-	rr = 3.0 * r * p - p * p * p - q * q;
-	h = rr * rr - qq * qq * qq;
-	z = 0.0;
-	if (h < 0.0)
-	{
-		sqq = sqrt(qq);
-		z = 2.0 * sqq * cos(acos(rr / (sqq * qq)) / 3.0);
-	}
-	else
-	{
-		sqq = pow(sqrt(h) + abs(rr), 1.0 / 3.0);
-		z = sign(rr) * abs(sqq + qq / sqq);
-	}
-	z = p - z;
-	//----------------------------------
-	d1 = z - 3.0 * p;
-	d2 = z * z - 3.0 * r;
-	if (abs(d1) < 1.0e-4)
-	{
-		if (d2 < 0.0)
-			return (-1.0);
-		d2 = sqrt(d2);
-	}
-	else
-	{
-		if (d1 < 0.0)
-			return (-1.0);
-		d1 = sqrt(d1 / 2.0);
-		d2 = q / d1;
-	}
-	//----------------------------------
-	result = 1e20;
-	h = d1 * d1 - z + d2;
-	if (h > 0.0)
-	{
-		h = sqrt(h);
-		t1 = -d1 - h - p3.x;
-		t2 = -d1 + h - p3.x;
-		if (t1 > 0.0)
-			result = t1;
-		else if (t2 > 0.0)
-			result = t2;
-	}
-	h = d1 * d1 - z - d2;
-	if (h > 0.0)
-	{
-		h = sqrt(h);
-		t1 = d1 - h - p3.x;
-		t2 = d1 + h - p3.x;
-		if (t1 > 0.0)
-			result = min(result, t1);
-		else if (t2 > 0.0)
-			result = min(result, t2);
-	}
-	return (result + (odst > sp.a.x - 1 ? odst : 0));
+	return (torus_res_1(p3));
 }
 
 vec3		ntorus(vec3 pos, vec2 tor)
@@ -131,7 +105,7 @@ s_res		torus_dst(s_geo sp, s_cam cam, s_res prev)
 	s_res ret;
 
 	ret.dst = torus(cam, sp);
-	if (ret.dst > 0 && (ret.dst <= prev.dst || prev.dst < 0))
+	if (ret.dst > 0 && (ret.dst < prev.dst || prev.dst < 0))
 	{
 		ret.mat = sp.mat;
 		ret.cam = cam;

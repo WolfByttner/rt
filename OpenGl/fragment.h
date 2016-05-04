@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/03 17:30:38 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/05/04 03:31:14 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@
 # define CYLINDER	4
 # define BOX		5
 # define PLANE		6
-
 
 # define KLEIN		11
 # define MOBIUS		12
@@ -138,10 +137,10 @@ struct			s_light
 	vec3		pos;
 };
 
-struct		s_geo_cam
+struct			s_geo_cam
 {
-	s_geo	sp;
-	s_cam	cam;
+	s_geo		sp;
+	s_cam		cam;
 };
 
 /*

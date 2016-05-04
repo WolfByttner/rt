@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/27 18:53:22 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/05/03 17:28:33 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/05/04 03:35:14 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,17 @@ void				printsrc(GLchar **src, int size)
 		ft_putstr(src[i]);
 }
 
+void				load_2(GLchar **srcs, GLint *sizes)
+{
+	load_file("shader_heart.c", &(srcs[16]), &(sizes[16]));
+	load_file("shader_goursat.c", &(srcs[17]), &(sizes[17]));
+	load_file("shader_noise.c", &(srcs[18]), &(sizes[18]));
+	load_file("shader_torus.c", &(srcs[19]), &(sizes[19]));
+	load_file("shader_doublesphere.c", &(srcs[20]), &(sizes[20]));
+	load_file("shader_main.c", &(srcs[21]), &(sizes[21]));
+	load_file("geo_cam.c", &(srcs[22]), &(sizes[22]));
+}
+
 GLuint				load_fragment(char *map)
 {
 	GLint				sizes[23];
@@ -57,13 +68,7 @@ GLuint				load_fragment(char *map)
 	load_file("shader_plane.c", &(srcs[13]), &(sizes[13]));
 	load_file("shader_sphere.c", &(srcs[14]), &(sizes[14]));
 	load_file("shader_klein.c", &(srcs[15]), &(sizes[15]));
-	load_file("shader_heart.c", &(srcs[16]), &(sizes[16]));
-	load_file("shader_goursat.c", &(srcs[17]), &(sizes[17]));
-	load_file("shader_noise.c", &(srcs[18]), &(sizes[18]));
-	load_file("shader_torus.c", &(srcs[19]), &(sizes[19]));
-	load_file("shader_doublesphere.c", &(srcs[20]), &(sizes[20]));
-	load_file("shader_main.c", &(srcs[21]), &(sizes[21]));
-	load_file("geo_cam.c", &(srcs[22]), &(sizes[22]));
+	load_2(srcs, sizes);
 	printsrc(srcs, 23);
 	return (shader(GL_FRAGMENT_SHADER, 23, srcs, 0));
 }

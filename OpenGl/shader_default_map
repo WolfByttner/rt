@@ -1,5 +1,5 @@
 s_mat	ms[] = s_mat[](
-	s_mat(vec4(1, 1, 1, 1), .5, .5, 0, vec4(1), vec2(.5), vec4(0, 0, 0, 0))
+	s_mat(vec4(1, 1, 1, 1), .5, .5, CHECKBOARD, vec4(1), vec2(.5), vec4(1))
 );
 
 #define LINUM	3
@@ -15,5 +15,5 @@ s_light	lights[] = s_light[](
 #define GEONUM	2
 s_geo	geos[] = s_geo[](
 	s_geo(PLANE, vec3(0, -2, 0), 1.5, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[0]),
-	s_geo(MOBIUS, vec3(0, -2, 0), 5, vec4(1, .5, 0, 0), vec4(0), vec4(0), vec4(0), ms[0])
+	s_geo(TORUS, vec3(0, -2, 0), 5, vec4(1, .5, 0, 0), vec4(0), vec4(0), vec4(0), ms[0])
 );
