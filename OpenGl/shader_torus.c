@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/02 22:44:31 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/04 05:42:03 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/04 05:51:51 by fnieto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ float		torus(s_cam cam, s_geo sp)
 	float	odst;
 
 	pos = cam.pos - sp.pos;
+	p2.y = length(pos);
+	if (p2.y > 2 * (sp.a.x + sp.a.y))
+		pos += cam.ray * (p2.y - 2 * (sp.a.x + sp.a.y));
 	p1.x = sp.a.x * sp.a.x;
 	p1.y = sp.a.y * sp.a.y;
 	p1.z = dot(pos, pos);
@@ -91,7 +94,9 @@ float		torus(s_cam cam, s_geo sp)
 	p3.y = p1.w * p1.w + p1.x * cam.ray.z * cam.ray.z + p2.x;
 	p3.z = p2.x * p1.w + p1.x * pos.z * cam.ray.z;
 	p3.w = p2.x * p2.x + p1.x * pos.z * pos.z - p1.x * p1.y;
-	return (torus_res_1(p3));
+	p2.z = torus_res_1(p3);
+	return (mix(-1, p2.z + ((p2.y > 2 * (sp.a.x + sp.a.y)) ?
+		(p2.y - 2 * (sp.a.x + sp.a.y)) : 0), step(0, p2.z)));
 }
 
 vec3		ntorus(vec3 pos, vec2 tor)
