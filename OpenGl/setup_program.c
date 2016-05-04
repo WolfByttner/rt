@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/27 21:38:37 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/29 19:32:00 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/05/04 16:54:46 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static GLFWwindow	*make_glfw(int width, int height)
 	glfwSetWindowSizeCallback(window, window_size_callback);
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(0);
+	glfwSetInputMode(window, GLFW_STICKY_KEYS, 1);
 	return (window);
 }
 

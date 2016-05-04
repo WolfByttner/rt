@@ -6,7 +6,7 @@
 /*   By: jbyttner <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/29 20:50:54 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/04/29 19:34:42 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/05/04 17:01:13 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,17 @@ static void	poll_movement_keys(GLFWwindow *window, float ftime, t_uniforms *u)
 		move[1] = u->cammov * ftime;
 	if ((state = glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)) == GLFW_PRESS)
 		move[1] = -u->cammov * ftime;
-	if ((state = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL)) == GLFW_PRESS)
-		u->mouse_moving = 0;
-	if ((state = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL)) == GLFW_RELEASE)
-		u->mouse_moving = 1;
 	if (!(move[0] || move[1] || move[2]))
 		return ;
 	translate_key_move(u, move);
 	glUniform3f(u->icampos, u->campos[0], u->campos[1], u->campos[2]);
 }
+
+/*
+** Making keys sticky helps handling events with heavy shaders
+** (low FPS).
+** Setting lives in setup_program.
+*/
 
 void		poll_keys(GLFWwindow *window, float ftime)
 {
@@ -89,7 +91,19 @@ void		poll_keys(GLFWwindow *window, float ftime)
 
 	u = get_uniforms();
 	if ((state = glfwGetKey(window, GLFW_KEY_ESCAPE)) == GLFW_PRESS)
+	{
 		glfwSetWindowShouldClose(window, 1);
+		ft_putendl("Exiting now");
+	}
 	else
+	{
+		if ((state = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL)) == GLFW_PRESS)
+			u->mouse_moving = 0;
+		if ((state = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL)) == GLFW_RELEASE
+				&& u->mouse_moving)
+			u->mouse_moving = 1;
+		if ((state = glfwGetKey(window, GLFW_KEY_TAB)) == GLFW_PRESS)
+			u->mouse_moving = !u->mouse_moving;
 		poll_movement_keys(window, ftime, u);
+	}
 }

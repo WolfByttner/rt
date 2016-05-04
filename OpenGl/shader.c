@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/22 11:13:38 by fnieto            #+#    #+#             */
-/*   Updated: 2016/04/27 18:23:23 by jbyttner         ###   ########.fr       */
+/*   Updated: 2016/05/04 16:59:48 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@ GLuint		shader(GLenum type, GLsizei count, GLchar **string,
 	GLchar			log[4097];
 
 	id = glCreateShader(type);
-	ft_putendl("a");
+	ft_putendl("Generating ray tracer");
 	glShaderSource(id, count, (const GLchar**)string, length);
-	ft_putendl("b");
 	glCompileShader(id);
 	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 	if (status == GL_FALSE)
