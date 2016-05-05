@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/24 13:46:54 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/03 18:06:24 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/05/05 13:06:06 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ s_res		end_klein(s_geo_cam gc, float step, s_res ret, vec4 p)
 	float	step_last;
 
 	i = 0;
-	step = -step / 2;
-	while (i++ < 50)
+	step = -step / 3;
+	while (i++ < 30)
 	{
 		ret.dst += step;
 		p.xyz = gc.cam.pos + ret.dst * gc.cam.ray;
 		step_last = p.w;
 		p.w = klein((p.xyz - gc.sp.pos) * 5 / gc.sp.bounds);
 		if (sign(step_last) != sign(p.w))
-			step = -step / 2;
+			step = -step / 3;
 	}
 	ret.cam = gc.cam;
 	ret.mat = gc.sp.mat;

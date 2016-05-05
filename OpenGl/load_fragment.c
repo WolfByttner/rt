@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/27 18:53:22 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/05/04 03:35:14 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/05 13:25:02 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void				load_2(GLchar **srcs, GLint *sizes)
 	load_file("shader_goursat.c", &(srcs[17]), &(sizes[17]));
 	load_file("shader_noise.c", &(srcs[18]), &(sizes[18]));
 	load_file("shader_torus.c", &(srcs[19]), &(sizes[19]));
-	load_file("shader_doublesphere.c", &(srcs[20]), &(sizes[20]));
+	load_file("shader_eight.c", &(srcs[20]), &(sizes[20]));
 	load_file("shader_main.c", &(srcs[21]), &(sizes[21]));
 	load_file("geo_cam.c", &(srcs[22]), &(sizes[22]));
 }

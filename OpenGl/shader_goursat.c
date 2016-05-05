@@ -6,7 +6,7 @@
 /*   By: jbyttner <jbyttner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/03 11:55:09 by jbyttner          #+#    #+#             */
-/*   Updated: 2016/05/03 18:16:28 by jpiniau          ###   ########.fr       */
+/*   Updated: 2016/05/05 12:59:27 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ float		sum(vec3 p)
 float		goursat(vec3 p, vec3 mods)
 {
 	vec3	res;
-	vec3	p2;
+	float	p2;
 
-	p2 = pow(p, VEC3(2));
-	return (-(sum(pow(p, VEC3(4))) + mods.x * pow(sum(p2), 2) +
-				mods.y * sum(p2) + mods.z));
+	p2 = sum(pow(p, VEC3(2)));
+	return (-(sum(pow(p, VEC3(4))) + mods.x * pow(p2, 2) +
+				mods.y * p2 + mods.z));
 }
 
 vec3		goursat_grad(vec3 p, vec3 mods)
@@ -75,14 +75,14 @@ s_res		goursat_dst(s_geo sp, s_cam cam, s_res prev)
 	float	step;
 	int		tmp;
 
-	step = 6.0 / 5;
+	step = 0.2 / 5;
 	ret.dst = length(cam.pos - sp.pos) <=
 		sp.bounds ? 0.1 : sphere_dst(sp, cam, prev).dst;
 	if (ret.dst < 0)
 		return (prev);
 	p.xyz = cam.pos + ret.dst * cam.ray;
 	i = -1;
-	while (++i < INT(sp.bounds) * 120)
+	while (++i < INT(sp.bounds) * 30)
 	{
 		if ((p.w = goursat((p.xyz - sp.pos) * 5 / sp.bounds, sp.a.xyz)) > 0)
 			break ;

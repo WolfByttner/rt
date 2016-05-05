@@ -6,7 +6,7 @@
 /*   By: fnieto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/30 16:01:05 by fnieto            #+#    #+#             */
-/*   Updated: 2016/05/04 03:31:14 by fnieto           ###   ########.fr       */
+/*   Updated: 2016/05/05 13:12:43 by jbyttner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define HEART		13
 # define GOURSAT	14
 # define TORUS		15
+# define EIGHT		16
 
 # define FLAT		21
 # define CHECKBOARD	22
@@ -190,6 +191,7 @@ s_res			sphere_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			heart_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			goursat_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			torus_dst(s_geo sp, s_cam cam, s_res prev);
+s_res			eight_dst(s_geo sp, s_cam cam, s_res prev);
 s_res			iterate(s_cam cam);
 vec4			paint(s_res res, vec4 lastcol);
 s_res			raytrace(s_cam cam);
