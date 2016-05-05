@@ -16,5 +16,5 @@ s_light	lights[] = s_light[](
 #define GEONUM	2
 s_geo	geos[] = s_geo[](
 	s_geo(PLANE, vec3(0, -2, 0), 1.5, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[0]),
-	s_geo(EIGHT, vec3(0, 2, 0), 2, vec4(1, .5, 0, 0), vec4(0), vec4(0), vec4(0), ms[1])
+	s_geo(EIGHT, vec3(0, 2, 0), 2, vec4(2, .5, 0, 0), vec4(0), vec4(0), vec4(0), ms[1])
 );
