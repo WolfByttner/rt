@@ -6,7 +6,7 @@
 */
 
 # undef ITERATIONS
-# define ITERATIONS 3
+# define ITERATIONS 2
 
 s_mat ms[] = s_mat[](
 	s_mat(vec4(1, 0, 0, 1), 0.2, 0, 0, vec4(0), vec2(0), vec4(0)),

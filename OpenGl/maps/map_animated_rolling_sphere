@@ -1,6 +1,6 @@
 s_mat	ms[] = s_mat[](
 	s_mat(vec4(0, 0, 1, 1), .5, .5, FLAT, vec4(1), vec2(.5), vec4(0)),
-	s_mat(vec4(sin(iGlobalTime) * .5 + .5, cos(iGlobalTime) * .5 + .5, .5, 1), .5, .5, FLAT, vec4(.1), vec2(0), vec4(0))
+	s_mat(vec4(1, 1, 1, 1), .1, .5, FLAT, vec4(.1), vec2(0), vec4(0))
 );
 
 #define LINUM	4
@@ -17,5 +17,5 @@ s_light	lights[LINUM] = s_light[](
 #define GEONUM	2
 s_geo	geos[GEONUM] = s_geo[](
 	s_geo(PLANE, vec3(0, -2, 0), 1.5, vec4(0, 1, 0, 0), vec4(0), vec4(0), vec4(0), ms[0]),
-	s_geo(SPHERE, vec3(0, 0, 0), 2, vec4(0), vec4(-2, 2, 4, 0), vec4(0), vec4(0), ms[1])
+	s_geo(SPHERE, vec3(3 * sin(iGlobalTime), 0, 3 * cos(iGlobalTime)), 2, vec4(0), vec4(-2, 2, 4, 0), vec4(0), vec4(0), ms[1])
 );
