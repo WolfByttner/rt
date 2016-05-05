@@ -1,0 +1,24 @@
+s_mat ms[] = s_mat[](
+		s_mat(vec4((cos(iGlobalTime) * 0.5 + 0.5) *0.5 + 0.5, 0, 0, 1), 0, 0, 0, vec4(0), vec2(0), vec4(0))
+);
+
+# define LINUM 1
+
+s_light lights[LINUM] = s_light[](
+		s_light(vec4(1), vec3(6, 0, -10))
+);
+
+/*
+**SPHERE, pos, bound
+**PLANE, pos, useless , normal
+**CONE, pos, useless, normal.xyz angle.w, bound
+**CYLINDER, pos, useless, normal.xyz (normelize) normal.w = 0, bound.xy
+**BOX, pos, useless, bound
+**ELLIPSE, pos, useless, normal, bound
+*/
+
+# define GEONUM 1
+
+s_geo geos[GEONUM] = s_geo[](
+		s_geo(HEART, vec3(0, 0, 0), 10, vec4(0, 0, 0, 0), vec4(0, 0, 0, 0), vec4(0), vec4(0), ms[0])
+);
